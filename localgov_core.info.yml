@@ -1,0 +1,5 @@
+name: LocalGovDrupal Core
+description: LocalGovDrupal helper functions and core dependencies.
+package: LocalGovDrupal
+type: module
+core: 8.x

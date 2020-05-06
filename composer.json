@@ -3,7 +3,7 @@
     "description": "Helper functions and core dependencies for the LocalGovDrupal distribution.",
     "type": "drupal-module",
     "homepage": "https://github.com/localgovdrupal/localgov_core",
-    "license": "GPL-3.0-or-later",
+    "license": "GPL-2.0-or-later",
     "minimum-stability": "dev"
 }
 
