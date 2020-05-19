@@ -3,3 +3,7 @@ description: LocalGovDrupal helper functions and core dependencies.
 package: LocalGovDrupal
 type: module
 core_version_requirement: ^8.8 || ^9
+
+dependencies:
+  - drupal:node
+  - drupal:field
