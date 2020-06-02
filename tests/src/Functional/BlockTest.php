@@ -24,7 +24,7 @@ class BlockTest extends BrowserTestBase {
    */
   public static $modules = [
     'localgov_core',
-    'localgov_services_landing',
+    'localgov_services_page',
   ];
 
   /**
@@ -36,8 +36,8 @@ class BlockTest extends BrowserTestBase {
     $this->adminUser = $this->drupalCreateUser([
       'access content',
       'administer nodes',
-      'create localgov_services_landing content',
-      'edit own localgov_services_landing content',
+      'create localgov_services_page content',
+      'edit own localgov_services_page content',
     ]);
   }
 
@@ -57,7 +57,7 @@ class BlockTest extends BrowserTestBase {
       'body[0][value]' => $body,
       'status[value]' => 1,
     ];
-    $this->drupalPostForm('/node/add/localgov_services_landing', $edit, 'Save');
+    $this->drupalPostForm('/node/add/localgov_services_page', $edit, 'Save');
     $this->drupalGet('/node/1');
     $this->assertSession()->statusCodeEquals(200);
     $this->assertSession()->pageTextContains($title);
