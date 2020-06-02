@@ -1,0 +1,21 @@
+{#
+/**
+* @file
+* Default theme implementation to display a block.
+*
+* @see template_preprocess_block()
+*
+* @ingroup themeable
+*/
+#}
+{% set classes = [
+    'clear-both',
+    'headers',
+    'key',
+] %}
+<div{{ attributes.addClass(classes) }}>
+  <h1 class="header">{{ title }}</h1>
+  {% if lede %}
+    <div class="subheader">{{ lede }}</div>
+  {% endif %}
+</div>
