@@ -1,0 +1,21 @@
+<?php
+
+/**
+ * @file
+ * LocalGovDrupal Core module file.
+ */
+
+/**
+ * Implements hook_theme().
+ */
+function localgov_core_theme() {
+  return [
+    'page_header' => [
+      'variables' => [
+        'title' => '',
+        'lede' => NULL,
+      ],
+      'render element' => 'block',
+    ],
+  ];
+}
