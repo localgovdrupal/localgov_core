@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\Tests\localgov\Functional;
+namespace Drupal\Tests\localgov_core\Functional;
 
 use Drupal\Tests\BrowserTestBase;
 
