@@ -4,6 +4,8 @@
     "type": "drupal-module",
     "homepage": "https://github.com/localgovdrupal/localgov_core",
     "license": "GPL-2.0-or-later",
-    "minimum-stability": "dev"
+    "minimum-stability": "dev",
+    "require": {
+        "drupal/image_widget_crop": "^2.3"
+    }
 }
-
