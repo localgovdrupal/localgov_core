@@ -2,12 +2,17 @@
 
 namespace Drupal\Tests\localgov_core\Functional;
 
+use Drupal\node\NodeInterface;
 use Drupal\Tests\BrowserTestBase;
+use Drupal\Tests\node\Traits\ContentTypeCreationTrait;
+use Drupal\Tests\node\Traits\NodeCreationTrait;
 
 /**
  * Functional tests for LocalGovDrupal install profile.
  */
 class BlockTest extends BrowserTestBase {
+
+  use NodeCreationTrait;
 
   /**
    * {@inheritdoc}
@@ -41,34 +46,25 @@ class BlockTest extends BrowserTestBase {
       ]);
     $type->save();
     $this->container->get('router.builder')->rebuild();
-
-    $this->adminUser = $this->drupalCreateUser([
-      'access content',
-      'administer nodes',
-      'create localgov_services_page content',
-      'edit own localgov_services_page content',
-      'create dummy content',
-      'edit own dummy content',
-    ]);
   }
 
   /**
    * Test blocks display.
    */
   public function testBlocksDisplay() {
-    $this->drupalLogin($this->adminUser);
-
     // Check node title and summary display on a landing page.
     $title = $this->randomMachineName(8);
     $summary = $this->randomMachineName(16);
     $body = $this->randomMachineName(32);
-    $edit = [
-      'title[0][value]' => $title,
-      'body[0][summary]' => $summary,
-      'body[0][value]' => $body,
-      'status[value]' => 1,
-    ];
-    $this->drupalPostForm('/node/add/localgov_services_page', $edit, 'Save');
+    $this->createNode([
+      'title' => $title,
+      'type' => 'localgov_services_page',
+      'body' => [
+        'summary' => $summary,
+        'value' => $body,
+      ],
+      'status' => NodeInterface::PUBLISHED,
+    ]);
     $this->drupalGet('/node/1');
     $this->assertSession()->statusCodeEquals(200);
     $this->assertSession()->pageTextContains($title);
@@ -80,15 +76,13 @@ class BlockTest extends BrowserTestBase {
    * Test blocks display when content type has no body field.
    */
   public function testBlocksDisplayWhenNoSummary() {
-    $this->drupalLogin($this->adminUser);
-
     // Check node title and summary display on a landing page.
     $title = $this->randomMachineName(8);
-    $edit = [
-      'title[0][value]' => $title,
-      'status[value]' => 1,
-    ];
-    $this->drupalPostForm('/node/add/dummy', $edit, 'Save');
+    $this->createNode([
+      'title' => $title,
+      'type' => 'dummy',
+      'status' => NodeInterface::PUBLISHED,
+    ]);
     $this->drupalGet('/node/1');
     $this->assertSession()->statusCodeEquals(200);
     $this->assertSession()->pageTextContains($title);
