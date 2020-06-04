@@ -13,7 +13,6 @@ use Drupal\Tests\node\Traits\NodeCreationTrait;
 class BlockTest extends BrowserTestBase {
 
   use NodeCreationTrait;
-  use ContentTypeCreationTrait;
 
   /**
    * {@inheritdoc}
@@ -34,22 +33,19 @@ class BlockTest extends BrowserTestBase {
   ];
 
   /**
-   * A user with mininum permissions for test.
-   *
-   * @var \Drupal\user\UserInterface
-   */
-  protected $user;
-
-  /**
    * {@inheritdoc}
    */
   protected function setUp() {
     parent::setUp();
 
-    $this->createContentType(['type' => 'dummy']);
-    $this->user = $this->drupalCreateUser([
-      'access content',
-    ]);
+    // Create a dummy content type that we will use for testing.
+    $type = $this->container->get('entity_type.manager')->getStorage('node_type')
+      ->create([
+        'type' => 'dummy',
+        'name' => 'Dummy',
+      ]);
+    $type->save();
+    $this->container->get('router.builder')->rebuild();
   }
 
   /**
