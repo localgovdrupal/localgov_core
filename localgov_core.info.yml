@@ -8,6 +8,4 @@ dependencies:
   - drupal:block
   - drupal:field
   - drupal:node
-  - drupal:media_library
-  - drupal:responsive_image
-  - image_widget_crop:image_widget_crop
+  - localgov_core:localgov_media

@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Drupal\Tests\localgov_core\Functional;
+namespace Drupal\Tests\localgov_media\Functional;
 
 use Drupal\Tests\BrowserTestBase;
 
@@ -13,7 +13,7 @@ use Drupal\Tests\BrowserTestBase;
  * - Presence of the Document, Image, and Remote video Media bundles.
  * - Presence of different image croppers in the Media Image edit form.
  *
- * @group localgov_core
+ * @group localgov_media
  */
 class MediaSetupTest extends BrowserTestBase {
 
@@ -22,7 +22,7 @@ class MediaSetupTest extends BrowserTestBase {
    *
    * @var array
    */
-  protected static $modules = ['localgov_core', 'path'];
+  protected static $modules = ['localgov_media', 'path'];
 
   /**
    * Test Media bundles.
