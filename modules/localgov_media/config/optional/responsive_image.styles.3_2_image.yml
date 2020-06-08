@@ -4,21 +4,15 @@ dependencies:
   config:
     - image.style.large_3_2_2x
     - image.style.large_3_2_768x512
-    - image.style.medium_3_2_2x
-    - image.style.medium_3_2_600x400
+  module:
+    - localgov_media
 id: 3_2_image
 label: '3:2 Image'
 image_style_mappings:
   -
-    breakpoint_id: responsive_image.viewport_sizing
+    breakpoint_id: localgov_media.bootstrap4_md_768px
     multiplier: 1x
-    image_mapping_type: sizes
-    image_mapping:
-      sizes: 100vw
-      sizes_image_styles:
-        - large_3_2_2x
-        - large_3_2_768x512
-        - medium_3_2_2x
-        - medium_3_2_600x400
-breakpoint_group: responsive_image
+    image_mapping_type: image_style
+    image_mapping: large_3_2_2x
+breakpoint_group: localgov_media
 fallback_image_style: large_3_2_768x512

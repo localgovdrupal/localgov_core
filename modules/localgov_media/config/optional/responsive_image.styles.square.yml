@@ -4,19 +4,15 @@ dependencies:
   config:
     - image.style.square_large
     - image.style.square_medium
-    - image.style.square_small
+  module:
+    - localgov_media
 id: square
 label: Square
 image_style_mappings:
   -
-    breakpoint_id: responsive_image.viewport_sizing
+    breakpoint_id: localgov_media.bootstrap4_md_768px
     multiplier: 1x
-    image_mapping_type: sizes
-    image_mapping:
-      sizes: 100vw
-      sizes_image_styles:
-        - square_large
-        - square_medium
-        - square_small
-breakpoint_group: responsive_image
+    image_mapping_type: image_style
+    image_mapping: square_large
+breakpoint_group: localgov_media
 fallback_image_style: square_medium
