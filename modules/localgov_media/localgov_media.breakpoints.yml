@@ -1,0 +1,30 @@
+localgov_media.bootstrap4_xs:
+  label: Bootstrap4 xs
+  mediaQuery: '(min-width: 0)'
+  weight: 0
+  multipliers:
+    - 1x
+localgov_media.bootstrap4_sm_576px:
+  label: Bootstrap4 sm
+  mediaQuery: '(min-width: 576px)'
+  weight: 1
+  multipliers:
+    - 1x
+localgov_media.bootstrap4_md_768px:
+  label: Bootstrap4 md
+  mediaQuery: '(min-width: 768px)'
+  weight: 2
+  multipliers:
+    - 1x
+localgov_media.bootstrap4_lg_992px:
+  label: Bootstrap4 lg
+  mediaQuery: '(min-width: 992px)'
+  weight: 3
+  multipliers:
+    - 1x
+localgov_media.bootstrap4_xl_1200px:
+  label: Bootstrap4 xl
+  mediaQuery: 'screen and (min-width: 1200px)'
+  weight: 4
+  multipliers:
+    - 1x
