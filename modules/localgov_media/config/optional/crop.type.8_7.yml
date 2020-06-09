@@ -1,0 +1,11 @@
+langcode: en
+status: true
+dependencies: {  }
+id: '8_7'
+label: '8:7'
+description: ''
+aspect_ratio: '8:7'
+soft_limit_width: null
+soft_limit_height: null
+hard_limit_width: null
+hard_limit_height: null
