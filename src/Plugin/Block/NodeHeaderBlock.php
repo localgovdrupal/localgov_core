@@ -84,7 +84,7 @@ class NodeHeaderBlock extends BlockBase implements ContainerFactoryPluginInterfa
       '#title' => $this->node->getTitle(),
     ];
 
-    if (!$this->node->get('body')->isEmpty()) {
+    if ($this->node->hasField('body') && !$this->node->get('body')->isEmpty()) {
       $body = $this->node->get('body')->first()->getValue();
       if ($body and array_key_exists('summary', $body)) {
         $build[0]['#lede'] = [
