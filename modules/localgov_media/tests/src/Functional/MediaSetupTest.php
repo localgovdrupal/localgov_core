@@ -67,11 +67,11 @@ class MediaSetupTest extends BrowserTestBase {
 
     // This should bring us to the Media image edit form where we should find
     // the image croppers.
-    $this->assertSession()->elementExists($type = 'css', $selector = '[data-drupal-iwc-id="3_2"]');
-    $this->assertSession()->elementExists($type = 'css', $selector = '[data-drupal-iwc-id="16_9"]');
-    $this->assertSession()->elementExists($type = 'css', $selector = '[data-drupal-iwc-id="8_7"]');
-    $this->assertSession()->elementExists($type = 'css', $selector = '[data-drupal-iwc-id="7_3"]');
-    $this->assertSession()->elementExists($type = 'css', $selector = '[data-drupal-iwc-id="square"]');
+    $this->assertSession()->elementExists('css', '[data-drupal-iwc-id="3_2"]');
+    $this->assertSession()->elementExists('css', '[data-drupal-iwc-id="16_9"]');
+    $this->assertSession()->elementExists('css', '[data-drupal-iwc-id="8_7"]');
+    $this->assertSession()->elementExists('css', '[data-drupal-iwc-id="7_3"]');
+    $this->assertSession()->elementExists('css', '[data-drupal-iwc-id="square"]');
   }
 
   /**
