@@ -8,3 +8,4 @@ dependencies:
   - drupal:block
   - drupal:field
   - drupal:node
+  - fontawesome:fontawesome

@@ -6,6 +6,7 @@
     "license": "GPL-2.0-or-later",
     "minimum-stability": "dev",
     "require": {
+        "drupal/fontawesome": "^2.16",
         "drupal/image_widget_crop": "^2.3"
     }
 }
