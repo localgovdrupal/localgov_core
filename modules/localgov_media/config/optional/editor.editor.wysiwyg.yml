@@ -5,8 +5,6 @@ dependencies:
     - filter.format.wysiwyg
   module:
     - ckeditor
-_core:
-  default_config_hash: gVvqOq7RrzdfNsVJwpcZjnMekiHUt4rw3oYgh8mk6z8
 format: wysiwyg
 editor: ckeditor
 settings:

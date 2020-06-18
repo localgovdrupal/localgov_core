@@ -10,8 +10,6 @@ dependencies:
     - editor
     - linkit
     - media
-_core:
-  default_config_hash: L7IADg1H0VIbgqtzWlkbGGPRZrQk5cHMqat8NyEs5fE
 name: WYSIWYG
 format: wysiwyg
 weight: 0
