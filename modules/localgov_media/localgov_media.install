@@ -1,0 +1,18 @@
+<?php
+
+/**
+ * @file
+ * Install file for the localgov_media module.
+ */
+
+use Drupal\user\Entity\Role;
+
+/**
+ * Implements hook_install().
+ */
+function localgov_media_install() {
+  // Add permission to use the WYSIWYG text format.
+  $role_object = Role::load('authenticated');
+  $role_object->grantPermission('use text format wysiwyg');
+  $role_object->save();
+}

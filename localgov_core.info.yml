@@ -6,5 +6,7 @@ core_version_requirement: ^8.8 || ^9
 
 dependencies:
   - drupal:block
+  - drupal:editor
   - drupal:field
   - drupal:node
+  - linkit:linkit
