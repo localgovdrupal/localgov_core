@@ -16,8 +16,8 @@ use Drupal\Core\Form\FormStateInterface;
  * @package Drupal\localgov_core\Field\FieldWidget
  *
  * @FieldWidget(
- *   id = "entity_reference_labels",
- *   label = @Translation("Labels"),
+ *   id = "localgov_entity_reference_labels",
+ *   label = @Translation("Entity labels"),
  *   field_types = {
  *     "entity_reference"
  *   }
