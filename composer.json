@@ -6,7 +6,20 @@
     "license": "GPL-2.0-or-later",
     "minimum-stability": "dev",
     "require": {
+        "drupal/field_group": "^3.1",
         "drupal/image_widget_crop": "^2.3",
         "drupal/linkit": "^6.0-beta1"
+    },
+    "extra": {
+        "enable-patching": true,
+        "composer-exit-on-patch-failure": true,
+        "patchLevel": {
+            "drupal/core": "-p2"
+        },
+        "patches": {
+            "drupal/field_group": {
+                "Fix 'Undefined property: stdClass::$region' error #3059614": "https://www.drupal.org/files/issues/2020-06-15/3059614-37.patch"
+            }
+        }
     }
 }
