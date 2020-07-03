@@ -1,0 +1,11 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - localgov_roles
+id: localgov_author
+label: Author
+weight: 3
+is_admin: null
+permissions: {  }

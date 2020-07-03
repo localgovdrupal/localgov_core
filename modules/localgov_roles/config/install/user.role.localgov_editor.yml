@@ -1,0 +1,11 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - localgov_roles
+id: localgov_editor
+label: 'Comms designer'
+weight: 2
+is_admin: null
+permissions: {  }

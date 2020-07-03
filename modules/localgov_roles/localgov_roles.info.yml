@@ -1,0 +1,5 @@
+name: LocalGovDrupal Roles
+description: Default user roles.
+package: LocalGovDrupal
+type: module
+core_version_requirement: ^8.8 || ^9
