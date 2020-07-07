@@ -5,7 +5,7 @@ dependencies:
     module:
       - localgov_roles
 id: localgov_editor
-label: 'Comms designer'
+label: 'Content designer'
 weight: 2
 is_admin: null
 permissions: {  }
