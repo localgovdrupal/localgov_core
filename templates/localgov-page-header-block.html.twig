@@ -1,0 +1,23 @@
+{#
+/**
+* @file
+* Default theme implementation of localgov_header_block.
+*
+* @see template_preprocess_block()
+*
+* @ingroup themeable
+*/
+#}
+{% set classes = [
+    'clear-both',
+    'headers',
+    'key',
+] %}
+{% if title %}
+<div{{ attributes.addClass(classes) }}>
+  <h1 class="header">{{ title }}</h1>
+  {% if lede %}
+  <div class="subheader">{{ lede }}</div>
+  {% endif %}
+</div>
+{% endif %}
