@@ -1,0 +1,6 @@
+services:
+  # Alter page header.
+  localgov_core_page_header_event_test.page_header:
+    class: Drupal\localgov_core_page_header_event_test\EventSubscriber\PageHeaderSubscriber
+    tags:
+      - { name: 'event_subscriber' }
