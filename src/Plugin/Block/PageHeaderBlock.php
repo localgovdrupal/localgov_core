@@ -110,16 +110,14 @@ class PageHeaderBlock extends BlockBase implements ContainerFactoryPluginInterfa
     $this->titleResolver = $title_resolver;
 
     // Find the entity, if any, associated with the current route.
-    // Adapted from https://www.computerminds.co.uk/drupal-code/get-entity-route
     if (($route = $this->currentRouteMatch->getRouteObject()) && ($parameters = $route->getOption('parameters'))) {
       foreach ($parameters as $name => $options) {
         if (isset($options['type']) && strpos($options['type'], 'entity:') === 0) {
           $entity = $this->currentRouteMatch->getParameter($name);
-          if ($entity instanceof EntityInterface && $entity->hasLinkTemplate('canonical')) {
+          if ($entity instanceof EntityInterface) {
             $this->entity = $entity;
+            break;
           }
-          // Since entity was found, no need to iterate further.
-          break;
         }
       }
     }
