@@ -8,9 +8,9 @@
 /**
  * Implements hook_theme().
  */
-function localgov_core_theme() {
+function localgov_core_theme($existing, $type, $theme, $path) {
   return [
-    'page_header' => [
+    'localgov_page_header_block' => [
       'variables' => [
         'title' => '',
         'lede' => NULL,
