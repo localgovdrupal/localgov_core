@@ -169,7 +169,7 @@ class PageHeaderBlock extends BlockBase implements ContainerFactoryPluginInterfa
   protected function getLede() {
 
     // Return node summary if it exists.
-    if ($this->entity instanceof Node && $this->entity->get('body')) {
+    if ($this->entity instanceof Node && $this->entity->hasField('body')) {
       return [
         '#type' => 'html_tag',
         '#tag' => 'p',
