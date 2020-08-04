@@ -1,4 +1,4 @@
-name: LocalGovDrupal Workflows
+name: LocalGov Drupal Workflows
 description: Provides the default editorial workflow for content types.
 package: LocalGovDrupal
 type: module
@@ -7,3 +7,4 @@ core_version_requirement: ^8.8 || ^9
 dependencies:
   - drupal:content_moderation
   - localgov_core:localgov_core
+  - localgov_core:localgov_roles

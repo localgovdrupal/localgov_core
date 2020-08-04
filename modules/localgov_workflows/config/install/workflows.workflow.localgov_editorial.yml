@@ -1,7 +1,7 @@
 langcode: en
 status: true
 dependencies:
-  config: { }
+  config: {  }
   enforced:
     module:
       - localgov_workflows
@@ -38,37 +38,37 @@ type_settings:
       from:
         - review
       to: published
-      weight: 6
+      weight: -2
     archive:
       label: Archive
       from:
         - draft
         - published
       to: archived
-      weight: 2
+      weight: 1
     archived_draft:
       label: 'Restore to Draft'
       from:
         - archived
       to: draft
-      weight: 3
+      weight: 2
     archived_published:
       label: Restore
       from:
         - archived
       to: published
-      weight: 4
+      weight: 3
     create_new_draft:
       label: 'Create New Draft'
       to: draft
-      weight: 0
+      weight: -4
       from:
         - draft
         - published
     publish:
       label: Publish
       to: published
-      weight: 1
+      weight: 0
       from:
         - draft
         - published
@@ -77,7 +77,7 @@ type_settings:
       from:
         - review
       to: draft
-      weight: 7
+      weight: -1
     submit_for_review:
       label: 'Submit for review'
       from:
@@ -86,6 +86,6 @@ type_settings:
         - published
         - review
       to: review
-      weight: 5
-  entity_types: { }
+      weight: -3
+  entity_types: {  }
   default_moderation_state: draft
