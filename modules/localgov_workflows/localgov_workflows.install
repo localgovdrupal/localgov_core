@@ -1,0 +1,61 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the LocalGov Workflow module.
+ */
+
+use Drupal\user\Entity\Role;
+use Drupal\workflows\Entity\Workflow;
+
+/**
+ * Implements hook_install().
+ */
+function localgov_workflows_install() {
+  // Add workflow to localgov_ node bundles with no other workflow.
+  $editorial = Workflow::load('localgov_editorial');
+  $workflow_type = $editorial->getTypePlugin();
+
+  $node_types = \Drupal::service('entity_type.bundle.info')->getBundleInfo('node');
+  $changed = FALSE;
+  foreach ($node_types as $type_name => $node_type) {
+    if (strpos($type_name, 'localgov_') === 0 && empty($node_type['workflow'])) {
+      $workflow_type->addEntityTypeAndBundle('node', $type_name);
+      $changed = TRUE;
+    }
+  }
+
+  if ($changed) {
+    $editorial->save();
+  }
+
+  // Apply permissions.
+  $author_permissions = [
+    'use localgov_editorial transition create_new_draft',
+    'use localgov_editorial transition submit_for_review',
+  ];
+  $editor_permissions = [
+    'use localgov_editorial transition approve',
+    'use localgov_editorial transition archive',
+    'use localgov_editorial transition archived_draft',
+    'use localgov_editorial transition archived_published',
+    'use localgov_editorial transition create_new_draft',
+    'use localgov_editorial transition publish',
+    'use localgov_editorial transition reject',
+    'use localgov_editorial transition submit_for_review',
+    'view any unpublished content',
+    'view latest version',
+  ];
+  if ($author = Role::load('localgov_author')) {
+    foreach ($author_permissions as $permission) {
+      $author->grantPermission($permission);
+    }
+    $author->save();
+  }
+  if ($editor = Role::load('localgov_editor')) {
+    foreach ($editor_permissions as $permission) {
+      $editor->grantPermission($permission);
+    }
+    $editor->save();
+  }
+}

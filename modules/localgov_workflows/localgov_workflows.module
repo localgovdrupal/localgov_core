@@ -1,0 +1,25 @@
+<?php
+
+/**
+ * @file
+ * Localgov Workflow module hooks.
+ */
+
+use Drupal\node\NodeTypeInterface;
+use Drupal\workflows\Entity\Workflow;
+
+/**
+ * Implements hook_ENTITY_TYPE_insert().
+ */
+function localgov_workflows_node_type_insert(NodeTypeInterface $node_type) {
+  // Add workflow to new localgov_ node bundle with no other workflow.
+  if (strpos($node_type->id(), 'localgov_') === 0) {
+    $types = \Drupal::service('entity_type.bundle.info')->getBundleInfo('node');
+    if (empty($types['node']['workflow'])) {
+      $editorial = Workflow::load('localgov_editorial');
+      $type = $editorial->getTypePlugin();
+      $type->addEntityTypeAndBundle('node', $node_type->id());
+      $editorial->save();
+    }
+  }
+}
