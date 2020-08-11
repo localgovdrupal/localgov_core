@@ -1,4 +1,4 @@
-name: LocalGov Drupal Workflows
+name: LocalGov Workflows
 description: Provides the default editorial workflow for content types.
 package: LocalGovDrupal
 type: module
