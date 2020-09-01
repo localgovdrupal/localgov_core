@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - media
+id: media.localgov_featured_large
+label: 'Featured large'
+targetEntityType: media
+cache: true

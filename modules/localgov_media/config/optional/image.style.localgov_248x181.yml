@@ -1,0 +1,14 @@
+langcode: en
+status: true
+dependencies: {  }
+name: localgov_248x181
+label: LocalGov 248x181
+effects:
+  b8c93f24-2915-4be5-82fd-69940c874fe6:
+    uuid: b8c93f24-2915-4be5-82fd-69940c874fe6
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 248
+      height: 181
+      anchor: center-center
