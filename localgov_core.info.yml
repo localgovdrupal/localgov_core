@@ -1,6 +1,6 @@
-name: LocalGovDrupal Core
-description: LocalGovDrupal helper functions and core dependencies.
-package: LocalGovDrupal
+name: LocalGov Core
+description: LocalGov Drupal helper functions and core dependencies.
+package: LocalGov Drupal
 type: module
 core_version_requirement: ^8.8 || ^9
 
