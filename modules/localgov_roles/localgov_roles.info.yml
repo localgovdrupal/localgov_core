@@ -1,5 +1,5 @@
-name: LocalGovDrupal Roles
+name: LocalGov Roles
 description: Default user roles.
-package: LocalGovDrupal
+package: LocalGov Drupal
 type: module
 core_version_requirement: ^8.8 || ^9

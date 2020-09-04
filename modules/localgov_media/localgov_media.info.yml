@@ -1,6 +1,6 @@
 name: LocalGovDrupal Media
 description: LocalGov Media configuration.
-package: LocalGovDrupal
+package: LocalGov Drupal
 type: module
 core_version_requirement: ^8.8 || ^9
 
