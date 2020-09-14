@@ -1,0 +1,52 @@
+<?php
+
+use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\field\Entity\FieldConfig;
+use Drupal\Core\Config\FileStorage;
+
+/**
+ * Update Field storage for core fields email_address, facebook, phone, twitter.
+ */
+function localgov_core_update_8001(&$sandbox) {
+  // Update field tables, Based on :
+  //   https://blog.42mate.com/change-field-type-with-existing-data-on-drupal-8/
+  $database = \Drupal::database();
+  $entity_type = 'node';
+
+  // See https://drupal.stackexchange.com/a/276209
+  $config_path    = drupal_get_path('module', 'localgov_core') . '/config/install';
+  $source         = new FileStorage($config_path);
+  $config_storage = \Drupal::service('config.storage');
+  $config_factory = \Drupal::configFactory();
+
+  // Update each field.
+  $field_names = ['email_address', 'facebook', 'phone', 'twitter'];
+  foreach ($field_names as $field_name_unprefixed) {
+    $old_field_name = 'field_' . $field_name_unprefixed;
+    $new_field_name = 'localgov_' . $field_name_unprefixed;
+    $old_table = $entity_type . '__' . $old_field_name;
+    $new_table = $entity_type . '__' . $new_field_name;
+    $revision_old_table = $entity_type . '_revision__' . $old_field_name;
+    $revision_new_table = $entity_type . '_revision__' . $new_field_name;
+    $field_storage = FieldStorageConfig::loadByName($entity_type, $old_field_name);
+
+    // Get install new field config.
+    $config_name = 'field.storage.' . $entity_type . '.' . $new_field_name;
+    $config_storage->write($config_name, $source->read($config_name));
+
+    // Rename the table.
+    // $sql = "RENAME TABLE $old_table TO $new_table, $revision_old_table TO $revision_new_table";
+    // $database->query($sql);
+    // Clone the table.
+    $sql[0] = "CREATE TABLE $new_table LIKE $old_table";
+    $sql[1] = "INSERT INTO $new_table SELECT * FROM $old_table";
+    $sql[2] = "CREATE TABLE $revision_new_table LIKE $revision_old_table";
+    $sql[3] = "INSERT INTO $revision_new_table SELECT * FROM $revision_old_table";
+    foreach ($sql as $indv_sql) {
+      $database->query($indv_sql);
+    }
+
+    // Deleting field storage which will also delete bundles(fields).
+    $field_storage->delete();
+  }
+}
