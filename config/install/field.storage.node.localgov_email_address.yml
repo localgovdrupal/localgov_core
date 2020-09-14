@@ -3,8 +3,8 @@ status: true
 dependencies:
   module:
     - node
-id: node.field_email_address
-field_name: field_email_address
+id: node.localgov_email_address
+field_name: localgov_email_address
 entity_type: node
 type: string
 settings:
