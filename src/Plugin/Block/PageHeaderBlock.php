@@ -156,8 +156,10 @@ class PageHeaderBlock extends BlockBase implements ContainerFactoryPluginInterfa
   protected function getTitle() {
     $request = $this->requestStack->getCurrentRequest();
     $route = $this->currentRouteMatch->getRouteObject();
-
-    return $this->titleResolver->getTitle($request, $route);
+    if ($route) {
+      return $this->titleResolver->getTitle($request, $route);
+    }
+    return NULL;
   }
 
   /**
