@@ -1,4 +1,3 @@
-uuid: 2eb59c8f-25d6-4c57-9b13-cec9755b8825
 langcode: en
 status: true
 dependencies:
@@ -7,8 +6,6 @@ dependencies:
     - paragraphs.paragraphs_type.localgov_banner_secondary
   module:
     - media_library
-_core:
-  default_config_hash: wUDV2PG5ho0Wot1IeBQK66AHjGYAHkzPqWMJgLWMS_g
 id: paragraph.localgov_banner_secondary.default
 targetEntityType: paragraph
 bundle: localgov_banner_secondary
