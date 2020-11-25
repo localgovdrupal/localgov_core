@@ -1,0 +1,11 @@
+langcode: en
+status: true
+dependencies: {  }
+id: '28_9'
+label: '28:9'
+description: ''
+aspect_ratio: '28:9'
+soft_limit_width: null
+soft_limit_height: null
+hard_limit_width: null
+hard_limit_height: null

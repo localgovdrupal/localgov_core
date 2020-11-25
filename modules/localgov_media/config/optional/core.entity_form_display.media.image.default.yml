@@ -27,6 +27,7 @@ content:
       crop_preview_image_style: crop_thumbnail
       crop_list:
         - '16_9'
+        - '28_9'
         - '3_2'
         - '7_3'
         - '8_7'
