@@ -7,7 +7,6 @@ dependencies:
     - media.type.image
     - responsive_image.styles.banner_28_9
   module:
-    - field_formatter_class
     - responsive_image
 id: media.image.responsive_banner
 targetEntityType: media
@@ -19,9 +18,7 @@ content:
     settings:
       responsive_image_style: banner_28_9
       image_link: ''
-    third_party_settings:
-      field_formatter_class:
-        class: ''
+    third_party_settings: {  }
     type: responsive_image
     weight: 1
     region: content
