@@ -30,6 +30,8 @@ function localgov_core_update_8001(&$sandbox) {
     $new_table = $entity_type . '__' . $new_field_name;
     $revision_old_table = $entity_type . '_revision__' . $old_field_name;
     $revision_new_table = $entity_type . '_revision__' . $new_field_name;
+    $old_table_value_column = $old_field_name . '_value';
+    $new_table_value_column = $new_field_name . '_value';
     $field_storage = FieldStorageConfig::loadByName($entity_type, $old_field_name);
 
     // Get install new field config.
@@ -44,6 +46,8 @@ function localgov_core_update_8001(&$sandbox) {
     $sql[] = "INSERT INTO $new_table SELECT * FROM $old_table";
     $sql[] = "CREATE TABLE $revision_new_table LIKE $revision_old_table";
     $sql[] = "INSERT INTO $revision_new_table SELECT * FROM $revision_old_table";
+    $sql[] = "ALTER TABLE $new_table CHANGE $old_table_value_column $new_table_value_column varchar(255)";
+    $sql[] = "ALTER TABLE $revision_new_table CHANGE $old_table_value_column $new_table_value_column varchar(255)";
     foreach ($sql as $indv_sql) {
       $database->query($indv_sql);
     }
@@ -71,7 +75,6 @@ function localgov_core_update_8001(&$sandbox) {
     foreach ($dependents as $dependent) {
       /** @var \Drupal\Core\Config\Entity\ConfigEntityInterface $dependent */
       if ($dependent instanceof EntityViewDisplay) {
-        print "\n\nEntityViewDisplay\n";
         if ($component = $dependent->getComponent($old_field_name)) {
           $dependent->setComponent($new_field_name, $component)->save();
         }
@@ -84,6 +87,14 @@ function localgov_core_update_8001(&$sandbox) {
     }
 
     // Deleting field storage which will also delete bundles(fields).
+    // $field_storage->delete();
+  }
+
+  // Remove the old config after all renaming is done,
+  // as otherwise table not found errors occur.
+  foreach ($field_names as $field_name_unprefixed) {
+    $old_field_name = 'field_' . $field_name_unprefixed;
+    $field_storage = FieldStorageConfig::loadByName($entity_type, $old_field_name);
     $field_storage->delete();
   }
 }
