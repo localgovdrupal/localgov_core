@@ -42,6 +42,8 @@ function localgov_core_update_8001(&$sandbox) {
     // $sql = "RENAME TABLE $old_table TO $new_table, $revision_old_table TO $revision_new_table";
     // $database->query($sql);
     // Clone the table.
+    $sql[] = "DROP TABLE IF EXISTS $new_table";
+    $sql[] = "DROP TABLE IF EXISTS $revision_new_table";
     $sql[] = "CREATE TABLE $new_table LIKE $old_table";
     $sql[] = "INSERT INTO $new_table SELECT * FROM $old_table";
     $sql[] = "CREATE TABLE $revision_new_table LIKE $revision_old_table";
@@ -74,16 +76,21 @@ function localgov_core_update_8001(&$sandbox) {
 
     foreach ($dependents as $dependent) {
       /** @var \Drupal\Core\Config\Entity\ConfigEntityInterface $dependent */
-      if ($dependent instanceof EntityViewDisplay) {
+      if ($dependent instanceof EntityViewDisplay || $dependent instanceof EntityFormDisplay) {
         if ($component = $dependent->getComponent($old_field_name)) {
-          $dependent->setComponent($new_field_name, $component)->save();
-        }
-
-      } elseif ($dependent instanceof EntityFormDisplay) {
-        if ($component = $dependent->getComponent($old_field_name)) {
-          $dependent->setComponent($new_field_name, $component)->save();
+          $dependent->setComponent($new_field_name, $component);
+          $groups = $dependent->getThirdPartySettings('field_group');
+          foreach ($groups as $group_key => $group) {
+            foreach($group['children'] as $child_key => $child) {
+              if ($child == $old_field_name) {
+                $group['children'][$child_key] = $new_field_name;
+                $dependent->setThirdPartySetting('field_group', $group_key, $group);
+              }
+            }
+          }
         }
       }
+      $dependent->save();
     }
 
     // Deleting field storage which will also delete bundles(fields).
