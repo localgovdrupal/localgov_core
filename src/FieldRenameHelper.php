@@ -24,13 +24,15 @@ class FieldRenameHelper {
     // Rename field.
     // https://www.drupal.org/docs/drupal-apis/update-api/updating-entities-and-fields-in-drupal-8
 
+    // Make sure new field name is correctly formatted.
+    $new_field_name = substr($new_field_name, 0, 32);
+
     // Field variables.
+    // @TODO find out how to get the correct table names.
     $old_table = $entity_type . '__' . $old_field_name;
     $new_table = $entity_type . '__' . $new_field_name;
     $revision_old_table = $entity_type . '_revision__' . $old_field_name;
     $revision_new_table = $entity_type . '_revision__' . $new_field_name;
-    $old_table_value_column = $old_field_name . '_value';
-    $new_table_value_column = $new_field_name . '_value';
 
     // Get config storage.
     $config_storage = \Drupal::service('config.storage');
@@ -58,8 +60,16 @@ class FieldRenameHelper {
     $sql[] = "INSERT INTO $new_table SELECT * FROM $old_table";
     $sql[] = "CREATE TABLE $revision_new_table LIKE $revision_old_table";
     $sql[] = "INSERT INTO $revision_new_table SELECT * FROM $revision_old_table";
-    $sql[] = "ALTER TABLE $new_table CHANGE $old_table_value_column $new_table_value_column varchar(255)";
-    $sql[] = "ALTER TABLE $revision_new_table CHANGE $old_table_value_column $new_table_value_column varchar(255)";
+
+    // SQL for update field column names.
+    $field_columns = array_keys($field_storage->getColumns());
+    foreach($field_columns as $column) {
+      $old_table_value_column = $old_field_name . '_' . $column;
+      $new_table_value_column = $new_field_name . '_' . $column;
+      $sql[] = "ALTER TABLE $new_table CHANGE $old_table_value_column $new_table_value_column varchar(255)";
+      $sql[] = "ALTER TABLE $revision_new_table CHANGE $old_table_value_column $new_table_value_column varchar(255)";
+    }
+
     foreach ($sql as $indv_sql) {
       $database->query($indv_sql);
     }
@@ -110,5 +120,7 @@ class FieldRenameHelper {
     unset($field_storage);
     $field_storage = FieldStorageConfig::loadByName($entity_type, $old_field_name);
     $field_storage->delete();
+
+    return TRUE;
   }
 }
