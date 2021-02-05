@@ -3,7 +3,12 @@
 use Drupal\localgov_core\FieldRenameHelper;
 
 /**
- * Update Field storage for core fields email_address, facebook, phone, twitter.
+ * Update Field names for localgov_core provided fields.
+ *
+ * field_email_address => localgov_email_address
+ * field_facebook      => localgov_facebook
+ * field_phone         => localgov_phone
+ * field_twitter       => localgov_twitter
  */
 function localgov_core_update_8001(&$sandbox) {
 
