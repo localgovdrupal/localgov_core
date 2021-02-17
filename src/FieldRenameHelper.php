@@ -41,6 +41,12 @@ class FieldRenameHelper {
     // Get the old field config.
     $field_storage = FieldStorageConfig::loadByName($entity_type, $old_field_name);
 
+    // If the field config does not exist, just return now.
+    // (Assume it was deleted intentionally)
+    if (!$field_storage instanceof FieldStorageConfig) {
+      return;
+    }
+
     // Create new field storage.
     $new_field_storage = $field_storage->toArray();
     unset($new_field_storage['uuid']);
