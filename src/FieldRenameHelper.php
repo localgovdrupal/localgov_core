@@ -60,20 +60,22 @@ class FieldRenameHelper {
 
     // Duplicate the field data.
     $database = \Drupal::database();
-    $sql[] = "DROP TABLE IF EXISTS $new_table";
-    $sql[] = "DROP TABLE IF EXISTS $revision_new_table";
-    $sql[] = "CREATE TABLE $new_table LIKE $old_table";
-    $sql[] = "INSERT INTO $new_table SELECT * FROM $old_table";
-    $sql[] = "CREATE TABLE $revision_new_table LIKE $revision_old_table";
-    $sql[] = "INSERT INTO $revision_new_table SELECT * FROM $revision_old_table";
+    $prefix = $database->tablePrefix();
+    // $prefix .= ($prefix ? '_' : '');
+    $sql[] = "DROP TABLE IF EXISTS $prefix$new_table";
+    $sql[] = "DROP TABLE IF EXISTS $prefix$revision_new_table";
+    $sql[] = "CREATE TABLE $prefix$new_table LIKE $prefix$old_table";
+    $sql[] = "INSERT INTO $prefix$new_table SELECT * FROM $prefix$old_table";
+    $sql[] = "CREATE TABLE $prefix$revision_new_table LIKE $prefix$revision_old_table";
+    $sql[] = "INSERT INTO $prefix$revision_new_table SELECT * FROM $prefix$revision_old_table";
 
     // SQL for update field column names.
     $field_columns = array_keys($field_storage->getColumns());
     foreach($field_columns as $column) {
       $old_table_value_column = $old_field_name . '_' . $column;
       $new_table_value_column = $new_field_name . '_' . $column;
-      $sql[] = "ALTER TABLE $new_table CHANGE $old_table_value_column $new_table_value_column varchar(255)";
-      $sql[] = "ALTER TABLE $revision_new_table CHANGE $old_table_value_column $new_table_value_column varchar(255)";
+      $sql[] = "ALTER TABLE $prefix$new_table CHANGE $old_table_value_column $new_table_value_column varchar(255)";
+      $sql[] = "ALTER TABLE $prefix$revision_new_table CHANGE $old_table_value_column $new_table_value_column varchar(255)";
     }
 
     foreach ($sql as $indv_sql) {
