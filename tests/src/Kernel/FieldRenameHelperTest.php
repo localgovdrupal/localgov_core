@@ -101,38 +101,37 @@ class FieldRenameHelperTest extends KernelTestBase {
       'targetEntityType' => 'node',
       'bundle' => 'test_type',
       'mode' => 'default',
-    ])->setComponent('field_test_field')
-      ->setThirdPartySetting('field_group', 'test_group', [
-        'children' => [
-          'field_test_field',
-        ],
-      ])
-      ->setComponent('field_another_test_field')
+    ])->setComponent('field_test_field', [
+      'weight' => -1,
+    ])->setThirdPartySetting('field_group', 'test_group', [
+      'children' => [
+        'field_test_field',
+      ],
+    ])->setComponent('field_another_test_field')
       ->setThirdPartySetting('field_group', 'another_test_group', [
-        'children' => [
-          'field_another_test_field',
-        ],
-      ])
-      ->save();
+      'children' => [
+        'field_another_test_field',
+      ],
+    ])->save();
 
     // Set up Entity view display with a field group.
     EntityViewDisplay::create([
       'targetEntityType' => 'node',
       'bundle' => 'test_type',
       'mode' => 'default',
-    ])->setComponent('field_test_field')
-      ->setThirdPartySetting('field_group', 'test_group', [
-        'children' => [
-          'field_test_field',
-        ],
-      ])
-      ->setComponent('field_another_test_field')
+    ])->setComponent('field_test_field', [
+      'weight' => -1,
+      'label'  => 'hidden',
+    ])->setThirdPartySetting('field_group', 'test_group', [
+      'children' => [
+        'field_test_field',
+      ],
+    ])->setComponent('field_another_test_field')
       ->setThirdPartySetting('field_group', 'another_test_group', [
-        'children' => [
-          'field_another_test_field',
-        ],
-      ])
-      ->save();
+      'children' => [
+        'field_another_test_field',
+      ],
+    ])->save();
 
     // Set up some nodes.
     $test_field_value = $this->randomMachineName(8);
@@ -175,6 +174,13 @@ class FieldRenameHelperTest extends KernelTestBase {
     $view_groups = $view_display->getThirdPartySettings('field_group');
     $this->assertEquals(TRUE, in_array('renamed_test_field', $view_groups['test_group']['children']));
     $this->assertEquals(TRUE, in_array('another_renamed_test_field', $view_groups['another_test_group']['children']));
+
+    // Assert the field config is preserved.
+    $form_component = $form_display->getComponent('renamed_test_field');
+    $this->assertEquals(-1, $form_component['weight']);
+    $view_component = $view_display->getComponent('renamed_test_field');
+    $this->assertEquals(-1, $view_component['weight']);
+    $this->assertEquals('hidden', $view_component['label']);
   }
 
 }
