@@ -109,10 +109,11 @@ class FieldRenameHelperTest extends KernelTestBase {
       ],
     ])->setComponent('field_another_test_field')
       ->setThirdPartySetting('field_group', 'another_test_group', [
-      'children' => [
-        'field_another_test_field',
-      ],
-    ])->save();
+        'children' => [
+          'field_another_test_field',
+        ],
+      ])
+      ->save();
 
     // Set up Entity view display with a field group.
     EntityViewDisplay::create([
@@ -128,10 +129,11 @@ class FieldRenameHelperTest extends KernelTestBase {
       ],
     ])->setComponent('field_another_test_field')
       ->setThirdPartySetting('field_group', 'another_test_group', [
-      'children' => [
-        'field_another_test_field',
-      ],
-    ])->save();
+        'children' => [
+          'field_another_test_field',
+        ],
+      ])
+      ->save();
 
     // Set up some nodes.
     $test_field_value = $this->randomMachineName(8);
