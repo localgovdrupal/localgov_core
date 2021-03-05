@@ -8,3 +8,4 @@ dependencies:
   - drupal:block
   - drupal:field
   - drupal:node
+  - field_group:field_group
