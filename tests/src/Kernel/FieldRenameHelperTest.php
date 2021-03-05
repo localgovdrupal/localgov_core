@@ -8,6 +8,9 @@ use Drupal\node\Entity\Node;
 use Drupal\node\Entity\NodeType;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\field\Entity\FieldConfig;
+use Drupal\Core\Entity\Entity\EntityFormDisplay;
+use Drupal\Core\Entity\Entity\EntityViewDisplay;
+use Drupal\Core\Entity\Entity\EntityViewMode;
 use Drupal\localgov_core\FieldRenameHelper;
 use Drupal\KernelTests\KernelTestBase;
 
@@ -34,6 +37,8 @@ class FieldRenameHelperTest extends KernelTestBase {
     'user',
     'node',
     'filter',
+    'field_ui',
+    'field_group',
   ];
 
   /**
@@ -49,6 +54,8 @@ class FieldRenameHelperTest extends KernelTestBase {
       'field',
       'text',
       'filter',
+      'field_ui',
+      'field_group',
     ]);
   }
 
@@ -90,6 +97,22 @@ class FieldRenameHelperTest extends KernelTestBase {
     ])->enforceIsNew(TRUE)
       ->save();
 
+    // Set up Entity view display with a field group.
+    EntityViewDisplay::create([
+      'targetEntityType' => 'node',
+      'bundle' => 'test_type',
+      'mode' => 'default',
+      'third_party_settings' => [
+        'field_group' => [
+          'test_group' => [
+            'children' => [
+              'field_test_field',
+            ],
+          ],
+        ],
+      ],
+    ])->setComponent('field_test_field')->save();
+
     // Set up some nodes.
     $test_field_value = $this->randomMachineName(8);
     $another_test_field_value = 42;
@@ -119,6 +142,12 @@ class FieldRenameHelperTest extends KernelTestBase {
     // Assert the field rename is the new name and the data is preserved.
     $this->assertEquals($test_field_value, $result_node->get('renamed_test_field')->value);
     $this->assertEquals($another_test_field_value, $result_node->get('another_renamed_test_field')->value);
+
+    // Assert the entity displays preserve the field groups.
+    $display = EntityViewDisplay::load('node.test_type.default');
+    $groups = $display->getThirdPartySettings('field_group');
+    $group_children = $groups['test_group']['children'];
+    $this->assertEquals(TRUE, in_array('renamed_test_field', $group_children));
   }
 
 }
