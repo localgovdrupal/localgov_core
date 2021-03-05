@@ -1,14 +1,24 @@
 <?php
 
+/**
+ * @file
+ * Update hook implementations.
+ */
+
 use Drupal\localgov_core\FieldRenameHelper;
 
 /**
  * Update Field names for localgov_core provided fields.
  *
+ * Field mapping between existing and new names:
  * field_email_address => localgov_email_address
  * field_facebook      => localgov_facebook
  * field_phone         => localgov_phone
- * field_twitter       => localgov_twitter
+ * field_twitter       => localgov_twitter.
+ *
+ * This change creates and updates Drupal config entities.  Unless configuration
+ * is *exported* after this update, later calls to 'drush deploy' or similar
+ * will revert these changes.
  */
 function localgov_core_update_8001(&$sandbox) {
 
