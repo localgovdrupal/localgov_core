@@ -139,8 +139,7 @@ class FieldRenameHelper {
       }
 
       try {
-        // @todo Can we do better here?
-        $db->query('INSERT INTO {' . $cloned_table_name . '} SELECT * FROM {' . $src_table_name . '}');
+        $db->query("INSERT INTO {{$cloned_table_name}} SELECT * FROM {{$src_table_name}}");
       }
       catch (\Exception $e) {
         $logger->warning('Failed to copy table data into cloned field table: %table.  More: %msg', [
