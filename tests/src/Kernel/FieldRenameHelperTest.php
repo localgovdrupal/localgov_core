@@ -10,7 +10,6 @@ use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\Core\Entity\Entity\EntityFormDisplay;
 use Drupal\Core\Entity\Entity\EntityViewDisplay;
-use Drupal\Core\Entity\Entity\EntityViewMode;
 use Drupal\localgov_core\FieldRenameHelper;
 use Drupal\KernelTests\KernelTestBase;
 
@@ -97,21 +96,43 @@ class FieldRenameHelperTest extends KernelTestBase {
     ])->enforceIsNew(TRUE)
       ->save();
 
+    // Set up Entity form display with a field group.
+    EntityFormDisplay::create([
+      'targetEntityType' => 'node',
+      'bundle' => 'test_type',
+      'mode' => 'default',
+    ])->setComponent('field_test_field')
+      ->setThirdPartySetting('field_group', 'test_group', [
+        'children' => [
+          'field_test_field',
+        ],
+      ])
+      ->setComponent('field_another_test_field')
+      ->setThirdPartySetting('field_group', 'another_test_group', [
+        'children' => [
+          'field_another_test_field',
+        ],
+      ])
+      ->save();
+
     // Set up Entity view display with a field group.
     EntityViewDisplay::create([
       'targetEntityType' => 'node',
       'bundle' => 'test_type',
       'mode' => 'default',
-      'third_party_settings' => [
-        'field_group' => [
-          'test_group' => [
-            'children' => [
-              'field_test_field',
-            ],
-          ],
+    ])->setComponent('field_test_field')
+      ->setThirdPartySetting('field_group', 'test_group', [
+        'children' => [
+          'field_test_field',
         ],
-      ],
-    ])->setComponent('field_test_field')->save();
+      ])
+      ->setComponent('field_another_test_field')
+      ->setThirdPartySetting('field_group', 'another_test_group', [
+        'children' => [
+          'field_another_test_field',
+        ],
+      ])
+      ->save();
 
     // Set up some nodes.
     $test_field_value = $this->randomMachineName(8);
@@ -143,11 +164,17 @@ class FieldRenameHelperTest extends KernelTestBase {
     $this->assertEquals($test_field_value, $result_node->get('renamed_test_field')->value);
     $this->assertEquals($another_test_field_value, $result_node->get('another_renamed_test_field')->value);
 
-    // Assert the entity displays preserve the field groups.
-    $display = EntityViewDisplay::load('node.test_type.default');
-    $groups = $display->getThirdPartySettings('field_group');
-    $group_children = $groups['test_group']['children'];
-    $this->assertEquals(TRUE, in_array('renamed_test_field', $group_children));
+    // Assert the entity form displays preserve the field groups.
+    $form_display = EntityFormDisplay::load('node.test_type.default');
+    $form_groups = $form_display->getThirdPartySettings('field_group');
+    $this->assertEquals(TRUE, in_array('renamed_test_field', $form_groups['test_group']['children']));
+    $this->assertEquals(TRUE, in_array('another_renamed_test_field', $form_groups['another_test_group']['children']));
+
+    // Assert the entity view displays preserve the field groups.
+    $view_display = EntityViewDisplay::load('node.test_type.default');
+    $view_groups = $view_display->getThirdPartySettings('field_group');
+    $this->assertEquals(TRUE, in_array('renamed_test_field', $view_groups['test_group']['children']));
+    $this->assertEquals(TRUE, in_array('another_renamed_test_field', $view_groups['another_test_group']['children']));
   }
 
 }
