@@ -8,16 +8,18 @@
 * @ingroup themeable
 */
 #}
-{% set classes = [
-    'clear-both',
-    'headers',
-    'key',
-] %}
+
+{% 
+  set classes = [
+    'page-title',
+  ] 
+%}
+
 {% if title %}
-<div{{ attributes.addClass(classes) }}>
-  <h1 class="header">{{ title }}</h1>
-  {% if lede %}
-  <div class="subheader">{{ lede }}</div>
-  {% endif %}
-</div>
+  <div{{ attributes.addClass(classes) }}>
+    <h1 class="page-title__title">{{ title }}</h1>
+    {% if lede %}
+      <div class="page-title__subtitle">{{ lede }}</div>
+    {% endif %}
+  </div>
 {% endif %}
