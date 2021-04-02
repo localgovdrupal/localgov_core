@@ -23,7 +23,7 @@ filters:
   filter_autop:
     id: filter_autop
     provider: filter
-    status: false
+    status: true
     weight: -43
     settings: {  }
   filter_html_image_secure:
