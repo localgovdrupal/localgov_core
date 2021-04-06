@@ -27,4 +27,6 @@ function localgov_core_update_8001(&$sandbox) {
   foreach ($field_names as $field_name_unprefixed) {
     FieldRenameHelper::renameField('field_' . $field_name_unprefixed, 'localgov_' . $field_name_unprefixed, 'node');
   }
+
+  return t('Please export your sites configuration! Config entities for localgov_core where updated.');
 }
