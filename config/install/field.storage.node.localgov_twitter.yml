@@ -3,8 +3,8 @@ status: true
 dependencies:
   module:
     - node
-id: node.field_facebook
-field_name: field_facebook
+id: node.localgov_twitter
+field_name: localgov_twitter
 entity_type: node
 type: string
 settings:

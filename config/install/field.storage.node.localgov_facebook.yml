@@ -3,8 +3,8 @@ status: true
 dependencies:
   module:
     - node
-id: node.field_phone
-field_name: field_phone
+id: node.localgov_facebook
+field_name: localgov_facebook
 entity_type: node
 type: string
 settings:
