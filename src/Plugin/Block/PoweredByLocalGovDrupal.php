@@ -9,7 +9,7 @@ use Drupal\Core\Block\BlockBase;
  *
  * @Block(
  *   id = "localgov_powered_by_block",
- *   admin_label = @Translation("Powered by LocalGovDrupal")
+ *   admin_label = @Translation("Powered by LocalGov Drupal")
  * )
  */
 class PoweredByLocalGovDrupal extends BlockBase {
@@ -25,7 +25,7 @@ class PoweredByLocalGovDrupal extends BlockBase {
    * {@inheritdoc}
    */
   public function build() {
-    return ['#markup' => '<span>' . $this->t('Powered by <a href=":poweredby">LocalGovDrupal</a>', [':poweredby' => 'https://github.com/localgovdrupal/localgov']) . '</span>'];
+    return ['#markup' => '<span>' . $this->t('Powered by <a href=":poweredby">LocalGov Drupal</a>', [':poweredby' => 'https://localgovdrupal.org/']) . '</span>'];
   }
 
 }
