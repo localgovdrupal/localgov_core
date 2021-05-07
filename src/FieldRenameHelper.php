@@ -51,6 +51,12 @@ class FieldRenameHelper {
     unset($new_field_storage['_core']);
     $new_field_storage['field_name'] = $new_field_name;
     $new_field_storage['id'] = str_replace($old_field_name, $new_field_name, $new_field_storage['id']);
+    // Useful where config file for this new field storage has been already
+    // exported after database update in a *development* site.
+    if ($existing_field_storage_config = \Drupal::service('config.storage.sync')->read("field.storage.{$new_field_storage['id']}")) {
+      $new_field_storage['uuid'] = $existing_field_storage_config['uuid'] ?? '';
+    }
+
     $new_field_storage = FieldStorageConfig::create($new_field_storage);
     $new_field_storage->original = $new_field_storage;
     $new_field_storage->enforceIsNew(TRUE);
@@ -78,6 +84,11 @@ class FieldRenameHelper {
         $new_field['field_name'] = $new_field_name;
         $new_field['id'] = str_replace($old_field_name, $new_field_name, $new_field['id']);
         $new_field['dependencies']['config'][0] = str_replace($old_field_name, $new_field_name, $new_field['dependencies']['config'][0]);
+        // In case this new field's config file already exists.
+        if ($existing_field_config = \Drupal::service('config.storage.sync')->read("field.field.{$new_field['id']}")) {
+          $new_field['uuid'] = $existing_field_config['uuid'] ?? '';
+        }
+
         $new_field = FieldConfig::create($new_field);
         $new_field->original = $dependent;
         $new_field->enforceIsNew(TRUE);
