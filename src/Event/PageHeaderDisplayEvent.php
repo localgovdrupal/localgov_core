@@ -2,18 +2,10 @@
 
 namespace Drupal\localgov_core\Event;
 
-use Symfony\Component\EventDispatcher\Event;
+use Drupal\Component\EventDispatcher\Event;
 
 /**
  * Event that is fired when displaying the page header.
- *
- * The parent Symfony\Component\EventDispatcher\Event class is deprecated in
- * Drupal 9.1 but the new Drupal\Component\EventDispatcher\Event class doesn't
- * exist in Drupal 8. Ignore the deprecation error until Drupal 8 support is
- * dropped.
- *
- * @see https://www.drupal.org/node/3159012
- * @phpstan-ignore-next-line
  */
 class PageHeaderDisplayEvent extends Event {
 
