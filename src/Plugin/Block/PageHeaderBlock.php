@@ -124,7 +124,7 @@ class PageHeaderBlock extends BlockBase implements ContainerFactoryPluginInterfa
 
     // Dispatch event to allow modules to alter block content.
     $event = new PageHeaderDisplayEvent($this->entity);
-    $this->eventDispatcher->dispatch(PageHeaderDisplayEvent::EVENT_NAME, $event);
+    $this->eventDispatcher->dispatch($event, PageHeaderDisplayEvent::EVENT_NAME);
 
     // Set the title, lede and visibility.
     $this->title = is_null($event->getTitle()) ? $this->getTitle() : $event->getTitle();

@@ -24,7 +24,7 @@ class PageHeaderBlockTest extends BrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = [
+  protected static $modules = [
     'node',
     'taxonomy',
     'localgov_core',
@@ -34,7 +34,7 @@ class PageHeaderBlockTest extends BrowserTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
     $this->drupalPlaceBlock('localgov_page_header_block');
   }
