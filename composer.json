@@ -1,6 +1,6 @@
 {
     "name": "localgovdrupal/localgov_core",
-    "description": "Helper functions and core dependencies for the LocalGovDrupal distribution.",
+    "description": "Helper functions and core dependencies for the LocalGov Drupal distribution.",
     "type": "drupal-module",
     "homepage": "https://github.com/localgovdrupal/localgov_core",
     "license": "GPL-2.0-or-later",

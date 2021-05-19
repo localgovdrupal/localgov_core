@@ -2,7 +2,7 @@
 
 namespace Drupal\localgov_core\Event;
 
-use Symfony\Component\EventDispatcher\Event;
+use Drupal\Component\EventDispatcher\Event;
 
 /**
  * Event that is fired when displaying the page header.

@@ -1,3 +1,3 @@
-# LocalGovDrupal core functionality
+# LocalGov Drupal core functionality
 
-LocalGovDrupal Core module, for helper functions and core dependencies.
+LocalGov Drupal Core module, for helper functions and core dependencies.

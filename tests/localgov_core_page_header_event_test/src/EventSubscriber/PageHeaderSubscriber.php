@@ -7,7 +7,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Drupal\localgov_core\Event\PageHeaderDisplayEvent;
 
 /**
- * Class PageHeaderSubscriber.
+ * Test page header events.
  *
  * @package Drupal\localgov_core_page_header_event_test\EventSubscriber
  */
