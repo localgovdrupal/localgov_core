@@ -26,7 +26,7 @@ class WorkflowsInstallTest extends KernelTestBase {
    *
    * @var array
    */
-  public static $modules = [
+  protected static $modules = [
     'system',
     'field',
     'user',
@@ -39,7 +39,7 @@ class WorkflowsInstallTest extends KernelTestBase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void {
     parent::setup();
 
     $this->installEntitySchema('workflow');
@@ -75,8 +75,8 @@ class WorkflowsInstallTest extends KernelTestBase {
     \Drupal::service('module_installer')->install(['localgov_workflows']);
     \Drupal::service('entity_type.bundle.info')->clearCachedBundles();
     $node_types = \Drupal::service('entity_type.bundle.info')->getBundleInfo('node');
-    $this->assertEqual($node_types['localgov_test_1']['workflow'], 'localgov_editorial');
-    $this->assertEqual($node_types['localgov_test_2']['workflow'], 'other_workflow');
+    $this->assertEquals($node_types['localgov_test_1']['workflow'], 'localgov_editorial');
+    $this->assertEquals($node_types['localgov_test_2']['workflow'], 'other_workflow');
 
     // Add new types.
     // Should add default as localgov_ type 3.
@@ -85,9 +85,9 @@ class WorkflowsInstallTest extends KernelTestBase {
     $this->createContentType(['type' => 'test_4']);
     \Drupal::service('entity_type.bundle.info')->clearCachedBundles();
     $node_types = \Drupal::service('entity_type.bundle.info')->getBundleInfo('node');
-    $this->assertEqual($node_types['localgov_test_1']['workflow'], 'localgov_editorial');
-    $this->assertEqual($node_types['localgov_test_2']['workflow'], 'other_workflow');
-    $this->assertEqual($node_types['localgov_test_3']['workflow'], 'localgov_editorial');
+    $this->assertEquals($node_types['localgov_test_1']['workflow'], 'localgov_editorial');
+    $this->assertEquals($node_types['localgov_test_2']['workflow'], 'other_workflow');
+    $this->assertEquals($node_types['localgov_test_3']['workflow'], 'localgov_editorial');
     $this->assertTrue(empty($node_types['test_4']['workflow']));
   }
 

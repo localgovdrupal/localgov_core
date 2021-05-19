@@ -28,7 +28,7 @@ class FieldRenameHelperTest extends KernelTestBase {
    *
    * @var array
    */
-  public static $modules = [
+  protected static $modules = [
     'system',
     'field',
     'text',
@@ -43,7 +43,7 @@ class FieldRenameHelperTest extends KernelTestBase {
   /**
    * {@inheritdoc}
    */
-  public function setUp() {
+  public function setUp(): void {
     parent::setup();
 
     $this->installEntitySchema('user');
