@@ -71,6 +71,12 @@ class FieldRenameHelper {
       ]);
     }
 
+    // Update paragraphs.
+    $field_settings = $field_storage->get('settings');
+    if (!empty($field_settings['target_type']) && $field_settings['target_type'] == 'paragraph') {
+      self::fixParagraphTables($entity_type, $old_field_name, $new_field_name);
+    }
+
     // Update the field config on each bundle.
     $config_manager = \Drupal::service('config.manager');
     $field_storage_name = $field_storage->getConfigDependencyName();
@@ -163,6 +169,43 @@ class FieldRenameHelper {
     }
 
     return $copied_tables;
+  }
+
+  /**
+   * Fix the paragraph table with the renamed fields
+   *
+   * See https://github.com/localgovdrupal/localgov_core/issues/75
+   * @param  string $host_entity_type_id
+   *   Entity type eg. Node.
+   * @param  string $src_field
+   *   Source field name.
+   * @param  string $cloned_field
+   *   New field name.
+   */
+  public static function fixParagraphTables(string $host_entity_type_id, string $src_field, string $cloned_field): void {
+
+    $db = \Drupal::database();
+    $logger = \Drupal::service('logger.factory')->get('localgov_core');
+
+    $paragraph_tables = ['paragraphs_item_field_data', 'paragraphs_item_revision_field_data'];
+    foreach($paragraph_tables as $paragraph_data_table) {
+      try {
+        $db->update($paragraph_data_table)
+           ->fields(['parent_field_name' => $cloned_field])
+           ->condition('parent_type', $host_entity_type_id)
+           ->condition('parent_field_name', $src_field)
+           ->execute();
+      }
+      catch (\Exception $e) {
+        $logger->warning('Failed to update %paragraph_data_table table parent_field_name column for %src_field to %cloned_field on %host_entity_type_id.  More: %msg', [
+          '%paragraph_data_table' => $paragraph_data_table,
+          '%host_entity_type_id' => $host_entity_type_id,
+          '%src_field' => $src_field,
+          '%cloned_field' => $cloned_field,
+          '%msg' => $e->getMessage(),
+        ]);
+      }
+    }
   }
 
 }
