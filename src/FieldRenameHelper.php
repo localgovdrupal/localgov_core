@@ -172,14 +172,15 @@ class FieldRenameHelper {
   }
 
   /**
-   * Fix the paragraph table with the renamed fields
+   * Fix the paragraph table with the renamed fields.
    *
    * See https://github.com/localgovdrupal/localgov_core/issues/75
-   * @param  string $host_entity_type_id
+   *
+   * @param string $host_entity_type_id
    *   Entity type eg. Node.
-   * @param  string $src_field
+   * @param string $src_field
    *   Source field name.
-   * @param  string $cloned_field
+   * @param string $cloned_field
    *   New field name.
    */
   public static function fixParagraphTables(string $host_entity_type_id, string $src_field, string $cloned_field): void {
@@ -188,13 +189,13 @@ class FieldRenameHelper {
     $logger = \Drupal::service('logger.factory')->get('localgov_core');
 
     $paragraph_tables = ['paragraphs_item_field_data', 'paragraphs_item_revision_field_data'];
-    foreach($paragraph_tables as $paragraph_data_table) {
+    foreach ($paragraph_tables as $paragraph_data_table) {
       try {
         $db->update($paragraph_data_table)
-           ->fields(['parent_field_name' => $cloned_field])
-           ->condition('parent_type', $host_entity_type_id)
-           ->condition('parent_field_name', $src_field)
-           ->execute();
+          ->fields(['parent_field_name' => $cloned_field])
+          ->condition('parent_type', $host_entity_type_id)
+          ->condition('parent_field_name', $src_field)
+          ->execute();
       }
       catch (\Exception $e) {
         $logger->warning('Failed to update %paragraph_data_table table parent_field_name column for %src_field to %cloned_field on %host_entity_type_id.  More: %msg', [
