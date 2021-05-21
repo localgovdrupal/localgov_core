@@ -11,6 +11,8 @@ use Drupal\field\Entity\FieldConfig;
 use Drupal\Core\Entity\Entity\EntityFormDisplay;
 use Drupal\Core\Entity\Entity\EntityViewDisplay;
 use Drupal\localgov_core\FieldRenameHelper;
+use Drupal\paragraphs\Entity\ParagraphsType;
+use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\KernelTests\KernelTestBase;
 
 /**
@@ -38,6 +40,9 @@ class FieldRenameHelperTest extends KernelTestBase {
     'filter',
     'field_ui',
     'field_group',
+    'entity_reference_revisions',
+    'file',
+    'paragraphs',
   ];
 
   /**
@@ -48,6 +53,7 @@ class FieldRenameHelperTest extends KernelTestBase {
 
     $this->installEntitySchema('user');
     $this->installEntitySchema('node');
+    $this->installEntitySchema('paragraph');
     $this->installConfig([
       'system',
       'field',
@@ -183,6 +189,108 @@ class FieldRenameHelperTest extends KernelTestBase {
     $view_component = $view_display->getComponent('renamed_test_field');
     $this->assertEquals(-1, $view_component['weight']);
     $this->assertEquals('hidden', $view_component['label']);
+  }
+
+  /**
+   * Tests for FieldRenameHelper::fixParagraphTables().
+   *
+   * Creates a paragraph field, renames, runs cron, and checks its still there.
+   */
+  public function testRenameNodeParagraphField() {
+
+    $paragraph_text = 'Lorem Ipsum...';
+
+    // Set up node type with a paragraph.
+    NodeType::create(['type' => 'test_node'])->save();
+    ParagraphsType::create(['id' => 'test_paragraph'])->save();
+    FieldStorageConfig::create([
+        'id'          => 'paragraph.field_text',
+        'field_name'  => 'field_text',
+        'type'        => 'string',
+        'entity_type' => 'paragraph',
+      ])->enforceIsNew(TRUE)
+        ->save();
+    FieldConfig::create([
+        'field_name'    => 'field_text',
+        'entity_type'   => 'paragraph',
+        'bundle'        => 'test_paragraph',
+        'label'         => 'Test paragraphs',
+      ])->enforceIsNew(TRUE)
+        ->save();
+    $paragraph = Paragraph::create([
+      'type' => 'test_paragraph',
+      'field_text' => $paragraph_text,
+      ])->enforceIsNew(TRUE);
+    $paragraph->save();
+    FieldStorageConfig::create([
+        'id'          => 'node.field_paragraphs',
+        'field_name'  => 'field_paragraphs',
+        'type'        => 'entity_reference_revisions',
+        'entity_type' => 'node',
+        'settings'    => [
+          'target_type' => 'paragraph',
+        ],
+      ])->enforceIsNew(TRUE)
+        ->save();
+    FieldConfig::create([
+        'field_name'    => 'field_paragraphs',
+        'entity_type'   => 'node',
+        'bundle'        => 'test_node',
+        'label'         => 'Test paragraphs',
+      ])->enforceIsNew(TRUE)
+        ->save();
+    $node = Node::create([
+      'type'        => 'test_node',
+      'title'       => 'Paragraph field',
+      'created' => time(),
+      ]);
+    $paragraph_reference = [
+      [
+        'target_id' => $paragraph->id(),
+        'target_revision_id' => $paragraph->getRevisionId(),
+      ],
+    ];
+    $node->set('field_paragraphs', $paragraph_reference);
+    $node->enforceIsNew(TRUE);
+    $node->save();
+    $nid = $node->id();
+
+    $node_paragraph = $node->get('field_paragraphs')->getEntity();
+
+    // Rename the paragraph field on the node.
+    FieldRenameHelper::renameField('field_paragraphs', 'renamed_paragraphs', 'node');
+
+    // Reload the node for the tests.
+    $result_node = Node::load($nid);
+
+    // Asset that the old field names do not exist on the node type.
+    $this->assertEmpty($result_node->hasField('field_paragraphs'));
+
+    // Assert that the new field names do exist on the node type.
+    $this->assertEquals(TRUE, $result_node->hasField('renamed_paragraphs'));
+
+    // Check the paragraphs value.
+    $result_paragraph_id = $result_node->get('renamed_paragraphs')->getValue()[0]['target_id'];
+    $result_paragraph = Paragraph::load($result_paragraph_id);
+    $this->assertEquals(TRUE, $result_paragraph->hasField('field_text'));
+    $this->assertEquals($paragraph_text, $result_paragraph->field_text->value);
+
+    \Drupal::service('cron')->run();
+
+    // Reload the node for the tests.
+    $result_node_post_cron = Node::load($nid);
+
+    // Asset that the old field names do not exist on the node type.
+    $this->assertEmpty($result_node_post_cron->hasField('field_paragraphs'));
+
+    // Assert that the new field names do exist on the node type.
+    $this->assertEquals(TRUE, $result_node_post_cron->hasField('renamed_paragraphs'));
+
+    // Check the paragraphs value.
+    $result_paragraph_id_post_cron = $result_node_post_cron->get('renamed_paragraphs')->getValue()[0]['target_id'];
+    $result_paragraph_post_cron = Paragraph::load($result_paragraph_id_post_cron);
+    $this->assertEquals(TRUE, $result_paragraph_post_cron->hasField('field_text'));
+    $this->assertEquals($paragraph_text, $result_paragraph_post_cron->field_text->value);
   }
 
 }
