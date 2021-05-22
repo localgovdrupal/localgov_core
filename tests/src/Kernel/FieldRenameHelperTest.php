@@ -41,6 +41,7 @@ class FieldRenameHelperTest extends KernelTestBase {
     'field_ui',
     'field_group',
     'entity_reference_revisions',
+    // Paragraphs needs file.
     'file',
     'paragraphs',
   ];
@@ -196,54 +197,55 @@ class FieldRenameHelperTest extends KernelTestBase {
    *
    * Creates a paragraph field, renames, runs cron, and checks its still there.
    */
-  public function testRenameNodeParagraphField() {
+  public function testRenameNodeParagraphFieldNotDeletedPostCron() {
 
+    // Text to test if still present.
     $paragraph_text = 'Lorem Ipsum...';
 
     // Set up node type with a paragraph.
     NodeType::create(['type' => 'test_node'])->save();
     ParagraphsType::create(['id' => 'test_paragraph'])->save();
     FieldStorageConfig::create([
-        'id'          => 'paragraph.field_text',
-        'field_name'  => 'field_text',
-        'type'        => 'string',
-        'entity_type' => 'paragraph',
-      ])->enforceIsNew(TRUE)
-        ->save();
+      'id'          => 'paragraph.field_text',
+      'field_name'  => 'field_text',
+      'type'        => 'string',
+      'entity_type' => 'paragraph',
+    ])->enforceIsNew(TRUE)
+      ->save();
     FieldConfig::create([
-        'field_name'    => 'field_text',
-        'entity_type'   => 'paragraph',
-        'bundle'        => 'test_paragraph',
-        'label'         => 'Test paragraphs',
-      ])->enforceIsNew(TRUE)
-        ->save();
+      'field_name'    => 'field_text',
+      'entity_type'   => 'paragraph',
+      'bundle'        => 'test_paragraph',
+      'label'         => 'Test paragraphs',
+    ])->enforceIsNew(TRUE)
+      ->save();
     $paragraph = Paragraph::create([
       'type' => 'test_paragraph',
       'field_text' => $paragraph_text,
-      ])->enforceIsNew(TRUE);
+    ])->enforceIsNew(TRUE);
     $paragraph->save();
     FieldStorageConfig::create([
-        'id'          => 'node.field_paragraphs',
-        'field_name'  => 'field_paragraphs',
-        'type'        => 'entity_reference_revisions',
-        'entity_type' => 'node',
-        'settings'    => [
-          'target_type' => 'paragraph',
-        ],
-      ])->enforceIsNew(TRUE)
-        ->save();
+      'id'          => 'node.field_paragraphs',
+      'field_name'  => 'field_paragraphs',
+      'type'        => 'entity_reference_revisions',
+      'entity_type' => 'node',
+      'settings'    => [
+        'target_type' => 'paragraph',
+      ],
+    ])->enforceIsNew(TRUE)
+      ->save();
     FieldConfig::create([
-        'field_name'    => 'field_paragraphs',
-        'entity_type'   => 'node',
-        'bundle'        => 'test_node',
-        'label'         => 'Test paragraphs',
-      ])->enforceIsNew(TRUE)
-        ->save();
+      'field_name'    => 'field_paragraphs',
+      'entity_type'   => 'node',
+      'bundle'        => 'test_node',
+      'label'         => 'Test paragraphs',
+    ])->enforceIsNew(TRUE)
+      ->save();
     $node = Node::create([
       'type'        => 'test_node',
       'title'       => 'Paragraph field',
       'created' => time(),
-      ]);
+    ]);
     $paragraph_reference = [
       [
         'target_id' => $paragraph->id(),
@@ -254,8 +256,6 @@ class FieldRenameHelperTest extends KernelTestBase {
     $node->enforceIsNew(TRUE);
     $node->save();
     $nid = $node->id();
-
-    $node_paragraph = $node->get('field_paragraphs')->getEntity();
 
     // Rename the paragraph field on the node.
     FieldRenameHelper::renameField('field_paragraphs', 'renamed_paragraphs', 'node');
@@ -275,9 +275,10 @@ class FieldRenameHelperTest extends KernelTestBase {
     $this->assertEquals(TRUE, $result_paragraph->hasField('field_text'));
     $this->assertEquals($paragraph_text, $result_paragraph->field_text->value);
 
+    // Run the cron (un the workers that do paragraph garbage collection).
     \Drupal::service('cron')->run();
 
-    // Reload the node for the tests.
+    // Reload the node for the post cron tests.
     $result_node_post_cron = Node::load($nid);
 
     // Asset that the old field names do not exist on the node type.
@@ -286,7 +287,7 @@ class FieldRenameHelperTest extends KernelTestBase {
     // Assert that the new field names do exist on the node type.
     $this->assertEquals(TRUE, $result_node_post_cron->hasField('renamed_paragraphs'));
 
-    // Check the paragraphs value.
+    // Check the paragraphs value is still present after the cron run.
     $result_paragraph_id_post_cron = $result_node_post_cron->get('renamed_paragraphs')->getValue()[0]['target_id'];
     $result_paragraph_post_cron = Paragraph::load($result_paragraph_id_post_cron);
     $this->assertEquals(TRUE, $result_paragraph_post_cron->hasField('field_text'));
