@@ -275,8 +275,8 @@ class FieldRenameHelperTest extends KernelTestBase {
     $this->assertEquals(TRUE, $result_paragraph->hasField('field_text'));
     $this->assertEquals($paragraph_text, $result_paragraph->field_text->value);
 
-    // Run the cron (un the workers that do paragraph garbage collection).
-    \Drupal::service('cron')->run();
+    // Run the entity reference revisions purger for paragraphs.
+    _entity_reference_revisions_orphan_purger_batch_dispatcher('entity_reference_revisions.orphan_purger:deleteOrphansBatchOperation', 'paragraph', []);
 
     // Reload the node for the post cron tests.
     $result_node_post_cron = Node::load($nid);
