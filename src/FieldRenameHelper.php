@@ -73,9 +73,12 @@ class FieldRenameHelper {
 
     // Update paragraphs.
     // @todo Fix for all entity reference revision types.
+    $field_type = $field_storage->get('type');
     $field_settings = $field_storage->get('settings');
-    if (!empty($field_settings['target_type']) && $field_settings['target_type'] == 'paragraph') {
-      self::fixParagraphTables($entity_type, $old_field_name, $new_field_name);
+    if ($field_type == 'entity_reference_revisions') {
+      if ($field_settings['target_type'] == 'paragraph') {
+        self::fixParagraphTables($entity_type, $old_field_name, $new_field_name);
+      }
     }
 
     // Update the field config on each bundle.
