@@ -7,6 +7,7 @@ use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\Core\Entity\Entity\EntityViewDisplay;
 use Drupal\Core\Entity\Entity\EntityFormDisplay;
+use Drupal\Core\Utility\UpdateException;
 
 /**
  * Renames an existing entity field.
@@ -45,6 +46,14 @@ class FieldRenameHelper {
       return;
     }
 
+    // Exception if trying to update an entity reference revisions field that
+    // is not a paragraph.
+    $field_type = $field_storage->get('type');
+    $field_target_type = $field_storage->get('settings')['target_type'] ?? NULL;
+    if ($field_type == 'entity_reference_revisions' && $field_target_type != 'paragraph') {
+      throw new UpdateException('Entity referenece revisions fields except for paragraphs cannot be renamed.');
+    }
+
     // Create new field storage.
     $new_field_storage = $field_storage->toArray();
     unset($new_field_storage['uuid']);
@@ -73,12 +82,8 @@ class FieldRenameHelper {
 
     // Update paragraphs.
     // @todo Fix for all entity reference revision types.
-    $field_type = $field_storage->get('type');
-    $field_settings = $field_storage->get('settings');
-    if ($field_type == 'entity_reference_revisions') {
-      if ($field_settings['target_type'] == 'paragraph') {
-        self::fixParagraphTables($entity_type, $old_field_name, $new_field_name);
-      }
+    if ($field_type == 'entity_reference_revisions' && $field_target_type == 'paragraph') {
+      self::fixParagraphTables($entity_type, $old_field_name, $new_field_name);
     }
 
     // Update the field config on each bundle.
