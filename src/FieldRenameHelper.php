@@ -197,7 +197,10 @@ class FieldRenameHelper {
     $db = \Drupal::database();
     $logger = \Drupal::service('logger.factory')->get('localgov_core');
 
-    $paragraph_tables = ['paragraphs_item_field_data', 'paragraphs_item_revision_field_data'];
+    $paragraph_tables = [
+      'paragraphs_item_field_data',
+      'paragraphs_item_revision_field_data'
+    ];
     foreach ($paragraph_tables as $paragraph_data_table) {
       try {
         $db->update($paragraph_data_table)
