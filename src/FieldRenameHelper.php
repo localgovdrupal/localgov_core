@@ -199,7 +199,7 @@ class FieldRenameHelper {
 
     $paragraph_tables = [
       'paragraphs_item_field_data',
-      'paragraphs_item_revision_field_data'
+      'paragraphs_item_revision_field_data',
     ];
     foreach ($paragraph_tables as $paragraph_data_table) {
       try {
