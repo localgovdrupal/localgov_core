@@ -7,6 +7,7 @@ use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\Core\Entity\Entity\EntityViewDisplay;
 use Drupal\Core\Entity\Entity\EntityFormDisplay;
+use Drupal\Core\Utility\UpdateException;
 
 /**
  * Renames an existing entity field.
@@ -45,6 +46,14 @@ class FieldRenameHelper {
       return;
     }
 
+    // Exception if trying to update an entity reference revisions field that
+    // is not a paragraph.
+    $field_type = $field_storage->get('type');
+    $field_target_type = $field_storage->get('settings')['target_type'] ?? NULL;
+    if ($field_type == 'entity_reference_revisions' && $field_target_type != 'paragraph') {
+      throw new UpdateException('Entity referenece revisions fields except for paragraphs cannot be renamed.');
+    }
+
     // Create new field storage.
     $new_field_storage = $field_storage->toArray();
     unset($new_field_storage['uuid']);
@@ -69,6 +78,12 @@ class FieldRenameHelper {
         '%src-field' => $old_field_name,
         '%target-field' => $new_field_name,
       ]);
+    }
+
+    // Update paragraphs.
+    // @todo Fix for all entity reference revision types.
+    if ($field_type == 'entity_reference_revisions' && $field_target_type == 'paragraph') {
+      self::fixParagraphTables($entity_type, $old_field_name, $new_field_name);
     }
 
     // Update the field config on each bundle.
@@ -163,6 +178,47 @@ class FieldRenameHelper {
     }
 
     return $copied_tables;
+  }
+
+  /**
+   * Fix the paragraph table with the renamed fields.
+   *
+   * See https://github.com/localgovdrupal/localgov_core/issues/75
+   *
+   * @param string $host_entity_type_id
+   *   Entity type eg. Node.
+   * @param string $src_field
+   *   Source field name.
+   * @param string $cloned_field
+   *   New field name.
+   */
+  public static function fixParagraphTables(string $host_entity_type_id, string $src_field, string $cloned_field): void {
+
+    $db = \Drupal::database();
+    $logger = \Drupal::service('logger.factory')->get('localgov_core');
+
+    $paragraph_tables = [
+      'paragraphs_item_field_data',
+      'paragraphs_item_revision_field_data',
+    ];
+    foreach ($paragraph_tables as $paragraph_data_table) {
+      try {
+        $db->update($paragraph_data_table)
+          ->fields(['parent_field_name' => $cloned_field])
+          ->condition('parent_type', $host_entity_type_id)
+          ->condition('parent_field_name', $src_field)
+          ->execute();
+      }
+      catch (\Exception $e) {
+        $logger->warning('Failed to update %paragraph_data_table table parent_field_name column for %src_field to %cloned_field on %host_entity_type_id.  More: %msg', [
+          '%paragraph_data_table' => $paragraph_data_table,
+          '%host_entity_type_id' => $host_entity_type_id,
+          '%src_field' => $src_field,
+          '%cloned_field' => $cloned_field,
+          '%msg' => $e->getMessage(),
+        ]);
+      }
+    }
   }
 
 }
