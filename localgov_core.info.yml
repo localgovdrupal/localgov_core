@@ -9,3 +9,6 @@ dependencies:
   - drupal:field
   - drupal:node
   - field_group:field_group
+
+test_dependencies:
+  - paragraphs:paragraphs
