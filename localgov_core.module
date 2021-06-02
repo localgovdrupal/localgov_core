@@ -19,3 +19,15 @@ function localgov_core_theme($existing, $type, $theme, $path) {
     ],
   ];
 }
+
+/**
+ * Implements hook_template_preprocess_default_variables_alter().
+ */
+function localgov_core_template_preprocess_default_variables_alter(&$variables) {
+  if (theme_get_setting('localgov_base_use_css')) {
+    $variables['localgov_base_use_css'] = TRUE;
+  }
+  if (theme_get_setting('localgov_base_use_js')) {
+    $variables['localgov_base_use_js'] = TRUE;
+  }
+}
