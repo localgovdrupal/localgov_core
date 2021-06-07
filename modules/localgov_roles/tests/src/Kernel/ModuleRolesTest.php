@@ -81,6 +81,7 @@ class ModuleRolesTest extends KernelTestBase {
    * Returns the ModuleInstaller.
    *
    * @return \Drupal\Core\Extension\ModuleInstallerInterface
+   *   The module installer.
    */
   protected function moduleInstaller() {
     return $this->container->get('module_installer');

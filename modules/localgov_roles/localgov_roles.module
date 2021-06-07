@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Hooks for LocalGov Roles. 
+ * Hooks for LocalGov Roles.
  */
 
 use Drupal\localgov_roles\RolesHelper;
