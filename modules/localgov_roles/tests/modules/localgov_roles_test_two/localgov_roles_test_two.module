@@ -1,0 +1,22 @@
+<?php
+
+/**
+ * @file
+ * Hooks for localgov_roles_test_one.
+ */
+
+/**
+ * Implements hook_localgov_roles_default().
+ */
+function localgov_roles_test_two_localgov_roles_default() {
+  return [
+    // @codingStandardsIgnoreLine
+    \Drupal\localgov_roles\RolesHelper::EDITOR_ROLE => [
+      'administer localgov roles test two',
+      'delete localgov roles test two',
+      'create localgov roles test two',
+      'view localgov roles test two',
+      'edit localgov roles test two',
+    ],
+  ];
+}
