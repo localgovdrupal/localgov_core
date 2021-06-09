@@ -2,8 +2,6 @@
 
 namespace Drupal\localgov_roles;
 
-use function call_user_func;
-
 /**
  * Helper class to for Roles.
  */
@@ -44,7 +42,7 @@ class RolesHelper {
    */
   public static function getModuleRoles($module) {
     if (function_exists($module . '_localgov_roles_default')) {
-      return call_user_func($module . '_localgov_roles_default');
+      return \call_user_func($module . '_localgov_roles_default');
     }
   }
 
