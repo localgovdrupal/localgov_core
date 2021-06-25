@@ -12,7 +12,7 @@ use Drupal\workflows\Entity\Workflow;
 /**
  * Implements hook_localgov_roles_default().
  */
-function localgov_workflows_localgov_roles_default(): array  {
+function localgov_workflows_localgov_roles_default(): array {
   return [
     RolesHelper::EDITOR_ROLE => [
       'use localgov_editorial transition approve',
@@ -28,6 +28,7 @@ function localgov_workflows_localgov_roles_default(): array  {
     ],
     RolesHelper::AUTHOR_ROLE => [
       'use localgov_editorial transition create_new_draft',
+      'use localgov_editorial transition reject',
       'use localgov_editorial transition submit_for_review',
       'use localgov_editorial transition publish',
       'view any unpublished content',
@@ -35,13 +36,13 @@ function localgov_workflows_localgov_roles_default(): array  {
     ],
     RolesHelper::CONTRIBUTOR_ROLE => [
       'use localgov_editorial transition create_new_draft',
+      'use localgov_editorial transition reject',
       'use localgov_editorial transition submit_for_review',
       'view any unpublished content',
       'view latest version',
     ],
   ];
 }
-
 
 /**
  * Implements hook_ENTITY_TYPE_insert().
