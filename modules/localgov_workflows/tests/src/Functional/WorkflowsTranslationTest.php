@@ -97,7 +97,6 @@ class WorkflowsTranslationTest extends BrowserTestBase {
     $this->submitForm([
       'moderation_state[0][state]' => 'published',
     ], 'Save (this translation)');
-    $node_storage = $this->container->get('entity_type.manager')->getStorage('node');
     $node_storage->resetCache([$en_node->id()]);
     $en_node = $node_storage->loadRevision($node_storage->getLatestRevisionId($en_node->id()));
     $cy_translation = $en_node->getTranslation('cy');
@@ -109,7 +108,6 @@ class WorkflowsTranslationTest extends BrowserTestBase {
     $this->submitForm([
       'moderation_state[0][state]' => 'archived',
     ], 'Save (this translation)');
-    $node_storage = $this->container->get('entity_type.manager')->getStorage('node');
     $node_storage->resetCache([$en_node->id()]);
     $en_node = $node_storage->loadRevision($node_storage->getLatestRevisionId($en_node->id()));
     $cy_translation = $en_node->getTranslation('cy');
