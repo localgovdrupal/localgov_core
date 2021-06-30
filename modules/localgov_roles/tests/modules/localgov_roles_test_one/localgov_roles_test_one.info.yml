@@ -1,0 +1,6 @@
+name: 'LocalGov Roles Test Helper 1'
+type: module
+description: 'Support module for LocalGov Roles tests'
+package: Testing
+core_version_requirement: ^8.8 || ^9
+hidden: true
