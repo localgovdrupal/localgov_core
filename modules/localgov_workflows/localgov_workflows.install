@@ -42,5 +42,8 @@ function localgov_workflows_install() {
   }
   $scheduled_transitions_config->set('bundles', $bundles);
   $scheduled_transitions_config->save();
-  Cache::invalidateTags([ScheduledTransitionsSettingsForm::SETTINGS_TAG]);
+  Cache::invalidateTags([
+    ScheduledTransitionsSettingsForm::SETTINGS_TAG,
+    'config:scheduled_transitions.settings',
+  ]);
 }
