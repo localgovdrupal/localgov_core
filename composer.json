@@ -13,6 +13,7 @@
         "drupal/pathauto": "^1.8",
         "drupal/redirect": "^1.6",
         "drupal/role_delegation": "^1.1",
+        "drupal/scheduled_transitions": "^2.1",
         "drupal/token": "^1.7"
     },
     "require-dev": {
