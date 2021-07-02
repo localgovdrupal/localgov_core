@@ -107,7 +107,7 @@ class WorkflowsInstallTest extends KernelTestBase {
       [
         'entity_type' => 'node',
         'bundle' => 'localgov_test',
-      ]
+      ],
     ], $bundles);
   }
 
