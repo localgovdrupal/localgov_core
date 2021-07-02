@@ -91,4 +91,24 @@ class WorkflowsInstallTest extends KernelTestBase {
     $this->assertTrue(empty($node_types['test_4']['workflow']));
   }
 
+  /**
+   * Test scheduled transition configuration on enabling workflow.
+   */
+  public function testScheduledTransitionConfig() {
+
+    // Check content type is configured for scheduled transitions when workflow
+    // is enabled.
+    $this->createContentType(['type' => 'localgov_test']);
+    $bundles = \Drupal::service('config.factory')->get('scheduled_transitions.settings')->get('bundles');
+    $this->assertEmpty($bundles);
+    \Drupal::service('module_installer')->install(['localgov_workflows']);
+    $bundles = \Drupal::service('config.factory')->get('scheduled_transitions.settings')->get('bundles');
+    $this->assertEquals([
+      [
+        'entity_type' => 'node',
+        'bundle' => 'localgov_test',
+      ],
+    ], $bundles);
+  }
+
 }

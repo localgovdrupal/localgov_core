@@ -79,12 +79,13 @@ class WorkflowsAccessTest extends BrowserTestBase {
     $this->assertSession()->pageTextContains('Draft');
     $this->assertSession()->pageTextContains('Review');
     $this->assertSession()->pageTextContains('Published');
-    $this->assertSession()->pageTextNotContains('Archived');
+    $this->assertSession()->pageTextContains('Archived');
 
-    // Draft > review > draft.
+    // Draft > review > draft > archived.
     $node = $this->createNodeWithState('draft');
     $this->updateState($node, 'review');
     $this->updateState($node, 'draft');
+    $this->updateState($node, 'archived');
 
     // Publish without review.
     $this->createNodeWithState('published');
