@@ -43,6 +43,7 @@ function localgov_workflows_localgov_roles_default(): array {
       'reschedule scheduled transitions node localgov_services_landing',
       'reschedule scheduled transitions node localgov_services_page',
       'reschedule scheduled transitions node localgov_services_sublanding',
+      'use localgov_editorial transition archive',
       'use localgov_editorial transition create_new_draft',
       'use localgov_editorial transition reject',
       'use localgov_editorial transition submit_for_review',
