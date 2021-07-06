@@ -18,3 +18,8 @@ matchers:
       include_unpublished: false
       substitution_type: canonical
       limit: 100
+  c3257417-fce9-4307-8251-58672edf88be:
+    uuid: c3257417-fce9-4307-8251-58672edf88be
+    id: email
+    weight: 0
+    settings: {  }
