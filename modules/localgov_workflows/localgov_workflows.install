@@ -46,4 +46,10 @@ function localgov_workflows_install() {
     ScheduledTransitionsSettingsForm::SETTINGS_TAG,
     'config:scheduled_transitions.settings',
   ]);
+
+  // Reload user permissions defined in hook_localgov_roles_default().
+  $roles = \Drupal::service('module_handler')->invokeAll('localgov_roles_default');
+  foreach ($roles as $role => $permissions) {
+    user_role_grant_permissions($role, $permissions);
+  }
 }
