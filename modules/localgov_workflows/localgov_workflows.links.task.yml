@@ -1,0 +1,5 @@
+localgov_workflows.approvals_dashboard:
+  title: 'Approvals dashboard'
+  route_name: view.localgov_approvals_dashboard.approvals_dashboard
+  parent_id: system.admin_content
+  weight: 1
