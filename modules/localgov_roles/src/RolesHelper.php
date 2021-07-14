@@ -18,11 +18,13 @@ class RolesHelper {
   const AUTHOR_ROLE = 'localgov_author';
 
   /**
+
    * Contributor role machine name.
    */
   const CONTRIBUTOR_ROLE = 'localgov_contributor';
 
   /**
+
    * Assign permissions to roles if module has defaults.
    */
   public static function assignModuleRoles($module) {
