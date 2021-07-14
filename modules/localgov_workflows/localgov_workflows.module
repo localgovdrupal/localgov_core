@@ -71,6 +71,11 @@ function localgov_workflows_localgov_roles_default(): array {
       'view scheduled transitions node localgov_services_landing',
       'view scheduled transitions node localgov_services_page',
       'view scheduled transitions node localgov_services_sublanding',
+      'use localgov_editorial transition create_new_draft',
+      'use localgov_editorial transition reject',
+      'use localgov_editorial transition submit_for_review',
+      'view any unpublished content',
+      'view latest version',
     ],
   ];
 }

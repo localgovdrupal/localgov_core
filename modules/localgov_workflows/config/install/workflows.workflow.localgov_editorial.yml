@@ -43,6 +43,7 @@ type_settings:
       label: Archive
       from:
         - draft
+        - review
         - published
       to: archived
       weight: 5
