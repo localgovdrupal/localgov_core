@@ -5,6 +5,8 @@
  * Localgov Workflow module hooks.
  */
 
+use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Cache\RefinableCacheableDependencyInterface;
 use Drupal\localgov_roles\RolesHelper;
 use Drupal\node\NodeTypeInterface;
 use Drupal\workflows\Entity\Workflow;
@@ -59,4 +61,37 @@ function localgov_workflows_node_type_insert(NodeTypeInterface $node_type) {
       $editorial->save();
     }
   }
+}
+
+/**
+ * Implements hook_menu_local_tasks_alter().
+ */
+function localgov_workflows_menu_local_tasks_alter(&$data, $route_name, RefinableCacheableDependencyInterface &$cacheability) {
+
+  // Disabled the default 'content moderation` tab on admin content pages as
+  // this expects the default 'editorial' workflow is enabled and doesn't work
+  // with other workflows without altering the content moderation view.
+  $admin_content_routes = [
+    'system.admin_content',
+    'view.localgov_approvals_dashboard.approvals_dashboard',
+  ];
+  if (in_array($route_name, $admin_content_routes)) {
+
+    // Check if there are more workflows enabled than localgov_editorial.
+    $workflows = \Drupal::entityQuery('workflow')->execute();
+    if (in_array('localgov_editorial', $workflows) && count($workflows) == 1) {
+
+      // Hide the moderated content tab.
+      for ($i = 0; $i < count($data['tabs']); $i++) {
+        foreach ($data['tabs'][$i] as $key => $tab) {
+          if ($key == 'content_moderation.moderated_content') {
+            $data['tabs'][$i][$key]['#access'] = AccessResult::neutral();
+          }
+        }
+      }
+    }
+  }
+
+  // Add cache dependency on workflow.
+  $cacheability->addCacheTags(['config:workflow_list']);
 }
