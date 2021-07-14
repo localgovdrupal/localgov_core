@@ -9,5 +9,6 @@ dependencies:
   - drupal:views
   - preview_link:preview_link
   - responsive_preview:responsive_preview
+  - scheduled_transitions:scheduled_transitions
   - localgov_core:localgov_core
   - localgov_core:localgov_roles

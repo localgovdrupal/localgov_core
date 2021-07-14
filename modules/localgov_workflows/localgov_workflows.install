@@ -5,12 +5,15 @@
  * Install, update and uninstall functions for the LocalGov Workflow module.
  */
 
+use Drupal\Core\Cache\Cache;
+use Drupal\scheduled_transitions\Form\ScheduledTransitionsSettingsForm;
 use Drupal\workflows\Entity\Workflow;
 
 /**
  * Implements hook_install().
  */
 function localgov_workflows_install() {
+
   // Add workflow to localgov_ node bundles with no other workflow.
   $editorial = Workflow::load('localgov_editorial');
   $workflow_type = $editorial->getTypePlugin();
@@ -26,5 +29,27 @@ function localgov_workflows_install() {
 
   if ($changed) {
     $editorial->save();
+  }
+
+  // Enable scheduled transitions for all node bundles.
+  $scheduled_transitions_config = \Drupal::service('config.factory')->getEditable('scheduled_transitions.settings');
+  $bundles = [];
+  foreach ($node_types as $bundle => $node_type) {
+    $bundles[] = [
+      'entity_type' => 'node',
+      'bundle' => $bundle,
+    ];
+  }
+  $scheduled_transitions_config->set('bundles', $bundles);
+  $scheduled_transitions_config->save();
+  Cache::invalidateTags([
+    ScheduledTransitionsSettingsForm::SETTINGS_TAG,
+    'config:scheduled_transitions.settings',
+  ]);
+
+  // Reload user permissions defined in hook_localgov_roles_default().
+  $roles = \Drupal::service('module_handler')->invokeAll('localgov_roles_default');
+  foreach ($roles as $role => $permissions) {
+    user_role_grant_permissions($role, $permissions);
   }
 }
