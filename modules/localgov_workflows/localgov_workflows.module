@@ -5,8 +5,45 @@
  * Localgov Workflow module hooks.
  */
 
+use Drupal\localgov_roles\RolesHelper;
 use Drupal\node\NodeTypeInterface;
 use Drupal\workflows\Entity\Workflow;
+
+/**
+ * Implements hook_localgov_roles_default().
+ */
+function localgov_workflows_localgov_roles_default(): array {
+  return [
+    RolesHelper::EDITOR_ROLE => [
+      'use localgov_editorial transition approve',
+      'use localgov_editorial transition archive',
+      'use localgov_editorial transition archived_draft',
+      'use localgov_editorial transition archived_published',
+      'use localgov_editorial transition create_new_draft',
+      'use localgov_editorial transition publish',
+      'use localgov_editorial transition reject',
+      'use localgov_editorial transition submit_for_review',
+      'view any unpublished content',
+      'view latest version',
+    ],
+    RolesHelper::AUTHOR_ROLE => [
+      'use localgov_editorial transition archive',
+      'use localgov_editorial transition create_new_draft',
+      'use localgov_editorial transition reject',
+      'use localgov_editorial transition submit_for_review',
+      'use localgov_editorial transition publish',
+      'view any unpublished content',
+      'view latest version',
+    ],
+    RolesHelper::CONTRIBUTOR_ROLE => [
+      'use localgov_editorial transition create_new_draft',
+      'use localgov_editorial transition reject',
+      'use localgov_editorial transition submit_for_review',
+      'view any unpublished content',
+      'view latest version',
+    ],
+  ];
+}
 
 /**
  * Implements hook_ENTITY_TYPE_insert().

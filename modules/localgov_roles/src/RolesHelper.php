@@ -8,7 +8,7 @@ namespace Drupal\localgov_roles;
 class RolesHelper {
 
   /**
-   * Content designer role machine name.
+   * Editor role machine name.
    */
   const EDITOR_ROLE = 'localgov_editor';
 
@@ -16,6 +16,11 @@ class RolesHelper {
    * Author role machine name.
    */
   const AUTHOR_ROLE = 'localgov_author';
+
+  /**
+   * Contributor role machine name.
+   */
+  const CONTRIBUTOR_ROLE = 'localgov_contributor';
 
   /**
    * Assign permissions to roles if module has defaults.
