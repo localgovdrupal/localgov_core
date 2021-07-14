@@ -33,6 +33,7 @@ class WorkflowsScheduledTransitionsTest extends KernelTestBase {
     'system',
     'text',
     'user',
+    'views',
     'workflows',
     'localgov_workflows',
   ];
@@ -55,6 +56,7 @@ class WorkflowsScheduledTransitionsTest extends KernelTestBase {
       'node',
       'scheduled_transitions',
       'system',
+      'views',
       'localgov_workflows',
     ]);
   }
