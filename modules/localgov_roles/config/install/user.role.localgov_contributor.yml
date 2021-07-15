@@ -4,9 +4,9 @@ dependencies:
   enforced:
     module:
       - localgov_roles
-id: localgov_author
-label: Author
-weight: 3
+id: localgov_contributor
+label: Contributor
+weight: 4
 is_admin: null
 permissions:
   - 'access content overview'
@@ -40,9 +40,6 @@ permissions:
   - 'edit own localgov_services_sublanding content'
   - 'edit own remote_video media'
   - 'edit paragraph library item'
-  - 'revert localgov_services_landing revisions'
-  - 'revert localgov_services_page revisions'
-  - 'revert localgov_services_sublanding revisions'
   - 'update media'
   - 'view all revisions'
   - 'view localgov_services_landing revisions'
