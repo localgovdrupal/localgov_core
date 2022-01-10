@@ -1,0 +1,5 @@
+name: LocalGov Admin Theme Improvements
+type: module
+description: 'Small items to fix issues with the admin theme.'
+package: Localgov
+core_version_requirement: ^8.8 || ^9

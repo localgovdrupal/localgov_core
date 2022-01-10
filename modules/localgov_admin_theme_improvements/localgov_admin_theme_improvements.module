@@ -1,0 +1,17 @@
+<?php
+/**
+ * @file
+ * Provides any functions we need to fix admin theme issues.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_layout_paragraphs_layout_paragraph_element_form_alter().
+ * */
+function localgov_admin_theme_improvements_layout_paragraph_element_form_alter(array &$element_form, FormStateInterface &$element_form_state, array $parent_form) {
+  $current_active_theme = \Drupal::service('theme.manager')->getActiveTheme()->getName();
+  if ($current_active_theme === 'gin') {
+    $element_form['#attached']['library'][] = 'localgov_admin_theme_improvements/gin-layout-paragraphs';
+  }
+}
