@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * Provides any functions we need to fix admin theme issues.
