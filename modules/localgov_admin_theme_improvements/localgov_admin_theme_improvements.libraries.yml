@@ -1,0 +1,3 @@
+gin-layout-paragraphs:
+  js:
+    js/gin-layout-paragraphs.js: {}
