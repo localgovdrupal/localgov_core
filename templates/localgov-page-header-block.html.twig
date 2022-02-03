@@ -9,17 +9,22 @@
 */
 #}
 
-{% 
+{%
   set classes = [
-    'page-title',
-  ] 
+    'lgd-page-title-block'
+  ]
 %}
 
-{% if title %}
+{% if title or lede['#value'] %}
   <div{{ attributes.addClass(classes) }}>
-    <h1 class="page-title__title">{{ title }}</h1>
-    {% if lede %}
-      <div class="page-title__subtitle">{{ lede }}</div>
+
+    {% if title %}
+      <h1 class="lgd-page-title-block__title">{{ title }}</h1>
     {% endif %}
+
+    {% if lede['#value'] %}
+      <p class="lgd-page-title-block__subheader">{{ lede['#value'] }}</p>
+    {% endif %}
+
   </div>
 {% endif %}
