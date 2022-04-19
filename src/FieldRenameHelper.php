@@ -89,7 +89,7 @@ class FieldRenameHelper {
     // Update the field config on each bundle.
     $config_manager = \Drupal::service('config.manager');
     $field_storage_name = $field_storage->getConfigDependencyName();
-    $dependents = $config_manager->findConfigEntityDependentsAsEntities('config', [$field_storage_name]);
+    $dependents = $config_manager->findConfigEntityDependenciesAsEntities('config', [$field_storage_name]);
     foreach ($dependents as $dependent) {
       /** @var \Drupal\Core\Config\Entity\ConfigEntityInterface $dependent */
       if ($dependent instanceof FieldConfig) {
