@@ -6,6 +6,9 @@ core_version_requirement: ^8.8 || ^9
 
 dependencies:
   - drupal:editor
+  - drupal:file
+  - drupal:image
+  - drupal:media
   - drupal:media_library
   - drupal:responsive_image
   - image_widget_crop:image_widget_crop
