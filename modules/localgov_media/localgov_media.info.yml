@@ -10,3 +10,4 @@ dependencies:
   - drupal:responsive_image
   - image_widget_crop:image_widget_crop
   - linkit:linkit
+  - media_library_edit:media_library_edit
