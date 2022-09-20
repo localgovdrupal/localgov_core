@@ -23,11 +23,6 @@
         "composer-exit-on-patch-failure": true,
         "patchLevel": {
             "drupal/core": "-p2"
-        },
-        "patches": {
-            "drupal/field_group": {
-                "Fix 'Undefined property: stdClass::$region' error #3059614": "https://www.drupal.org/files/issues/2020-06-15/3059614-37.patch"
-            }
         }
     }
 }
