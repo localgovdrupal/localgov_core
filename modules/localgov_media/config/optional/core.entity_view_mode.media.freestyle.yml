@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - media
+id: media.freestyle
+label: Freestyle
+targetEntityType: media
+cache: true
