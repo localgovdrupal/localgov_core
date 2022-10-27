@@ -2,6 +2,7 @@
 
 namespace Drupal\localgov_core_page_header_event_test\EventSubscriber;
 
+use Drupal\Core\Cache\Cache;
 use Drupal\node\Entity\Node;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Drupal\localgov_core\Event\PageHeaderDisplayEvent;
@@ -27,19 +28,28 @@ class PageHeaderSubscriber implements EventSubscriberInterface {
    */
   public function setPageHeader(PageHeaderDisplayEvent $event) {
 
+    $node = $event->getEntity();
+
+    if (!$node instanceof Node) {
+      return;
+    }
+
     // Override title and lede for page1 node content types.
-    if ($event->getEntity() instanceof Node &&
-      $event->getEntity()->bundle() == 'page1'
-    ) {
+    if ($node->bundle() == 'page1') {
       $event->setTitle('Overridden title');
       $event->setLede('Overridden lede');
     }
 
     // Hide page header block for page2 content types.
-    if ($event->getEntity() instanceof Node &&
-      $event->getEntity()->bundle() == 'page2'
-    ) {
+    if ($node->bundle() == 'page2') {
       $event->setVisibility(FALSE);
+    }
+
+    // Set lede from summary, and cache tags from the parent for page3 nodes.
+    if ($node->bundle() == 'page3') {
+      $parent = $node->parent->entity;
+      $event->setLede($parent->body->summary);
+      $event->setCacheTags(Cache::mergeTags($node->getCacheTags(), $parent->getCacheTags()));
     }
   }
 
