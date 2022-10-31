@@ -84,6 +84,13 @@ class PageHeaderBlock extends BlockBase implements ContainerFactoryPluginInterfa
   protected $visible;
 
   /**
+   * Cache tags for this block.
+   *
+   * @var array
+   */
+  protected $cacheTags;
+
+  /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
@@ -126,10 +133,12 @@ class PageHeaderBlock extends BlockBase implements ContainerFactoryPluginInterfa
     $event = new PageHeaderDisplayEvent($this->entity);
     $this->eventDispatcher->dispatch($event, PageHeaderDisplayEvent::EVENT_NAME);
 
-    // Set the title, lede and visibility.
+    // Set the title, lede, visibility and cache tags.
     $this->title = is_null($event->getTitle()) ? $this->getTitle() : $event->getTitle();
     $this->lede = is_null($event->getLede()) ? $this->getLede() : $event->getLede();
     $this->visible = $event->getVisibility();
+    $entityCacheTags = is_null($this->entity) ? [] : $this->entity->getCacheTags();
+    $this->cacheTags = is_null($event->getCacheTags()) ? $entityCacheTags : $event->getCacheTags();
   }
 
   /**
@@ -214,8 +223,8 @@ class PageHeaderBlock extends BlockBase implements ContainerFactoryPluginInterfa
    * {@inheritdoc}
    */
   public function getCacheTags() {
-    if (!is_null($this->entity)) {
-      return Cache::mergeTags(parent::getCacheTags(), $this->entity->getCacheTags());
+    if (!empty($this->cacheTags)) {
+      return Cache::mergeTags(parent::getCacheTags(), $this->cacheTags);
     }
     return parent::getCacheTags();
   }
