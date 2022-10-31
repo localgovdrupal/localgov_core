@@ -40,6 +40,13 @@ class PageHeaderDisplayEvent extends Event {
   protected $visibility = TRUE;
 
   /**
+   * Cache tags override.
+   *
+   * @var array|null
+   */
+  protected $cacheTags = NULL;
+
+  /**
    * {@inheritdoc}
    */
   public function __construct($entity) {
@@ -114,6 +121,25 @@ class PageHeaderDisplayEvent extends Event {
    */
   public function setVisibility($visibility) {
     $this->visibility = $visibility;
+  }
+
+  /**
+   * Cache tags getter.
+   *
+   * @return array|null
+   */
+  public function getCacheTags() {
+    return $this->cacheTags;
+  }
+
+  /**
+   * Cache tags setter.
+   *
+   * @param array $cacheTags
+   *   The cache tags.
+   */
+  public function setCacheTags(array $cacheTags) {
+    $this->cacheTags = $cacheTags;
   }
 
 }
