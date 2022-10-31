@@ -127,6 +127,7 @@ class PageHeaderDisplayEvent extends Event {
    * Cache tags getter.
    *
    * @return array|null
+   *   Cache tags array if set.
    */
   public function getCacheTags() {
     return $this->cacheTags;

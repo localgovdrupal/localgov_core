@@ -10,7 +10,6 @@ use Drupal\Tests\BrowserTestBase;
 use Drupal\Tests\node\Traits\NodeCreationTrait;
 use Drupal\Tests\taxonomy\Traits\TaxonomyTestTrait;
 
-
 /**
  * Functional tests for LocalGovDrupal install profile.
  */
