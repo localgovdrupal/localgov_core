@@ -26,7 +26,7 @@
             "drupal/core": "-p2"
         },
         "patches": {
-            "drupal/core": {
+            "drupal/linkit": {
                 "Linkit working with CKEditor 5, https://www.drupal.org/project/linkit/issues/3232190#comment-14859457": "https://www.drupal.org/files/issues/2022-12-14/3232190-113.patch"
             }
         }
