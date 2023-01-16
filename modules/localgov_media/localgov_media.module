@@ -13,8 +13,12 @@ use Drupal\user\Entity\Role;
 function localgov_media_modules_installed($modules, $is_syncing) {
   if (!$is_syncing && in_array('localgov_media', $modules)) {
     // Add permission to use the WYSIWYG text format.
-    $role_object = Role::load('authenticated');
-    $role_object->grantPermission('use text format wysiwyg');
-    $role_object->save();
+    if (\Drupal::configFactory()->get('filter.format.wysiwyg')->getRawData()) {
+      // This code likely never runs because filter.format.wysiwyg is in
+      // optional config and not installed when this check it made.
+      $role_object = Role::load('authenticated');
+      $role_object->grantPermission('use text format wysiwyg');
+      $role_object->save();
+    }
   }
 }
