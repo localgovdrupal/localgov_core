@@ -4,9 +4,9 @@ dependencies:
   config:
     - filter.format.wysiwyg
   module:
-    - ckeditor
+    - ckeditor5
 format: wysiwyg
-editor: ckeditor
+editor: ckeditor5
 settings:
   toolbar:
     rows:
