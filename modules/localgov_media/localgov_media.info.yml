@@ -5,6 +5,7 @@ type: module
 core_version_requirement: ^9 || ^10
 
 dependencies:
+  - drupal:ckeditor5
   - drupal:editor
   - drupal:media_library
   - drupal:media_library_edit
