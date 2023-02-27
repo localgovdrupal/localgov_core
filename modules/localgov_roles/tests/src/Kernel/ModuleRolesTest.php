@@ -19,8 +19,6 @@ class ModuleRolesTest extends KernelTestBase {
   protected static $modules = [
     'entity_reference_revisions',
     'node',
-    'paragraphs',
-    'paragraphs_library',
     'path',
     'system',
     'toolbar',
