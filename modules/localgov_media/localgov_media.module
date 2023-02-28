@@ -28,66 +28,66 @@ function localgov_media_modules_installed($modules, $is_syncing) {
 function localgov_media_localgov_roles_default() {
   return [
     RolesHelper::AUTHOR_ROLE => [
-      - 'access media overview'
-      - 'create document media'
-      - 'create image media'
-      - 'create media'
-      - 'create remote_video media'
-      - 'delete media'
-      - 'delete own document media'
-      - 'delete own image media'
-      - 'delete own remote_video media'
-      - 'edit any document media'
-      - 'edit any image media'
-      - 'edit any remote_video media'
-      - 'edit own document media'
-      - 'edit own image media'
-      - 'edit own remote_video media'
-      - 'update media'
-      - 'view own unpublished media'
+      'access media overview',
+      'create document media',
+      'create image media',
+      'create media',
+      'create remote_video media',
+      'delete media',
+      'delete own document media',
+      'delete own image media',
+      'delete own remote_video media',
+      'edit any document media',
+      'edit any image media',
+      'edit any remote_video media',
+      'edit own document media',
+      'edit own image media',
+      'edit own remote_video media',
+      'update media',
+      'view own unpublished media',
     ],
     RolesHelper::CONTRIBUTOR_ROLE => [
-      - 'access media overview'
-      - 'create document media'
-      - 'create image media'
-      - 'create media'
-      - 'create remote_video media'
-      - 'delete media'
-      - 'delete own document media'
-      - 'delete own image media'
-      - 'delete own remote_video media'
-      - 'edit any document media'
-      - 'edit any image media'
-      - 'edit any remote_video media'
-      - 'edit own document media'
-      - 'edit own image media'
-      - 'edit own remote_video media'
-      - 'update media'
-      - 'view own unpublished media'
+      'access media overview',
+      'create document media',
+      'create image media',
+      'create media',
+      'create remote_video media',
+      'delete media',
+      'delete own document media',
+      'delete own image media',
+      'delete own remote_video media',
+      'edit any document media',
+      'edit any image media',
+      'edit any remote_video media',
+      'edit own document media',
+      'edit own image media',
+      'edit own remote_video media',
+      'update media',
+      'view own unpublished media',
     ],
     RolesHelper::EDITOR_ROLE => [
-      - 'access media overview'
-      - 'create document media'
-      - 'create image media'
-      - 'create media'
-      - 'create remote_video media'
-      - 'delete any document media'
-      - 'delete any image media'
-      - 'delete any media'
-      - 'delete any remote_video media'
-      - 'delete media'
-      - 'delete own document media'
-      - 'delete own image media'
-      - 'delete own remote_video media'
-      - 'edit any document media'
-      - 'edit any image media'
-      - 'edit any remote_video media'
-      - 'edit own document media'
-      - 'edit own image media'
-      - 'edit own remote_video media'
-      - 'update any media'
-      - 'update media'
-      - 'view own unpublished media'
+      'access media overview',
+      'create document media',
+      'create image media',
+      'create media',
+      'create remote_video media',
+      'delete any document media',
+      'delete any image media',
+      'delete any media',
+      'delete any remote_video media',
+      'delete media',
+      'delete own document media',
+      'delete own image media',
+      'delete own remote_video media',
+      'edit any document media',
+      'edit any image media',
+      'edit any remote_video media',
+      'edit own document media',
+      'edit own image media',
+      'edit own remote_video media',
+      'update any media',
+      'update media',
+      'view own unpublished media',
     ],
   ];
 }
