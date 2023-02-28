@@ -8,4 +8,3 @@ dependencies:
   - drupal:path
   - drupal:toolbar
   - role_delegation:role_delegation
-  - localgov_core:localgov_media
