@@ -16,7 +16,7 @@ mode: freestyle
 content:
   field_media_image:
     type: responsive_image
-    label: visually_hidden
+    label: hidden
     settings:
       responsive_image_style: freestyle_responsive
       image_link: ''
