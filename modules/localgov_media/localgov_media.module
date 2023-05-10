@@ -5,6 +5,7 @@
  * Module file for the localgov_media module.
  */
 
+use Drupal\Core\Config\FileStorage;
 use Drupal\localgov_roles\RolesHelper;
 use Drupal\user\Entity\Role;
 
@@ -13,6 +14,12 @@ use Drupal\user\Entity\Role;
  */
 function localgov_media_modules_installed($modules, $is_syncing) {
   if (!$is_syncing && in_array('localgov_media', $modules)) {
+
+    // Install all optional config now rather than deferring it to later.
+    $config_path = \Drupal::service('extension.list.module')->getPath('localgov_media') . '/config/optional';
+    $config_source = new FileStorage($config_path);
+    \Drupal::service('config.installer')->installOptionalConfig($config_source);
+
     // Add permission to use the WYSIWYG text format.
     if (\Drupal::configFactory()->get('filter.format.wysiwyg')->getRawData()) {
       $role_object = Role::load('authenticated');
