@@ -129,7 +129,7 @@ class PageHeaderBlock extends BlockBase implements ContainerFactoryPluginInterfa
         if (strpos($options['type'], 'entity:') === 0) {
           $entity = $this->currentRouteMatch->getParameter($name);
         }
-        else if ($options['type'] === 'node_preview') {
+        elseif ($options['type'] === 'node_preview') {
           $preview = $this->currentRouteMatch->getParentRouteMatch()->getParameter($name);
           if (isset($preview->preview_view_mode) && $preview->preview_view_mode === 'full') {
             $entity = $preview;
