@@ -117,14 +117,28 @@ class PageHeaderBlock extends BlockBase implements ContainerFactoryPluginInterfa
     $this->titleResolver = $title_resolver;
 
     // Find the entity, if any, associated with the current route.
+    //
+    // We consider two cases: (1) type entity:*, and (2) type node_preview with
+    // view_mode_id set to 'full'.
     if (($route = $this->currentRouteMatch->getRouteObject()) && ($parameters = $route->getOption('parameters'))) {
       foreach ($parameters as $name => $options) {
-        if (isset($options['type']) && strpos($options['type'], 'entity:') === 0) {
+        if (!isset($options['type'])) {
+          continue;
+        }
+
+        if (strpos($options['type'], 'entity:') === 0) {
           $entity = $this->currentRouteMatch->getParameter($name);
-          if ($entity instanceof EntityInterface) {
-            $this->entity = $entity;
-            break;
+        }
+        else if ($options['type'] === 'node_preview') {
+          $preview = $this->currentRouteMatch->getParentRouteMatch()->getParameter($name);
+          if (isset($preview->preview_view_mode) && $preview->preview_view_mode === 'full') {
+            $entity = $preview;
           }
+        }
+
+        if (isset($entity) && $entity instanceof EntityInterface) {
+          $this->entity = $entity;
+          break;
         }
       }
     }
