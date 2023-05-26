@@ -31,3 +31,16 @@ function localgov_core_template_preprocess_default_variables_alter(&$variables) 
     $variables['localgov_base_remove_js'] = TRUE;
   }
 }
+
+
+/**
+ * Implements hook_page_attachments_alter().
+ */
+function localgov_core_page_attachments_alter(array &$attachments) {
+  foreach ($attachments['#attached']['html_head'] as $key => $attachment) {
+    if ($attachment[1] === 'system_meta_generator') {
+      $attachments['#attached']['html_head'][$key][0]['#attributes']['content'] = 'LocalGov Drupal (https://localgovdrupal.org)';
+      break;
+    }
+  }
+}
