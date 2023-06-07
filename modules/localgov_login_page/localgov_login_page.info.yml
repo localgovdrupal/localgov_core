@@ -1,0 +1,7 @@
+name: LocalGov Login Page
+description: Simple module to redirect users at login.
+package: LocalGov Drupal
+type: module
+core_version_requirement: ^9 || ^10
+
+configure: localgov_login_page.settings

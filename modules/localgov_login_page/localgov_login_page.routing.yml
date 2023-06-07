@@ -1,0 +1,7 @@
+localgov_login_page.settings:
+  path: '/admin/config/system/localgov_login_page'
+  defaults:
+    _form: '\Drupal\localgov_login_page\Form\LoginPageSettingsForm'
+    _title: 'Localgov login page settings'
+  requirements:
+    _permission: 'administer site configuration'

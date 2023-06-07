@@ -1,0 +1,5 @@
+localgov_login_page.settings:
+  title: 'Localgov login page settings'
+  description: 'Configure settings for the Localgov Login Page  module.'
+  route_name: localgov_login_page.settings
+  parent: 'system.admin_config_system'
