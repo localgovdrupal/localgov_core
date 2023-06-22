@@ -1,11 +1,11 @@
-administer localgov roles test one:
+administer localgov roles test two:
   title: Administer LocalGov roles test two
   restrict access: true
-delete localgov roles test one:
+delete localgov roles test two:
   title: Delete LocalGov roles test Two
-create localgov roles test one:
+create localgov roles test two:
   title: Create LocalGov roles test two
-view localgov roles test one:
+view localgov roles test two:
   title: View LocalGov roles test two
-edit localgov roles test one:
+edit localgov roles test two:
   title: Edit LocalGov roles test two

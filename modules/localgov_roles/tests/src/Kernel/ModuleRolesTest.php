@@ -16,7 +16,25 @@ class ModuleRolesTest extends KernelTestBase {
   /**
    * {@inheritdoc}
    */
-  protected static $modules = ['system', 'user'];
+  protected static $modules = [
+    'entity_reference_revisions',
+    'node',
+    'path',
+    'system',
+    'toolbar',
+    'user',
+  ];
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setUp(): void {
+    parent::setup();
+
+    $this->installConfig([
+      'user',
+    ]);
+  }
 
   /**
    * Test enabling localgov_roles after other modules.
