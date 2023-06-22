@@ -7,7 +7,6 @@ dependencies:
     - media.type.image
     - responsive_image.styles.freestyle_responsive
   module:
-    - field_formatter_class
     - responsive_image
 id: media.image.freestyle
 targetEntityType: media
@@ -20,9 +19,7 @@ content:
     settings:
       responsive_image_style: freestyle_responsive
       image_link: ''
-    third_party_settings:
-      field_formatter_class:
-        class: ''
+    third_party_settings: {  }
     weight: 1
     region: content
 hidden:

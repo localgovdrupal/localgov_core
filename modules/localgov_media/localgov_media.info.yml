@@ -2,9 +2,10 @@ name: LocalGov Media
 description: LocalGov Media configuration.
 package: LocalGov Drupal
 type: module
-core_version_requirement: ^8.8 || ^9
+core_version_requirement: ^9 || ^10
 
 dependencies:
+  - drupal:ckeditor5
   - drupal:editor
   - drupal:media_library
   - drupal:media_library_edit

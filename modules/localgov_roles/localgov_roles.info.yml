@@ -2,7 +2,9 @@ name: LocalGov Roles
 description: Default user roles.
 package: LocalGov Drupal
 type: module
-core_version_requirement: ^8.8 || ^9
+core_version_requirement: ^9 || ^10
 
 dependencies:
+  - drupal:path
+  - drupal:toolbar
   - role_delegation:role_delegation

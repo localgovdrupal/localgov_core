@@ -6,10 +6,11 @@
  */
 
 use Drupal\Core\Config\FileStorage;
+use Drupal\localgov_roles\RolesHelper;
 use Drupal\user\Entity\Role;
 
 /**
- * Implements hook_install().
+ * Implements hook_modules_installed().
  */
 function localgov_media_modules_installed($modules, $is_syncing) {
   if (!$is_syncing && in_array('localgov_media', $modules)) {
@@ -20,8 +21,80 @@ function localgov_media_modules_installed($modules, $is_syncing) {
     \Drupal::service('config.installer')->installOptionalConfig($config_source);
 
     // Add permission to use the WYSIWYG text format.
-    $role_object = Role::load('authenticated');
-    $role_object->grantPermission('use text format wysiwyg');
-    $role_object->save();
+    if (\Drupal::configFactory()->get('filter.format.wysiwyg')->getRawData()) {
+      $role_object = Role::load('authenticated');
+      $role_object->grantPermission('use text format wysiwyg');
+      $role_object->save();
+    }
   }
+}
+
+/**
+ * Implements hook_localgov_role_default().
+ */
+function localgov_media_localgov_roles_default() {
+  return [
+    RolesHelper::AUTHOR_ROLE => [
+      'access media overview',
+      'create document media',
+      'create image media',
+      'create media',
+      'create remote_video media',
+      'delete media',
+      'delete own document media',
+      'delete own image media',
+      'delete own remote_video media',
+      'edit any document media',
+      'edit any image media',
+      'edit any remote_video media',
+      'edit own document media',
+      'edit own image media',
+      'edit own remote_video media',
+      'update media',
+      'view own unpublished media',
+    ],
+    RolesHelper::CONTRIBUTOR_ROLE => [
+      'access media overview',
+      'create document media',
+      'create image media',
+      'create media',
+      'create remote_video media',
+      'delete media',
+      'delete own document media',
+      'delete own image media',
+      'delete own remote_video media',
+      'edit any document media',
+      'edit any image media',
+      'edit any remote_video media',
+      'edit own document media',
+      'edit own image media',
+      'edit own remote_video media',
+      'update media',
+      'view own unpublished media',
+    ],
+    RolesHelper::EDITOR_ROLE => [
+      'access media overview',
+      'create document media',
+      'create image media',
+      'create media',
+      'create remote_video media',
+      'delete any document media',
+      'delete any image media',
+      'delete any media',
+      'delete any remote_video media',
+      'delete media',
+      'delete own document media',
+      'delete own image media',
+      'delete own remote_video media',
+      'edit any document media',
+      'edit any image media',
+      'edit any remote_video media',
+      'edit own document media',
+      'edit own image media',
+      'edit own remote_video media',
+      'update any media',
+      'update media',
+      'view own unpublished media',
+    ],
+  ];
 }

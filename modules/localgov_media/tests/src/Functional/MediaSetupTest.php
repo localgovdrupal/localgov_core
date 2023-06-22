@@ -22,7 +22,13 @@ class MediaSetupTest extends BrowserTestBase {
    *
    * @var array
    */
-  protected static $modules = ['localgov_media', 'path'];
+  protected static $modules = [
+    'node',
+    'path',
+    'system',
+    'user',
+    'localgov_media',
+  ];
 
   /**
    * Test Media bundles.
