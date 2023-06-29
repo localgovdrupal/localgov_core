@@ -63,7 +63,7 @@ settings:
           element: '<p class="alert alert-danger">'
         -
           label: 'Alert failure'
-          element: '<p class="alert alert-primary">'
+          element: '<p class="alert alert-fail">'
         -
           label: 'Alert success'
           element: '<p class="alert alert-success">'
