@@ -51,7 +51,7 @@ settings:
           element: '<a class="pdf-link">'
         -
           label: 'Start button'
-          element: '<a class="btn btn-start col-sm-6 mt-3">'
+          element: '<a class="btn btn-start">'
         -
           label: 'Alert info'
           element: '<p class="alert alert-info">'
