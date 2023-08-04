@@ -3,9 +3,9 @@
 namespace Drupal\localgov_core_page_header_event_test\EventSubscriber;
 
 use Drupal\Core\Cache\Cache;
+use Drupal\localgov_core\Event\PageHeaderDisplayEvent;
 use Drupal\node\Entity\Node;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Drupal\localgov_core\Event\PageHeaderDisplayEvent;
 
 /**
  * Test page header events.
