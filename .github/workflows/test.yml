@@ -23,7 +23,7 @@ jobs:
       matrix:
         include:
           - localgov-version: '2.x'
-            drupal-version: '~9.4'
+            drupal-version: '~9.5'
             php-version: '8.1'
           - localgov-version: '3.x'
             drupal-version: '~10.0'
@@ -107,7 +107,7 @@ jobs:
       matrix:
         include:
           - localgov-version: '2.x'
-            drupal-version: '~9.4'
+            drupal-version: '~9.5'
             php-version: '8.1'
           - localgov-version: '3.x'
             drupal-version: '~10.0'
@@ -143,7 +143,7 @@ jobs:
       matrix:
         include:
           - localgov-version: '2.x'
-            drupal-version: '~9.4'
+            drupal-version: '~9.5'
             php-version: '8.1'
           - localgov-version: '3.x'
             drupal-version: '~10.0'
@@ -178,7 +178,7 @@ jobs:
       matrix:
         include:
           - localgov-version: '2.x'
-            drupal-version: '~9.4'
+            drupal-version: '~9.5'
             php-version: '8.1'
           - localgov-version: '3.x'
             drupal-version: '~10.0'
