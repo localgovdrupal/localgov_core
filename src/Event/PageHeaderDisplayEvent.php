@@ -33,6 +33,13 @@ class PageHeaderDisplayEvent extends Event {
   protected $title = NULL;
 
   /**
+   * The page sub title override.
+   *
+   * @var array|string|null
+   */
+  protected $subTitle = NULL;
+
+  /**
    * Should the page header block be displayed?
    *
    * @var bool
@@ -101,6 +108,26 @@ class PageHeaderDisplayEvent extends Event {
    */
   public function setTitle($title) {
     $this->title = $title;
+  }
+
+  /**
+   * Sub title getter.
+   *
+   * @return array|string|null
+   *   The sub title.
+   */
+  public function getSubTitle() {
+    return $this->subTitle;
+  }
+
+  /**
+   * Sub title setter.
+   *
+   * @param array|string|null $sub_title
+   *   The sub title.
+   */
+  public function setSubTitle($sub_title) {
+    $this->subTitle = $sub_title;
   }
 
   /**
