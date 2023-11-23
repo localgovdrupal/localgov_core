@@ -13,6 +13,7 @@ function localgov_core_theme($existing, $type, $theme, $path) {
     'localgov_page_header_block' => [
       'variables' => [
         'title' => '',
+        'subtitle' => NULL,
         'lede' => NULL,
       ],
       'render element' => 'block',

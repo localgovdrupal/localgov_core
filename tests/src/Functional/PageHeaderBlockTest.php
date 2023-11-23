@@ -56,7 +56,9 @@ class PageHeaderBlockTest extends BrowserTestBase {
       'status' => NodeInterface::PUBLISHED,
     ]);
     $this->drupalGet($page->toUrl()->toString());
-    $this->assertSession()->responseContains('<h1 class="header">' . $node_title . '</h1>');
+    $query = $this->xpath('.//h1[contains(concat(" ",normalize-space(@class)," ")," header ")]');
+    $page_title = $query[0]->getText();
+    $this->assertEquals($page_title, $node_title);
     $this->assertSession()->pageTextNotContains($node_summary);
     $page->set('body', [
       'summary' => $node_summary,
@@ -64,7 +66,9 @@ class PageHeaderBlockTest extends BrowserTestBase {
     ]);
     $page->save();
     $this->drupalGet($page->toUrl()->toString());
-    $this->assertSession()->responseContains('<h1 class="header">' . $node_title . '</h1>');
+    $query = $this->xpath('.//h1[contains(concat(" ",normalize-space(@class)," ")," header ")]');
+    $page_title = $query[0]->getText();
+    $this->assertEquals($page_title, $node_title);
     $this->assertSession()->pageTextContains($node_summary);
 
     // Check title and lede display on a taxonomy term page.
@@ -77,7 +81,9 @@ class PageHeaderBlockTest extends BrowserTestBase {
     ]);
     $term->save();
     $this->drupalGet($term->toUrl()->toString());
-    $this->assertSession()->responseContains('<h1 class="header">' . $term_name . '</h1>');
+    $query = $this->xpath('.//h1[contains(concat(" ",normalize-space(@class)," ")," header ")]');
+    $page_title = $query[0]->getText();
+    $this->assertEquals($page_title, $term_name);
     $this->assertSession()->pageTextContains('All pages relating to ' . $term_name);
   }
 
@@ -100,9 +106,11 @@ class PageHeaderBlockTest extends BrowserTestBase {
       'status' => NodeInterface::PUBLISHED,
     ]);
     $this->drupalGet($page1->toUrl()->toString());
-    $this->assertSession()->responseNotContains('<h1 class="header">' . $title . '</h1>');
+    $query = $this->xpath('.//h1[contains(concat(" ",normalize-space(@class)," ")," header ")]');
+    $page_title = $query[0]->getText();
+    $this->assertNotEquals($page_title, $title);
     $this->assertSession()->pageTextNotContains($summary);
-    $this->assertSession()->responseContains('<h1 class="header">Overridden title</h1>');
+    $this->assertEquals($page_title, 'Overridden title');
     $this->assertSession()->pageTextContains('Overridden lede');
 
     // Check hidden page header block.
@@ -117,9 +125,20 @@ class PageHeaderBlockTest extends BrowserTestBase {
       'status' => NodeInterface::PUBLISHED,
     ]);
     $this->drupalGet($page2->toUrl()->toString());
-    $this->assertSession()->responseNotContains('<h1 class="header">' . $title . '</h1>');
+
+    // There should be no h1 visible.
+    $query = $this->xpath('.//h1[contains(concat(" ",normalize-space(@class)," ")," header ")]');
+    $this->assertEmpty($query);
+
+    // Using pageTextNotContains also fetches the title tag, so do an xpath on
+    // the body tag to check the title text is not present.
+    $body_query = $this->xpath('.//body');
+    $body_text = $body_query[0]->getText();
+    $this->assertStringNotContainsString($title, $body_text);
+
+    // Check summary and overridden title and summary not present in page.
     $this->assertSession()->pageTextNotContains($summary);
-    $this->assertSession()->responseNotContains('<h1 class="header">Overridden title</h1>');
+    $this->assertSession()->pageTextNotContains('Overridden title');
     $this->assertSession()->pageTextNotContains('Overridden lede');
 
     // Check cache tags override.
@@ -182,6 +201,48 @@ class PageHeaderBlockTest extends BrowserTestBase {
 
     // Check the child page contains the updated parent summary.
     $this->assertSession()->pageTextContains('page 3 parent updated summary');
+
+    // Set up a page4 that can reference other page4 nodes with
+    // subtitle in header.
+    $this->createContentType(['type' => 'page4']);
+
+    FieldConfig::create([
+      'field_name' => 'parent',
+      'entity_type' => 'node',
+      'bundle' => 'page4',
+      'label' => 'Parent',
+      'cardinality' => -1,
+    ])->save();
+
+    $page4parent = $this->createNode([
+      'type' => 'page4',
+      'title' => 'page 4 parent title',
+      'body' => [
+        'summary' => 'page 4 parent summary',
+        'value' => '',
+      ],
+      'status' => NodeInterface::PUBLISHED,
+    ]);
+
+    $page4child = $this->createNode([
+      'type' => 'page4',
+      'title' => 'page 4 child title',
+      'body' => [
+        'summary' => 'page 4 child summary',
+        'value' => '',
+      ],
+      'parent' => [
+        'target_id' => $page4parent->id(),
+      ],
+      'status' => NodeInterface::PUBLISHED,
+    ]);
+
+    // Load the child page.
+    $this->drupalGet($page4child->toUrl()->toString());
+    $query = $this->xpath('.//h1[contains(concat(" ",normalize-space(@class)," ")," header ")]//div');
+    $page_subtitle = $query[0]->getText();
+    $this->assertEquals($page_subtitle, 'page 4 parent title');
+
   }
 
 }

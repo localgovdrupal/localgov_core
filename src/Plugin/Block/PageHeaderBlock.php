@@ -70,6 +70,13 @@ class PageHeaderBlock extends BlockBase implements ContainerFactoryPluginInterfa
   protected $title;
 
   /**
+   * The page subtitle override.
+   *
+   * @var array|string|null
+   */
+  protected $subTitle;
+
+  /**
    * The page lede override.
    *
    * @var array|string|null
@@ -149,6 +156,7 @@ class PageHeaderBlock extends BlockBase implements ContainerFactoryPluginInterfa
 
     // Set the title, lede, visibility and cache tags.
     $this->title = is_null($event->getTitle()) ? $this->getTitle() : $event->getTitle();
+    $this->subTitle = is_null($event->getSubTitle()) ? NULL : $event->getSubTitle();
     $this->lede = is_null($event->getLede()) ? $this->getLede() : $event->getLede();
     $this->visible = $event->getVisibility();
     $entityCacheTags = is_null($this->entity) ? [] : $this->entity->getCacheTags();
@@ -164,6 +172,7 @@ class PageHeaderBlock extends BlockBase implements ContainerFactoryPluginInterfa
     $build[] = [
       '#theme' => 'localgov_page_header_block',
       '#title' => $this->title,
+      '#subtitle' => $this->subTitle,
       '#lede' => $this->lede,
     ];
 
