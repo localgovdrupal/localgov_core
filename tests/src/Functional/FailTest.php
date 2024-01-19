@@ -7,7 +7,7 @@ use Drupal\Tests\BrowserTestBase;
 /**
  * A test that fails.
  */
-class PageHeaderBlockTest extends BrowserTestBase {
+class FailTest extends BrowserTestBase {
 
   /**
    * The test that fails.
