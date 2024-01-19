@@ -10,6 +10,11 @@ use Drupal\Tests\BrowserTestBase;
 class FailTest extends BrowserTestBase {
 
   /**
+   * {@inheritdoc}
+   */
+  protected $defaultTheme = 'stark';
+
+  /**
    * The test that fails.
    */
   public function testFail() {
