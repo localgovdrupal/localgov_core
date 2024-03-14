@@ -51,6 +51,13 @@ class PageHeaderSubscriber implements EventSubscriberInterface {
       $event->setLede($parent->body->summary);
       $event->setCacheTags(Cache::mergeTags($node->getCacheTags(), $parent->getCacheTags()));
     }
+
+    // Set subtitle from parent, and cache tags from the parent for page4 nodes.
+    if ($node->bundle() == 'page4') {
+      $parent = $node->parent->entity;
+      $event->setSubTitle($parent->title->value);
+      $event->setCacheTags(Cache::mergeTags($node->getCacheTags(), $parent->getCacheTags()));
+    }
   }
 
 }
