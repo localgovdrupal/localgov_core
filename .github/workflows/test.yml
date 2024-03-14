@@ -7,6 +7,7 @@ on:
   pull_request:
     branches:
       - '3.x'
+  workflow_dispatch:
 
 env:
   LOCALGOV_DRUPAL_PROJECT: localgovdrupal/localgov_core
@@ -21,11 +22,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        localgov-version: 
+        localgov-version:
           - '3.x'
         drupal-version:
           - '~10.1'
-        php-version: 
+        php-version:
           - '8.1'
           - '8.2'
 
@@ -105,11 +106,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        localgov-version: 
+        localgov-version:
           - '3.x'
         drupal-version:
           - '~10.1'
-        php-version: 
+        php-version:
           - '8.1'
           - '8.2'
 
@@ -141,11 +142,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        localgov-version: 
+        localgov-version:
           - '3.x'
         drupal-version:
           - '~10.1'
-        php-version: 
+        php-version:
           - '8.1'
           - '8.2'
 
@@ -176,11 +177,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        localgov-version: 
+        localgov-version:
           - '3.x'
         drupal-version:
           - '~10.1'
-        php-version: 
+        php-version:
           - '8.1'
           - '8.2'
 
