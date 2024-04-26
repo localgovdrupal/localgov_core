@@ -9,12 +9,23 @@ use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Theme\ThemeManagerInterface;
 use Symfony\Component\Yaml\Yaml;
 
+/**
+ * Service to install default blocks.
+ */
 class DefaultBlockInstaller {
 
-  /** @var \Drupal\Core\Entity\EntityTypeManagerInterface */
+  /**
+   * Entity type manager.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
   protected $entityTypeManager;
 
-  /** @var \Drupal\Core\File\FileSystemInterface */
+  /**
+   * File system.
+   *
+   * @var \Drupal\Core\File\FileSystemInterface
+   */
   protected $fileSystem;
 
   /**
@@ -38,9 +49,16 @@ class DefaultBlockInstaller {
    */
   protected $moduleHandler;
 
-
+  /**
+   * Array of regions in each theme.
+   *
+   * @var array
+   */
   protected $themeRegions = [];
 
+  /**
+   * Constructor.
+   */
   public function __construct(
     EntityTypeManagerInterface $entityTypeManager,
     FileSystemInterface $fileSystem,
@@ -55,11 +73,10 @@ class DefaultBlockInstaller {
     $this->themeManager = $themeManager;
   }
 
-
   /**
    * Read the yaml files provided by modules.
    */
-  protected function blockDefinitions($module) {
+  protected function blockDefinitions(string $module): array {
 
     $modulePath = $this->moduleHandler->getModule($module)->getPath();
     $moduleBlockDefinitionsPath = $modulePath . '/config/localgov';
@@ -75,7 +92,10 @@ class DefaultBlockInstaller {
     return $blocks;
   }
 
-  protected function targetThemes() {
+  /**
+   * The themes we'll be installing blocks into.
+   */
+  protected function targetThemes(): array {
 
     // @todo: These should be a setting.
     // @todo: Add a setting at the same time to prevent default blocks being installed entirely.
@@ -97,7 +117,10 @@ class DefaultBlockInstaller {
     return $themes;
   }
 
-  function install($module): void {
+  /**
+   * Installs the default blocks for the given module.
+   */
+  public function install(string $module): void {
 
     $blocks = $this->blockDefinitions($module);
 
@@ -121,14 +144,17 @@ class DefaultBlockInstaller {
     }
   }
 
-  protected function themeHasRegion($theme, $region) {
+  /**
+   * Does the given theme have the given region?
+   */
+  protected function themeHasRegion(string $theme, string $region): bool {
     return in_array($region, $this->themeRegions($theme));
   }
 
   /**
    * Gets the regions for the given theme.
    */
-  protected function themeRegions($theme) {
+  protected function themeRegions(string $theme): array {
     if (!isset($this->themeRegions[$theme])) {
       $themeInfo = $this->themeHandler->getTheme($theme);
       if (empty($themeInfo)) {
