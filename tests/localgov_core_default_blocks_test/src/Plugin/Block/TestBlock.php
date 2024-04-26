@@ -12,7 +12,7 @@ use Drupal\Core\Block\BlockBase;
  *   admin_label = @Translation("Default block test block")
  * )
  */
-class PoweredByLocalGovDrupal extends BlockBase {
+class TestBlock extends BlockBase {
 
   /**
    * {@inheritdoc}

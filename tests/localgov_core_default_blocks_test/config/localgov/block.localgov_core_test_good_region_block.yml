@@ -1,0 +1,7 @@
+plugin: 'localgov_core_test_block'
+region: content_top
+status: true
+weight: 1
+settings:
+  label: 'Block in a good region.'
+visibility: {  }

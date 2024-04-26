@@ -2,12 +2,14 @@
 
 namespace Drupal\localgov_core\Service;
 
-use use Symfony\Component\Yaml\Yaml;
+use Symfony\Component\Yaml\Yaml;
 
 class DefaultBlockInstaller {
 
+  /** @var \Drupal\Core\Entity\EntityTypeManagerInterface */
   protected $entityTypeManager;
 
+  /** @var \Drupal\Core\File\FileSystemInterface */
   protected $fileSystem;
 
   /**
@@ -35,7 +37,7 @@ class DefaultBlockInstaller {
   protected $themeRegions = [];
 
   public function __construct() {
-    $this->entityTypeManager = \Drupal::service('entity_type.repository');
+    $this->entityTypeManager = \Drupal::entityTypeManager();
     $this->fileSystem = \Drupal::service('file_system');
     $this->moduleHandler = \Drupal::service('module_handler');
     $this->themeHandler = \Drupal::service('theme_handler');
@@ -50,10 +52,13 @@ class DefaultBlockInstaller {
 
     $modulePath = $this->moduleHandler->getModule($module)->getPath();
     $moduleBlockDefinitionsPath = $modulePath . '/config/localgov';
-    $files = $this->fileSystem->scanDirectory($moduleBlockDefinitionsPath, '/block\..+\.yml$/');
     $blocks = [];
-    foreach ($files as $file) {
-      $blocks[] = Yaml::parseFile($file);
+
+    if (is_dir($moduleBlockDefinitionsPath)) {
+      $files = $this->fileSystem->scanDirectory($moduleBlockDefinitionsPath, '/block\..+\.yml$/');
+      foreach ($files as $file) {
+        $blocks[] = Yaml::parseFile($moduleBlockDefinitionsPath . '/' . $file->filename);
+      }
     }
 
     return $blocks;
@@ -65,9 +70,16 @@ class DefaultBlockInstaller {
     // @todo: Add a setting at the same time to prevent default blocks being installed entirely.
     $themes = ['localgov_base', 'localgov_scarfolk'];
 
+    // Don't try to use themes that don't exist.
+    foreach ($themes as $i => $theme) {
+      if (!$this->themeHandler->themeExists($theme)) {
+        unset($themes[$i]);
+      }
+    }
+
     $activeTheme = $this->themeManager->getActiveTheme()->getName();
 
-    if (!in_array($activeTheme, $this->themes)) {
+    if (!in_array($activeTheme, $themes)) {
       $themes[] = $activeTheme;
     }
 

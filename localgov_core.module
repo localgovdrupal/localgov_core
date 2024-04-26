@@ -38,9 +38,10 @@ function localgov_core_template_preprocess_default_variables_alter(&$variables) 
  */
 function localgov_core_modules_installed($modules) {
 
-  \Drupal::service('localgov_core.default_block_installer');
+  /** @var \Drupal\localgov_core\Service\DefaultBlockInstaller $defaultBlockInstaller */
+  $defaultBlockInstaller = \Drupal::service('localgov_core.default_block_installer');
 
   foreach ($modules as $module) {
-    RolesHelper::assignModuleRoles($module);
+    $defaultBlockInstaller->install($module);
   }
 }
