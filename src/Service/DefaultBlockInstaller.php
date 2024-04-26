@@ -2,6 +2,11 @@
 
 namespace Drupal\localgov_core\Service;
 
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Extension\ModuleHandlerInterface;
+use Drupal\Core\Extension\ThemeHandlerInterface;
+use Drupal\Core\File\FileSystemInterface;
+use Drupal\Core\Theme\ThemeManagerInterface;
 use Symfony\Component\Yaml\Yaml;
 
 class DefaultBlockInstaller {
@@ -36,12 +41,18 @@ class DefaultBlockInstaller {
 
   protected $themeRegions = [];
 
-  public function __construct() {
-    $this->entityTypeManager = \Drupal::entityTypeManager();
-    $this->fileSystem = \Drupal::service('file_system');
-    $this->moduleHandler = \Drupal::service('module_handler');
-    $this->themeHandler = \Drupal::service('theme_handler');
-    $this->themeManager = \Drupal::service('theme.manager');
+  public function __construct(
+    EntityTypeManagerInterface $entityTypeManager,
+    FileSystemInterface $fileSystem,
+    ModuleHandlerInterface $moduleHandler,
+    ThemeHandlerInterface $themeHandler,
+    ThemeManagerInterface $themeManager
+  ) {
+    $this->entityTypeManager = $entityTypeManager;
+    $this->fileSystem = $fileSystem;
+    $this->moduleHandler = $moduleHandler;
+    $this->themeHandler = $themeHandler;
+    $this->themeManager = $themeManager;
   }
 
 
