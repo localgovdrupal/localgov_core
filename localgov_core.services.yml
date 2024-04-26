@@ -1,0 +1,4 @@
+services:
+  localgov_core.default_block_installer:
+    class: Drupal\localgov_core\Service\DefaultBlockInstaller
+    arguments: ['@entity_type.manager', '@plugin.manager.menu.link', '@current_route_match']

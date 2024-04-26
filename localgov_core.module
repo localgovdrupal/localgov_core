@@ -32,3 +32,15 @@ function localgov_core_template_preprocess_default_variables_alter(&$variables) 
     $variables['localgov_base_remove_js'] = TRUE;
   }
 }
+
+/**
+ * Implements hook_modules_installed().
+ */
+function localgov_core_modules_installed($modules) {
+
+  \Drupal::service('localgov_core.default_block_installer');
+
+  foreach ($modules as $module) {
+    RolesHelper::assignModuleRoles($module);
+  }
+}
