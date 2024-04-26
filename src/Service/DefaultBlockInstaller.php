@@ -64,7 +64,7 @@ class DefaultBlockInstaller {
     FileSystemInterface $fileSystem,
     ModuleHandlerInterface $moduleHandler,
     ThemeHandlerInterface $themeHandler,
-    ThemeManagerInterface $themeManager
+    ThemeManagerInterface $themeManager,
   ) {
     $this->entityTypeManager = $entityTypeManager;
     $this->fileSystem = $fileSystem;
@@ -97,8 +97,8 @@ class DefaultBlockInstaller {
    */
   protected function targetThemes(): array {
 
-    // @todo: These should be a setting.
-    // @todo: Add a setting at the same time to prevent default blocks being installed entirely.
+    // @todo These should be a setting.
+    // @todo Add a setting at the same time to prevent default blocks being installed entirely.
     $themes = ['localgov_base', 'localgov_scarfolk'];
 
     // Don't try to use themes that don't exist.
@@ -124,8 +124,8 @@ class DefaultBlockInstaller {
 
     $blocks = $this->blockDefinitions($module);
 
-    // Loop over every theme and block definition, so we set up all the blocks in
-    // all the relevant themes.
+    // Loop over every theme and block definition, so we set up all the blocks
+    // in all the relevant themes.
     foreach ($this->targetThemes() as $theme) {
       foreach ($blocks as $block) {
 

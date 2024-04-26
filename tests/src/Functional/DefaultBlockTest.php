@@ -30,4 +30,5 @@ class DefaultBlockTest extends BrowserTestBase {
     $this->assertSession()->pageTextContains('Block in a good region.');
     $this->assertSession()->pageTextNotContains('Block in a bad region.');
   }
+
 }
