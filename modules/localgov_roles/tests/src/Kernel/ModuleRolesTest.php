@@ -29,7 +29,7 @@ class ModuleRolesTest extends KernelTestBase {
    * {@inheritdoc}
    */
   public function setUp(): void {
-    parent::setup();
+    parent::setUp();
 
     $this->installConfig([
       'user',
