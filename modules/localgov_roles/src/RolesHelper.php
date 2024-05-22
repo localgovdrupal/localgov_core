@@ -28,6 +28,11 @@ class RolesHelper {
   const USER_MANAGER_ROLE = 'localgov_user_manager';
 
   /**
+   * Admin role machine name.
+   */
+  const ADMIN_ROLE = 'localgov_admin';
+
+  /**
    * Assign permissions to roles if module has defaults.
    */
   public static function assignModuleRoles($module) {
