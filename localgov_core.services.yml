@@ -1,0 +1,5 @@
+services:
+  localgov_core.route_subscriber:
+    class: Drupal\localgov_core\EventSubscriber\SystemErrorPageRouteSubscriber
+    tags:
+      - { name: event_subscriber }
