@@ -4,6 +4,7 @@
  * @file
  * Install, update and uninstall functions for the localgov_role module.
  */
+use Drupal\user\Entity\Role;
 
 /**
  * Implements hook_install().
@@ -13,4 +14,28 @@ function localgov_roles_install() {
   foreach ($roles as $role => $permissions) {
     user_role_grant_permissions($role, $permissions);
   }
+  _removeAccessFilesOverviewPermission();
+}
+
+/**
+ * Removes the 'access files overview' permission from all roles.
+ *
+ * If a particular role needs this permission, it should be added via the
+ * permissions page.
+ */
+function _removeAccessFilesOverviewPermission() {
+  $roles = Role::loadMultiple();
+  foreach ($roles as $role) {
+    if ($role->hasPermission('access files overview')) {
+      $role->revokePermission('access files overview');
+      $role->save();
+    }
+  }
+}
+
+/**
+ * hook_update_N().
+ */
+function localgov_roles_update_10001() {
+  _removeAccessFilesOverviewPermission();
 }
