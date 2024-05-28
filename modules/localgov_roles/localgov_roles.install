@@ -20,9 +20,6 @@ function localgov_roles_install() {
 
 /**
  * Removes the 'access files overview' permission from all roles.
- *
- * If a particular role needs this permission, it should be added via the
- * permissions page.
  */
 function _remove_access_files_overview_permission() {
   $roles = Role::loadMultiple();
@@ -32,11 +29,4 @@ function _remove_access_files_overview_permission() {
       $role->save();
     }
   }
-}
-
-/**
- * Implements hook_update_N().
- */
-function localgov_roles_update_10001() {
-  _remove_access_files_overview_permission();
 }
