@@ -5,6 +5,8 @@
  * Install, update and uninstall functions for the localgov_role module.
  */
 
+use Drupal\user\Entity\Role;
+
 /**
  * Implements hook_install().
  */
@@ -13,4 +15,16 @@ function localgov_roles_install() {
   foreach ($roles as $role => $permissions) {
     user_role_grant_permissions($role, $permissions);
   }
+}
+
+/**
+ * Create admin role.
+ */
+function localgov_roles_update_10001() {
+  $role = Role::create([
+    'id' => 'localgov_admin',
+    'label' => 'Admin',
+    'is_admin' => TRUE,
+  ]);
+  $role->save();
 }
