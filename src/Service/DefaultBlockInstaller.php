@@ -133,7 +133,7 @@ class DefaultBlockInstaller {
           continue;
         }
 
-        $block['id'] = $theme . '_' . $block['plugin'];
+        $block['id'] = $this->sanitiseID($theme . '_' . $block['plugin']);
         $block['theme'] = $theme;
 
         $this->entityTypeManager
@@ -142,6 +142,13 @@ class DefaultBlockInstaller {
           ->save();
       }
     }
+  }
+
+  /**
+   * Replace characters that aren't allowed in config IDs.
+   */
+  protected function sanitiseID(string $id): string {
+    return preg_replace('/[^a-z0-9\._]/', '_', strtolower($id));
   }
 
   /**
