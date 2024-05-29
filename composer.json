@@ -12,7 +12,6 @@
         "drupal/media_library_edit": "^3.0",
         "drupal/metatag": "^1.14",
         "drupal/pathauto": "^1.8",
-        "drupal/redirect": "^1.6",
         "drupal/role_delegation": "^1.1",
         "drupal/token": "^1.7"
     },
@@ -21,9 +20,6 @@
     },
     "extra": {
         "enable-patching": true,
-        "patches": {
-            "drupal/redirect": {
-                "Validation issue on adding url redirect: https://www.drupal.org/project/redirect/issues/3057250": "https://www.drupal.org/files/issues/2022-09-01/3057250-53.patch"}},
         "composer-exit-on-patch-failure": true,
         "patchLevel": {
             "drupal/core": "-p2"
