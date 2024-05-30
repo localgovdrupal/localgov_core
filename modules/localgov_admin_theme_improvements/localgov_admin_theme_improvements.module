@@ -16,3 +16,12 @@ function localgov_admin_theme_improvements_layout_paragraph_element_form_alter(a
     $element_form['#attached']['library'][] = 'localgov_admin_theme_improvements/gin-layout-paragraphs';
   }
 }
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function localgov_admin_theme_improvements_form_revision_overview_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if ($form_id === 'revision_overview_form') {
+    $form['#attached']['library'][] = 'localgov_admin_theme_improvements/revisions-page';
+  }
+}
