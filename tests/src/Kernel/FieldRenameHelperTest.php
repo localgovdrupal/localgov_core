@@ -50,7 +50,7 @@ class FieldRenameHelperTest extends KernelTestBase {
    * {@inheritdoc}
    */
   public function setUp(): void {
-    parent::setup();
+    parent::setUp();
 
     $this->installEntitySchema('user');
     $this->installEntitySchema('node');
@@ -175,14 +175,14 @@ class FieldRenameHelperTest extends KernelTestBase {
     // Assert the entity form displays preserve the field groups.
     $form_display = EntityFormDisplay::load('node.test_type.default');
     $form_groups = $form_display->getThirdPartySettings('field_group');
-    $this->assertEquals(TRUE, in_array('renamed_test_field', $form_groups['test_group']['children']));
-    $this->assertEquals(TRUE, in_array('another_renamed_test_field', $form_groups['another_test_group']['children']));
+    $this->assertEquals(TRUE, in_array('renamed_test_field', $form_groups['test_group']['children'], TRUE));
+    $this->assertEquals(TRUE, in_array('another_renamed_test_field', $form_groups['another_test_group']['children'], TRUE));
 
     // Assert the entity view displays preserve the field groups.
     $view_display = EntityViewDisplay::load('node.test_type.default');
     $view_groups = $view_display->getThirdPartySettings('field_group');
-    $this->assertEquals(TRUE, in_array('renamed_test_field', $view_groups['test_group']['children']));
-    $this->assertEquals(TRUE, in_array('another_renamed_test_field', $view_groups['another_test_group']['children']));
+    $this->assertEquals(TRUE, in_array('renamed_test_field', $view_groups['test_group']['children'], TRUE));
+    $this->assertEquals(TRUE, in_array('another_renamed_test_field', $view_groups['another_test_group']['children'], TRUE));
 
     // Assert the field config is preserved.
     $form_component = $form_display->getComponent('renamed_test_field');

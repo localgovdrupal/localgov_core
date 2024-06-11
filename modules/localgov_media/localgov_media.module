@@ -13,7 +13,7 @@ use Drupal\user\Entity\Role;
  * Implements hook_modules_installed().
  */
 function localgov_media_modules_installed($modules, $is_syncing) {
-  if (!$is_syncing && in_array('localgov_media', $modules)) {
+  if (!$is_syncing && in_array('localgov_media', $modules, TRUE)) {
 
     // Install all optional config now rather than deferring it to later.
     $config_path = \Drupal::service('extension.list.module')->getPath('localgov_media') . '/config/optional';
