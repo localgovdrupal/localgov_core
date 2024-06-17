@@ -5,6 +5,7 @@
  * Provides any functions we need to fix admin theme issues.
  */
 
+use Drupal\Core\Cache\RefinableCacheableDependencyInterface;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
@@ -23,5 +24,19 @@ function localgov_admin_theme_improvements_layout_paragraph_element_form_alter(a
 function localgov_admin_theme_improvements_form_revision_overview_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   if ($form_id === 'revision_overview_form') {
     $form['#attached']['library'][] = 'localgov_admin_theme_improvements/revisions-page';
+  }
+}
+
+/**
+ * Implements hook_menu_local_tasks_alter().
+ */
+function localgov_admin_theme_improvements_menu_local_tasks_alter(&$data, $route_name, RefinableCacheableDependencyInterface &$cacheability) {
+  // Increase "Files" item weight.
+  if (isset($data['tabs'][0]['views_view:view.files.page_1'])) {
+    $data['tabs'][0]['views_view:view.files.page_1']['#weight'] = 20;
+  }
+  // Increase "Page components" item weight.
+  if (isset($data['tabs'][0]['entity.paragraphs_library_item.collection'])) {
+    $data['tabs'][0]['entity.paragraphs_library_item.collection']['#weight'] = 60;
   }
 }
