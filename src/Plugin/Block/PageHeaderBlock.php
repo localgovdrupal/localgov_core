@@ -127,7 +127,9 @@ class PageHeaderBlock extends BlockBase implements ContainerFactoryPluginInterfa
     //
     // We consider two cases: (1) type entity:*, and (2) type node_preview with
     // view_mode_id set to 'full'.
-    if (($route = $this->currentRouteMatch->getRouteObject()) && ($parameters = $route->getOption('parameters'))) {
+    $route = $this->currentRouteMatch->getRouteObject();
+    if (!is_null($route)) {
+      $parameters = $route->getOption('parameters');
       foreach ($parameters as $name => $options) {
         if (!isset($options['type'])) {
           continue;
