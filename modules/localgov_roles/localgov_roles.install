@@ -17,14 +17,3 @@ function localgov_roles_install() {
   }
 }
 
-/**
- * Create admin role.
- */
-function localgov_roles_update_10001() {
-  $role = Role::create([
-    'id' => 'localgov_admin',
-    'label' => 'Admin',
-    'is_admin' => TRUE,
-  ]);
-  $role->save();
-}
