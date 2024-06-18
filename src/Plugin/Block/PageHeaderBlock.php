@@ -127,25 +127,29 @@ class PageHeaderBlock extends BlockBase implements ContainerFactoryPluginInterfa
     //
     // We consider two cases: (1) type entity:*, and (2) type node_preview with
     // view_mode_id set to 'full'.
-    if (($route = $this->currentRouteMatch->getRouteObject()) && ($parameters = $route->getOption('parameters'))) {
-      foreach ($parameters as $name => $options) {
-        if (!isset($options['type'])) {
-          continue;
-        }
-
-        if (strpos($options['type'], 'entity:') === 0) {
-          $entity = $this->currentRouteMatch->getParameter($name);
-        }
-        elseif ($options['type'] === 'node_preview') {
-          $preview = $this->currentRouteMatch->getParentRouteMatch()->getParameter($name);
-          if (isset($preview->preview_view_mode) && $preview->preview_view_mode === 'full') {
-            $entity = $preview;
+    $route = $this->currentRouteMatch->getRouteObject();
+    if (!is_null($route)) {
+      $parameters = $route->getOption('parameters');
+      if (!is_null($parameters)) {
+        foreach ($parameters as $name => $options) {
+          if (!isset($options['type'])) {
+            continue;
           }
-        }
 
-        if (isset($entity) && $entity instanceof EntityInterface) {
-          $this->entity = $entity;
-          break;
+          if (strpos($options['type'], 'entity:') === 0) {
+            $entity = $this->currentRouteMatch->getParameter($name);
+          }
+          elseif ($options['type'] === 'node_preview') {
+            $preview = $this->currentRouteMatch->getParentRouteMatch()->getParameter($name);
+            if (isset($preview->preview_view_mode) && $preview->preview_view_mode === 'full') {
+              $entity = $preview;
+            }
+          }
+
+          if (isset($entity) && $entity instanceof EntityInterface) {
+            $this->entity = $entity;
+            break;
+          }
         }
       }
     }
