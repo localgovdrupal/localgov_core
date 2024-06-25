@@ -32,8 +32,8 @@ class OnOffSwitchTest extends BrowserTestBase {
   /**
    * Tests the on/off switch for installing default blocks.
    *
-   * If $settings['localgov_core_install_default_blocks'] = FALSE; then no
-   * blocks should be installed. Otherwise they should.
+   * If localgov_core.settings.install_default_blocks in config is set to FALSE
+   * then no blocks should be installed. Otherwise they should.
    *
    * @dataProvider onOffProvider
    */
