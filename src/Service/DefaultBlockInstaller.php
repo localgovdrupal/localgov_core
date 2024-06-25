@@ -146,9 +146,22 @@ class DefaultBlockInstaller {
 
   /**
    * Replace characters that aren't allowed in config IDs.
+   *
+   * This is partly based on
+   * \Drupal\Core\Block\BlockPluginTrait::getMachineNameSuggestion().
    */
   protected function sanitiseId(string $id): string {
-    return preg_replace('/[^a-z0-9\._]/', '_', strtolower($id));
+
+    // Shift to lower case.
+    $id = mb_strtolower($id);
+
+    // Limit to alphanumeric chars, dot and underscore.
+    $id = preg_replace('@[^a-z0-9_.]+@', '_', $id);
+
+    // Remove non-alphanumeric chars from the beginning and end of the id.
+    $id = preg_replace('@^([^a-z0-9]+)|([^a-z0-9]+)$@', '', $id);
+
+    return $id;
   }
 
   /**
