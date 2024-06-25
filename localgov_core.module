@@ -38,10 +38,20 @@ function localgov_core_template_preprocess_default_variables_alter(&$variables) 
  */
 function localgov_core_modules_installed($modules) {
 
-  /** @var \Drupal\localgov_core\Service\DefaultBlockInstaller $defaultBlockInstaller */
-  $defaultBlockInstaller = \Drupal::service('localgov_core.default_block_installer');
-
-  foreach ($modules as $module) {
-    $defaultBlockInstaller->install($module);
+  // If localgov_core.settings.install_default_blocks is set to FALSE, don't
+  // install default blocks. This lets site owners opt out if desired.
+  $installDefaultBlocks = TRUE;
+  $config = \Drupal::config('localgov_core.settings');
+  if ($config) {
+    if ($config->get('install_default_blocks') === FALSE) {
+      $installDefaultBlocks = FALSE;
+    }
+  }
+  if ($installDefaultBlocks) {
+    /** @var \Drupal\localgov_core\Service\DefaultBlockInstaller $defaultBlockInstaller */
+    $defaultBlockInstaller = \Drupal::service('localgov_core.default_block_installer');
+    foreach ($modules as $module) {
+      $defaultBlockInstaller->install($module);
+    }
   }
 }

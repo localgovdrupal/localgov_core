@@ -97,8 +97,6 @@ class DefaultBlockInstaller {
    */
   protected function targetThemes(): array {
 
-    // @todo These should be a setting.
-    // @todo Add a setting at the same time to prevent default blocks being installed entirely.
     $themes = ['localgov_base', 'localgov_scarfolk'];
 
     // Don't try to use themes that don't exist.
