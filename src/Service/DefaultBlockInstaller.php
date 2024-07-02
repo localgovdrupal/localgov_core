@@ -100,16 +100,15 @@ class DefaultBlockInstaller {
 
     $themes = ['localgov_base', 'localgov_scarfolk'];
 
-    // Check if the site is being installed. If it is, there's no active theme,
-    // and we can't check if themes exist. We'll assume that localgov_base and
-    // localgov_scarfolk are present for new installs.
+    $activeTheme = $this->getActiveThemeName();
+    if ($activeTheme && !in_array($activeTheme, $themes)) {
+      $themes[] = $activeTheme;
+    }
+
+    // Check if the site is being installed. If it is, we can't check if themes
+    // exist. We'll assume that localgov_base and localgov_scarfolk are present
+    // for new installs.
     if (!InstallerKernel::installationAttempted()) {
-      $activeTheme = $this->themeManager->getActiveTheme()->getName();
-
-      if (!in_array($activeTheme, $themes)) {
-        $themes[] = $activeTheme;
-      }
-
       // Don't try to use themes that don't exist.
       foreach ($themes as $i => $theme) {
         if (!$this->themeHandler->themeExists($theme)) {
@@ -119,6 +118,20 @@ class DefaultBlockInstaller {
     }
 
     return $themes;
+  }
+
+  /**
+   * Gets the name of the active theme, if there is one.
+   */
+  protected function getActiveThemeName(): ?string {
+    $activeTheme = $this->themeManager->getActiveTheme()->getName();
+    if ($activeTheme === 'core') {
+      // 'core' is what Drupal returns when there's no themes available.
+      // See \Drupal\Core\Theme\ThemeInitialization::getActiveThemeByName().
+      // This mainly happens in the installer.
+      return null;
+    }
+    return $activeTheme;
   }
 
   /**
