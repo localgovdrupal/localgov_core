@@ -6,6 +6,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Extension\ThemeHandlerInterface;
 use Drupal\Core\File\FileSystemInterface;
+use Drupal\Core\Installer\InstallerKernel;
 use Drupal\Core\Theme\ThemeManagerInterface;
 use Symfony\Component\Yaml\Yaml;
 
@@ -99,17 +100,22 @@ class DefaultBlockInstaller {
 
     $themes = ['localgov_base', 'localgov_scarfolk'];
 
-    // Don't try to use themes that don't exist.
-    foreach ($themes as $i => $theme) {
-      if (!$this->themeHandler->themeExists($theme)) {
-        unset($themes[$i]);
+    // Check if the site is being installed. If it is, there's no active theme,
+    // and we can't check if themes exist. We'll assume that localgov_base and
+    // localgov_scarfolk are present for new installs.
+    if (!InstallerKernel::installationAttempted()) {
+      $activeTheme = $this->themeManager->getActiveTheme()->getName();
+
+      if (!in_array($activeTheme, $themes)) {
+        $themes[] = $activeTheme;
       }
-    }
 
-    $activeTheme = $this->themeManager->getActiveTheme()->getName();
-
-    if (!in_array($activeTheme, $themes)) {
-      $themes[] = $activeTheme;
+      // Don't try to use themes that don't exist.
+      foreach ($themes as $i => $theme) {
+        if (!$this->themeHandler->themeExists($theme)) {
+          unset($themes[$i]);
+        }
+      }
     }
 
     return $themes;
@@ -127,8 +133,12 @@ class DefaultBlockInstaller {
     foreach ($this->targetThemes() as $theme) {
       foreach ($blocks as $block) {
 
-        if (!$this->themeHasRegion($theme, $block['region'])) {
-          continue;
+        // If we're not in the installer, verify that the theme we're using has
+        // the requested region.
+        if (!InstallerKernel::installationAttempted()) {
+          if (!$this->themeHasRegion($theme, $block['region'])) {
+            continue;
+          }
         }
 
         $block['id'] = $this->sanitiseId($theme . '_' . $block['plugin']);
