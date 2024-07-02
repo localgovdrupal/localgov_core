@@ -129,7 +129,7 @@ class DefaultBlockInstaller {
       // 'core' is what Drupal returns when there's no themes available.
       // See \Drupal\Core\Theme\ThemeInitialization::getActiveThemeByName().
       // This mainly happens in the installer.
-      return null;
+      return NULL;
     }
     return $activeTheme;
   }
