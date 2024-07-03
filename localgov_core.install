@@ -57,3 +57,19 @@ function localgov_core_update_8002() {
     }
   }
 }
+
+/**
+ * Add a localgov_card view mode.
+ */
+function localgov_core_update_8003() {
+  $view_mode = \Drupal::entityTypeManager()->getStorage('entity_view_mode')->load('node.localgov_card');
+  if (!$view_mode) {
+    $view_mode = \Drupal::entityTypeManager()->getStorage('entity_view_mode')->create([
+      'id' => 'node.localgov_card',
+      'targetEntityType' => 'node',
+      'status' => TRUE,
+      'label' => 'LocalGov Card',
+    ]);
+    $view_mode->save();
+  }
+}
