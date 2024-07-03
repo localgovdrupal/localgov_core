@@ -3,5 +3,6 @@ gin-layout-paragraphs:
     js/gin-layout-paragraphs.js: {}
 
 revisions-page:
-  js:
-    js/revisions-page.js: {}
+  css:
+    theme:
+      css/revisions-page.css: {}
