@@ -1,0 +1,10 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: node.localgov_card
+label: 'LocalGov Card'
+description: ''
+targetEntityType: node
+cache: true
