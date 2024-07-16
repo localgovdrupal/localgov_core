@@ -2,7 +2,7 @@ langcode: en
 status: true
 dependencies: {  }
 id: localgov_admin
-label: Admin
+label: 'LocalGov Admin'
 weight: 100
 is_admin: true
 permissions: {  }
