@@ -8,6 +8,11 @@ namespace Drupal\localgov_roles;
 class RolesHelper {
 
   /**
+   * Admin role machine name.
+   */
+  const ADMIN_ROLE = 'localgov_admin';
+
+  /**
    * Editor role machine name.
    */
   const EDITOR_ROLE = 'localgov_editor';
