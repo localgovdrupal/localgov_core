@@ -2,11 +2,11 @@
 
 namespace Drupal\localgov_core\Service;
 
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Extension\ThemeHandlerInterface;
 use Drupal\Core\File\FileSystemInterface;
-use Drupal\Core\Installer\InstallerKernel;
 use Drupal\Core\Theme\ThemeManagerInterface;
 use Symfony\Component\Yaml\Yaml;
 
@@ -14,41 +14,6 @@ use Symfony\Component\Yaml\Yaml;
  * Service to install default blocks.
  */
 class DefaultBlockInstaller {
-
-  /**
-   * Entity type manager.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
-   */
-  protected $entityTypeManager;
-
-  /**
-   * File system.
-   *
-   * @var \Drupal\Core\File\FileSystemInterface
-   */
-  protected $fileSystem;
-
-  /**
-   * Theme handler.
-   *
-   * @var \Drupal\Core\Extension\ThemeHandlerInterface
-   */
-  protected $themeHandler;
-
-  /**
-   * Theme manager.
-   *
-   * @var \Drupal\Core\Theme\ThemeManagerInterface
-   */
-  protected $themeManager;
-
-  /**
-   * Theme handler.
-   *
-   * @var \Drupal\Core\Extension\ModuleHandlerInterface
-   */
-  protected $moduleHandler;
 
   /**
    * Array of regions in each theme.
@@ -61,17 +26,13 @@ class DefaultBlockInstaller {
    * Constructor.
    */
   public function __construct(
-    EntityTypeManagerInterface $entityTypeManager,
-    FileSystemInterface $fileSystem,
-    ModuleHandlerInterface $moduleHandler,
-    ThemeHandlerInterface $themeHandler,
-    ThemeManagerInterface $themeManager,
+    protected ConfigFactoryInterface $configFactory,
+    protected EntityTypeManagerInterface $entityTypeManager,
+    protected FileSystemInterface $fileSystem,
+    protected ModuleHandlerInterface $moduleHandler,
+    protected ThemeHandlerInterface $themeHandler,
+    protected ThemeManagerInterface $themeManager,
   ) {
-    $this->entityTypeManager = $entityTypeManager;
-    $this->fileSystem = $fileSystem;
-    $this->moduleHandler = $moduleHandler;
-    $this->themeHandler = $themeHandler;
-    $this->themeManager = $themeManager;
   }
 
   /**
@@ -105,15 +66,10 @@ class DefaultBlockInstaller {
       $themes[] = $activeTheme;
     }
 
-    // Check if the site is being installed. If it is, we can't check if themes
-    // exist. We'll assume that localgov_base and localgov_scarfolk are present
-    // for new installs.
-    if (!InstallerKernel::installationAttempted()) {
-      // Don't try to use themes that don't exist.
-      foreach ($themes as $i => $theme) {
-        if (!$this->themeHandler->themeExists($theme)) {
-          unset($themes[$i]);
-        }
+    // Don't try to use themes that don't exist.
+    foreach ($themes as $i => $theme) {
+      if (!$this->themeHandler->themeExists($theme)) {
+        unset($themes[$i]);
       }
     }
 
@@ -135,9 +91,29 @@ class DefaultBlockInstaller {
   }
 
   /**
+   * Installs the default blocks for the given modules.
+   *
+   * If the site is configured not to allow default blocks to be installed, this
+   * method will do nothing.
+   */
+  public function install(array $modules): void {
+
+    // If localgov_core.settings.install_default_blocks is set to FALSE, don't
+    // install default blocks. This lets site owners opt out if desired.
+    $config = $this->configFactory->get('localgov_core.settings');
+    if ($config && ($config->get('install_default_blocks') === FALSE)) {
+      return;
+    }
+
+    foreach ($modules as $module) {
+      $this->installForModule($module);
+    }
+  }
+
+  /**
    * Installs the default blocks for the given module.
    */
-  public function install(string $module): void {
+  protected function installForModule(string $module): void {
 
     $blocks = $this->blockDefinitions($module);
 
@@ -146,12 +122,9 @@ class DefaultBlockInstaller {
     foreach ($this->targetThemes() as $theme) {
       foreach ($blocks as $block) {
 
-        // If we're not in the installer, verify that the theme we're using has
-        // the requested region.
-        if (!InstallerKernel::installationAttempted()) {
-          if (!$this->themeHasRegion($theme, $block['region'])) {
-            continue;
-          }
+        // Verify that the theme we're using has the requested region.
+        if (!$this->themeHasRegion($theme, $block['region'])) {
+          continue;
         }
 
         $block['id'] = $this->sanitiseId($theme . '_' . $block['plugin']);
