@@ -43,7 +43,7 @@ function localgov_core_template_preprocess_default_variables_alter(&$variables) 
  */
 function localgov_core_modules_installed(array $modules): void {
   // If we're in the installer, do nothing.
-  if (!InstallerKernel::installationAttempted()) {
+  if (InstallerKernel::installationAttempted()) {
     return;
   }
 
