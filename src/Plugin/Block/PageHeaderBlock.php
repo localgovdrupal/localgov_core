@@ -106,7 +106,7 @@ class PageHeaderBlock extends BlockBase implements ContainerFactoryPluginInterfa
       $plugin_id,
       $plugin_definition,
       $container->get('current_route_match'),
-      $container->get('event_dispatcher'),
+      $container->get('\Symfony\Contracts\EventDispatcher\EventDispatcherInterface'),
       $container->get('request_stack'),
       $container->get('title_resolver')
     );
