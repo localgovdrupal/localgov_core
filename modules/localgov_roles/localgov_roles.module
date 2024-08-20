@@ -10,8 +10,10 @@ use Drupal\localgov_roles\RolesHelper;
 /**
  * Implements hook_modules_installed().
  */
-function localgov_roles_modules_installed($modules) {
-  foreach ($modules as $module) {
-    RolesHelper::assignModuleRoles($module);
+function localgov_roles_modules_installed($modules, $is_syncing) {
+  if (!$is_syncing) {
+    foreach ($modules as $module) {
+      RolesHelper::assignModuleRoles($module);
+    }
   }
 }

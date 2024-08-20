@@ -5,6 +5,8 @@
  * LocalGovDrupal Core module file.
  */
 
+use Drupal\Core\Installer\InstallerKernel;
+
 /**
  * Implements hook_theme().
  */
@@ -34,4 +36,39 @@ function localgov_core_template_preprocess_default_variables_alter(&$variables) 
   if ($remove_js) {
     $variables['localgov_base_remove_js'] = TRUE;
   }
+}
+
+/**
+ * Implements hook_modules_installed().
+ *
+ * This installs default blocks for modules when they're enabled on an existing
+ * site. (IE, not in the installer.)
+ */
+function localgov_core_modules_installed(array $modules): void {
+  // If we're in the installer, do nothing.
+  if (InstallerKernel::installationAttempted()) {
+    return;
+  }
+
+  /** @var \Drupal\localgov_core\Service\DefaultBlockInstaller $defaultBlockInstaller */
+  $defaultBlockInstaller = \Drupal::service('localgov_core.default_block_installer');
+  $defaultBlockInstaller->install($modules);
+}
+
+/**
+ * Implements hook_localgov_post_install().
+ *
+ * This installs default blocks as part of the installation of a new LocalGov
+ * site. All LocalGov modules (IE ones whose name starts with 'localgov_') will
+ * have default blocks that they define installed.
+ */
+function localgov_core_localgov_post_install(): void {
+  $moduleList = \Drupal::moduleHandler()->getModuleList();
+  $localgovModules = array_filter(array_keys($moduleList), function ($moduleName) {
+    return str_starts_with($moduleName, 'localgov_');
+  });
+
+  /** @var \Drupal\localgov_core\Service\DefaultBlockInstaller $defaultBlockInstaller */
+  $defaultBlockInstaller = \Drupal::service('localgov_core.default_block_installer');
+  $defaultBlockInstaller->install($localgovModules);
 }

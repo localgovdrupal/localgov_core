@@ -1,0 +1,7 @@
+localgov_core.settings:
+  type: config_object
+  label: 'LocalGov Core settings'
+  mapping:
+    install_default_blocks:
+      type: boolean
+      label: 'Install default blocks when modules provide them'
