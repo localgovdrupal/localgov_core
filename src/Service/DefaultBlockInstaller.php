@@ -4,6 +4,7 @@ namespace Drupal\localgov_core\Service;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Extension\Extension;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Extension\ThemeHandlerInterface;
 use Drupal\Core\File\FileSystemInterface;
@@ -62,7 +63,7 @@ class DefaultBlockInstaller {
     $themes = ['localgov_base', 'localgov_scarfolk'];
 
     $activeTheme = $this->getActiveThemeName();
-    if ($activeTheme && !in_array($activeTheme, $themes)) {
+    if ($activeTheme && !in_array($activeTheme, $themes, TRUE)) {
       $themes[] = $activeTheme;
     }
 
@@ -162,7 +163,7 @@ class DefaultBlockInstaller {
    * Does the given theme have the given region?
    */
   protected function themeHasRegion(string $theme, string $region): bool {
-    return in_array($region, $this->themeRegions($theme));
+    return in_array($region, $this->themeRegions($theme), TRUE);
   }
 
   /**
@@ -171,7 +172,7 @@ class DefaultBlockInstaller {
   protected function themeRegions(string $theme): array {
     if (!isset($this->themeRegions[$theme])) {
       $themeInfo = $this->themeHandler->getTheme($theme);
-      if (empty($themeInfo)) {
+      if (!$themeInfo instanceof Extension) {
         $regions = [];
       }
       else {
