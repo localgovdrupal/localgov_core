@@ -15,18 +15,4 @@ function localgov_roles_install() {
   foreach ($roles as $role => $permissions) {
     user_role_grant_permissions($role, $permissions);
   }
-  _remove_access_files_overview_permission();
-}
-
-/**
- * Removes the 'access files overview' permission from all roles.
- */
-function _remove_access_files_overview_permission() {
-  $roles = Role::loadMultiple();
-  foreach ($roles as $role) {
-    if ($role->hasPermission('access files overview')) {
-      $role->revokePermission('access files overview');
-      $role->save();
-    }
-  }
 }
