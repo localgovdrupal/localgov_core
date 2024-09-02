@@ -80,8 +80,7 @@ function localgov_core_update_8003() {
 function localgov_core_update_8004() {
   // Load the view configuration.
   $config = \Drupal::configFactory()->getEditable('views.view.files');
-
-  // Set the configuration values using an array.
+  // Update the path and menu settings for the 'page_1' display.
   $config->set('display.page_1.display_options.path', 'admin/content/media/files');
   $config_files_menu_items = $config->get('display.page_1.display_options.menu');
   $config_files_menu_items['type'] = 'none';
@@ -89,9 +88,6 @@ function localgov_core_update_8004() {
   $config_files_menu_items['parent'] = '';
   $config_files_menu_items['context'] = '0';
   $config->set('display.page_1.display_options.menu', $config_files_menu_items);
-
-  $config->set('display.page_2.display_options.path', 'admin/content/media/files/usage/%');
-
   // Save the configuration.
   $config->save();
 }
