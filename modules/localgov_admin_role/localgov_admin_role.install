@@ -1,0 +1,29 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the localgov_admin_role module.
+ */
+
+use Drupal\localgov_roles\RolesHelper;
+use Drupal\user\Entity\Role;
+
+/**
+ * Implements hook_install().
+ */
+function localgov_admin_role_install($is_syncing) {
+  if ($is_syncing) {
+    return;
+  }
+  // Check if the 'localgov_admin_role' role exists.
+  $admin_role = Role::load(RolesHelper::ADMIN_ROLE);
+  if (!$admin_role) {
+    // If the role doesn't exist, create it.
+    $admin_role = Role::create([
+      'id' => 'localgov_admin',
+      'label' => 'LocalGov Admin',
+      'is_admin' => TRUE,
+    ]);
+    $admin_role->save();
+  }
+}

@@ -1,3 +1,8 @@
 gin-layout-paragraphs:
   js:
     js/gin-layout-paragraphs.js: {}
+
+revisions-page:
+  css:
+    theme:
+      css/revisions-page.css: {}

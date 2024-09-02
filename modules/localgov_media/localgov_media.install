@@ -1,0 +1,42 @@
+<?php
+
+/**
+ * @file
+ * LocalGov Drupal Media module install file.
+ */
+
+/**
+ * Remove invalid attributes from the WYSIWYG editor's allowed tags.
+ */
+function localgov_media_update_10001() {
+
+  $invalid_attributes = [
+    'data-entity-type',
+    'data-entity-uuid',
+    'data-entity-substitution',
+  ];
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('editor.editor.wysiwyg');
+  $allowed_tags = $config->get('settings.plugins.ckeditor5_sourceEditing.allowed_tags');
+  $updated = FALSE;
+
+  foreach ($allowed_tags as $key => $tag) {
+    if (str_starts_with($tag, '<a')) {
+      foreach ($invalid_attributes as $attribute) {
+        if (str_contains($tag, $attribute)) {
+          $tag = str_replace($attribute, '', $tag);
+          $updated = TRUE;
+        }
+      }
+
+      if ($updated) {
+        $tag = preg_replace('/\s+/', ' ', $tag);
+        $allowed_tags[$key] = $tag;
+        $config->set('settings.plugins.ckeditor5_sourceEditing.allowed_tags', $allowed_tags);
+        $config->save();
+      }
+
+      return;
+    }
+  }
+}

@@ -8,9 +8,15 @@
 /**
  * Implements hook_install().
  */
-function localgov_roles_install() {
+function localgov_roles_install($is_syncing) {
+
+  if ($is_syncing) {
+    return;
+  }
+
   $roles = \Drupal::service('module_handler')->invokeAll('localgov_roles_default');
   foreach ($roles as $role => $permissions) {
     user_role_grant_permissions($role, $permissions);
   }
+
 }
