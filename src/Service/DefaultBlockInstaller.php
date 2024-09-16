@@ -117,6 +117,7 @@ class DefaultBlockInstaller {
   protected function installForModule(string $module): void {
 
     $blocks = $this->blockDefinitions($module);
+    $blockStorage = $this->entityTypeManager->getStorage('block');
 
     // Loop over every theme and block definition, so we set up all the blocks
     // in all the relevant themes.
@@ -131,10 +132,10 @@ class DefaultBlockInstaller {
         $block['id'] = $this->sanitiseId($theme . '_' . $block['plugin']);
         $block['theme'] = $theme;
 
-        $this->entityTypeManager
-          ->getStorage('block')
-          ->create($block)
-          ->save();
+        // If there's no block with this ID already, create and save this block.
+        if ($blockStorage->load($block['id']) === NULL) {
+          $blockStorage->create($block)->save();
+        }
       }
     }
   }
