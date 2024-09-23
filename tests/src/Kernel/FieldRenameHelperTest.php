@@ -4,16 +4,16 @@ namespace Drupal\Tests\localgov_core\Kernel;
 
 use Drupal\Core\Entity\Entity\EntityFormDisplay;
 use Drupal\Core\Entity\Entity\EntityViewDisplay;
+use Drupal\KernelTests\KernelTestBase;
+use Drupal\Tests\node\Traits\ContentTypeCreationTrait;
+use Drupal\Tests\node\Traits\NodeCreationTrait;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
-use Drupal\KernelTests\KernelTestBase;
 use Drupal\localgov_core\FieldRenameHelper;
 use Drupal\node\Entity\Node;
 use Drupal\node\Entity\NodeType;
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\paragraphs\Entity\ParagraphsType;
-use Drupal\Tests\node\Traits\ContentTypeCreationTrait;
-use Drupal\Tests\node\Traits\NodeCreationTrait;
 
 /**
  * Kernel test for field rename helper.
