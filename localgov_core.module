@@ -44,7 +44,12 @@ function localgov_core_template_preprocess_default_variables_alter(&$variables) 
  * This installs default blocks for modules when they're enabled on an existing
  * site. (IE, not in the installer.)
  */
-function localgov_core_modules_installed(array $modules): void {
+function localgov_core_modules_installed(array $modules, bool $is_syncing): void {
+
+  if ($is_syncing) {
+    return;
+  }
+
   // If we're in the installer, do nothing.
   if (InstallerKernel::installationAttempted()) {
     return;
