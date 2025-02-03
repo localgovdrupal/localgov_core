@@ -1,0 +1,8 @@
+name: 'LocalGov Character Count'
+type: module
+description: 'Adds character counting to text fields'
+package: LocalGov Drupal
+core_version_requirement: ^10 || ^11
+dependencies:
+  - textfield_counter:textfield_counter
+configure: localgov_char_count.character_counter_settings

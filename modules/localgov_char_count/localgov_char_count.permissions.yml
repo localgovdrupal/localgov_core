@@ -1,0 +1,3 @@
+localgov character counting admin:
+  title: 'Administer LocalGov character counting'
+  description: 'Add and remove character counting for content types'

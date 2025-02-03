@@ -1,0 +1,1 @@
+##  LocalGov Character Count module

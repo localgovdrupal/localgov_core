@@ -1,0 +1,7 @@
+localgov_char_count.character_counter_settings:
+  path: '/admin/config/content/localgov-char-count'
+  defaults:
+    _title: 'Enable/disable character counting'
+    _form: 'Drupal\localgov_char_count\Form\CharacterCounterSettingsForm'
+  requirements:
+    _permission: 'administer localgov character counting'

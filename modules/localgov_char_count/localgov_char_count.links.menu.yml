@@ -1,0 +1,5 @@
+localgov_char_count.character_counter_settings:
+  title: LocalGov character counter
+  description: Enable/disable character counting.
+  parent: system.admin_config_content
+  route_name: localgov_char_count.character_counter_config

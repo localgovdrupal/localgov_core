@@ -13,6 +13,7 @@
         "drupal/metatag": "^2.0.2",
         "drupal/pathauto": "^1.8",
         "drupal/role_delegation": "^1.1",
+        "drupal/textfield_counter": "^2.4",
         "drupal/token": "^1.7"
     },
     "require-dev": {
