@@ -2,7 +2,6 @@
 
 namespace Drupal\localgov_core\Plugin\Block;
 
-use Drupal\Component\EventDispatcher\ContainerAwareEventDispatcher;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\Cache;
@@ -14,7 +13,10 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\localgov_core\Event\PageHeaderDisplayEvent;
 use Drupal\node\Entity\Node;
 use Drupal\taxonomy\Entity\Term;
+use Drupal\views\ViewExecutable;
+use Drupal\views\Views;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
@@ -37,7 +39,7 @@ class PageHeaderBlock extends BlockBase implements ContainerFactoryPluginInterfa
   /**
    * Core event_dispatcher service.
    *
-   * @var \Drupal\Component\EventDispatcher\ContainerAwareEventDispatcher
+   * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
    */
   protected $eventDispatcher;
 
@@ -61,6 +63,13 @@ class PageHeaderBlock extends BlockBase implements ContainerFactoryPluginInterfa
    * @var \Drupal\Core\Entity\EntityInterface|null
    */
   protected $entity = NULL;
+
+  /**
+   * View executable associated with the current route.
+   *
+   * @var \Drupal\views\ViewExecutable|null
+   */
+  protected $view = NULL;
 
   /**
    * The page title override.
@@ -115,7 +124,7 @@ class PageHeaderBlock extends BlockBase implements ContainerFactoryPluginInterfa
   /**
    * {@inheritdoc}
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, CurrentRouteMatch $current_route_match, ContainerAwareEventDispatcher $event_dispatcher, RequestStack $request_stack, TitleResolver $title_resolver) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, CurrentRouteMatch $current_route_match, EventDispatcherInterface $event_dispatcher, RequestStack $request_stack, TitleResolver $title_resolver) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
 
     $this->currentRouteMatch = $current_route_match;
@@ -130,6 +139,7 @@ class PageHeaderBlock extends BlockBase implements ContainerFactoryPluginInterfa
     $route = $this->currentRouteMatch->getRouteObject();
     if (!is_null($route)) {
       $parameters = $route->getOption('parameters');
+      $defaults = $route->getDefaults();
       if (!is_null($parameters)) {
         foreach ($parameters as $name => $options) {
           if (!isset($options['type'])) {
@@ -152,10 +162,31 @@ class PageHeaderBlock extends BlockBase implements ContainerFactoryPluginInterfa
           }
         }
       }
+
+      // If this is a view path, set the view instead.
+      if (isset($defaults['view_id']) && isset($defaults['display_id'])) {
+        $view = Views::getView($defaults['view_id']);
+        if ($view) {
+          $view->setDisplay($defaults['display_id']);
+          $this->view = $view;
+        }
+      }
     }
 
     // Dispatch event to allow modules to alter block content.
-    $event = new PageHeaderDisplayEvent($this->entity);
+    $event = new PageHeaderDisplayEvent();
+
+    // If an entity is set, pass to the event.
+    if ($this->entity instanceof EntityInterface) {
+      $event->setEntity($this->entity);
+    }
+
+    // If a view is set, pass to the event.
+    if ($this->view instanceof ViewExecutable) {
+      $event->setView($this->view);
+    }
+
+    // Dispatch event.
     $this->eventDispatcher->dispatch($event, PageHeaderDisplayEvent::EVENT_NAME);
 
     // Set the title, lede, visibility and cache tags.
@@ -164,7 +195,8 @@ class PageHeaderBlock extends BlockBase implements ContainerFactoryPluginInterfa
     $this->lede = is_null($event->getLede()) ? $this->getLede() : $event->getLede();
     $this->visible = $event->getVisibility();
     $entityCacheTags = is_null($this->entity) ? [] : $this->entity->getCacheTags();
-    $this->cacheTags = is_null($event->getCacheTags()) ? $entityCacheTags : $event->getCacheTags();
+    $viewCacheTags = is_null($this->view) ? [] : $this->view->getCacheTags();
+    $this->cacheTags = is_null($event->getCacheTags()) ? array_merge($entityCacheTags, $viewCacheTags) : $event->getCacheTags();
   }
 
   /**
@@ -221,6 +253,20 @@ class PageHeaderBlock extends BlockBase implements ContainerFactoryPluginInterfa
         '#type' => 'html_tag',
         '#tag' => 'p',
         '#value' => $this->t('All pages relating to @label.', ['@label' => strtolower($this->entity->label())]),
+      ];
+    }
+
+    // Return view custom summary.
+    if ($this->view instanceof ViewExecutable) {
+      $extender = $this->view->getDisplay()->getExtenders()['localgov_page_header_display_extender'] ?? NULL;
+
+      // Need to render view to apply tokens.
+      $this->view->render();
+      $lede = $extender->getLede();
+      return [
+        '#type' => 'html_tag',
+        '#tag' => 'p',
+        '#value' => $lede,
       ];
     }
 
