@@ -19,11 +19,11 @@ class StandardProfileTest extends BrowserTestBase {
   protected $profile = 'standard';
 
   /**
-   * Test locagov_media installs with the Standard profile.
+   * Test localgov_media installs with the Standard profile.
    */
   public function testEnablingLocalGovMedia() {
-
     \Drupal::service('module_installer')->install(['localgov_media']);
+    $this->assertTrue(\Drupal::service('module_handler')->moduleExists('localgov_media'));
   }
 
 }
