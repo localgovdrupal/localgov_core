@@ -1,0 +1,3 @@
+title_length: 60
+summary_length: 160
+status_message: '@current_length / @maxlength characters'

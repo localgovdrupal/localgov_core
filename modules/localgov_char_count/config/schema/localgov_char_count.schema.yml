@@ -1,0 +1,13 @@
+localgov_char_count.settings:
+  type: mapping
+  label: 'LocalGov character counting settings'
+  mapping:
+    title_length:
+      type: integer
+      label: 'The maximum number of characters allowed in the title field.'
+    summary_length:
+      type: integer
+      label: 'The maximum number of characters allowed in the title field.'
+    status_message:
+      type: string
+      label: 'The message shown indicating the status of the character count. The variables @maxlength, @current_length, @remaining_count'
