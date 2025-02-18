@@ -6,6 +6,7 @@ use Drupal\Tests\BrowserTestBase;
 use Drupal\Tests\node\Traits\NodeCreationTrait;
 use Drupal\Tests\taxonomy\Traits\TaxonomyTestTrait;
 use Drupal\node\NodeInterface;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Functional tests for LocalGovDrupal install profile.
@@ -38,7 +39,7 @@ class ViewsPageExtenderTest extends BrowserTestBase {
   }
 
   /**
-   * Test block display.
+   * Test view with the page header extender displays correctly.
    */
   public function testViewWithPageHeadeExtender(): void {
 
@@ -65,6 +66,28 @@ class ViewsPageExtenderTest extends BrowserTestBase {
     $this->drupalGet('/oldest-content');
     $this->assertSession()->pageTextContains('The oldest 10 pages that have been created on ' . $site_name . ', including ' . $first_node->getTitle());
 
+  }
+
+  /**
+   * Test a view page displays even when the display extender is disabled.
+   */
+  public function testViewWithoutPageExtenderInstalled(): void {
+
+    // Disable the pageHeaderExtender.
+    $config = \Drupal::service('config.factory')->getEditable('views.settings');
+    $display_extenders = $config->get('display_extenders') ?: [];
+    $display_extenders = array_filter($display_extenders, function ($item) {
+      return $item != 'localgov_page_header_display_extender' ? TRUE : FALSE;
+    });
+    $config->set('display_extenders', $display_extenders);
+    $config->save();
+
+    // Try to access the test view.
+    $this->drupalGet('/recent-content');
+
+    // Test view page should still display without the extender enabled.
+    // @See https://github.com/localgovdrupal/localgov_core/issues/270
+    $this->assertSession()->statusCodeEquals(Response::HTTP_OK);
   }
 
 }
