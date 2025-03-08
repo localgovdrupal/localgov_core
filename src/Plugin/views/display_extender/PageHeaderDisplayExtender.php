@@ -168,7 +168,7 @@ class PageHeaderDisplayExtender extends DisplayExtenderPluginBase {
    * @return string
    *   Lede for display.
    */
-  public function getLede(bool $raw = FALSE) : string {
+  public function getLede(bool $raw = FALSE): string {
     $view = $this->view;
     $lede = '';
 
