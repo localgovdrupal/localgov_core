@@ -78,7 +78,7 @@ class PageHeaderDisplayEvent extends Event {
    * @return \Drupal\Core\Entity\EntityInterface|null
    *   The entity.
    */
-  public function getEntity() : ?EntityInterface {
+  public function getEntity(): ?EntityInterface {
     return $this->entity;
   }
 
@@ -88,7 +88,7 @@ class PageHeaderDisplayEvent extends Event {
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *   The entity.
    */
-  public function setEntity(EntityInterface $entity) : void {
+  public function setEntity(EntityInterface $entity): void {
     $this->entity = $entity;
   }
 
@@ -98,7 +98,7 @@ class PageHeaderDisplayEvent extends Event {
    * @return \Drupal\views\ViewExecutable|null
    *   The view.
    */
-  public function getView() : ?ViewExecutable {
+  public function getView(): ?ViewExecutable {
     return $this->view;
   }
 
@@ -108,7 +108,7 @@ class PageHeaderDisplayEvent extends Event {
    * @param \Drupal\views\ViewExecutable $view
    *   The view.
    */
-  public function setView(ViewExecutable $view) : void {
+  public function setView(ViewExecutable $view): void {
     $this->view = $view;
   }
 
