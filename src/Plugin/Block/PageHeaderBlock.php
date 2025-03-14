@@ -18,6 +18,7 @@ use Drupal\views\Views;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Drupal\localgov_core\Plugin\views\display_extender\PageHeaderDisplayExtender;
 
 /**
  * Provides a 'PageHeaderBlock' block.
@@ -260,14 +261,18 @@ class PageHeaderBlock extends BlockBase implements ContainerFactoryPluginInterfa
     if ($this->view instanceof ViewExecutable) {
       $extender = $this->view->getDisplay()->getExtenders()['localgov_page_header_display_extender'] ?? NULL;
 
-      // Need to render view to apply tokens.
-      $this->view->render();
-      $lede = $extender->getLede();
-      return [
-        '#type' => 'html_tag',
-        '#tag' => 'p',
-        '#value' => $lede,
-      ];
+      // Only return a view lede if the Page Header Display extender is found.
+      if ($extender instanceof PageHeaderDisplayExtender) {
+
+        // Need to render view to apply tokens.
+        $this->view->render();
+        $lede = $extender->getLede();
+        return [
+          '#type' => 'html_tag',
+          '#tag' => 'p',
+          '#value' => $lede,
+        ];
+      }
     }
 
     return NULL;
