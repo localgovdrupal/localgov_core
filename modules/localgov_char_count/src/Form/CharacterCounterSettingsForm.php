@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Drupal\localgov_char_count\Form;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Entity\EntityDisplayRepository;
 use Drupal\Core\Entity\EntityFieldManager;
 use Drupal\Core\Entity\EntityTypeManager;
+use Drupal\Core\Field\WidgetPluginManager;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -31,11 +33,25 @@ class CharacterCounterSettingsForm extends ConfigFormBase {
   const DEFAULT_SUMMARY_LENGTH = 160;
 
   /**
+   * Default status message.
+   *
+   * @var string
+   */
+  const DEFAULT_STATUS_MESSAGE = '<span class="current_count">@current_length</span> / <span class="maxlength_count">@maxlength</span> characters';
+
+  /**
    * Config settings.
    *
    * @var string
    */
   const SETTINGS = 'localgov_char_count.settings';
+
+  /**
+   * The Entity Display Repository.
+   *
+   * @var \Drupal\Core\Entity\EntityDisplayRepository
+   */
+  protected EntityDisplayRepository $entityDisplayRepository;
 
   /**
    * The Entity Field Manager.
@@ -52,27 +68,41 @@ class CharacterCounterSettingsForm extends ConfigFormBase {
   protected EntityTypeManager $entityTypeManager;
 
   /**
+   * The Widget Plugin Manager.
+   *
+   * @var \Drupal\Core\Field\WidgetPluginManager
+   */
+  protected WidgetPluginManager $widgetPluginManager;
+
+  /**
    * Constructs a \Drupal\system\ConfigFormBase object.
    *
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The factory for configuration objects.
+   * @param \Drupal\Core\Entity\EntityDisplayRepository $entity_display_repository
+   *   The entity display repository.
    * @param \Drupal\Core\Entity\EntityFieldManager $entity_field_manager
    *   The entity field manager.
    * @param \Drupal\Core\Entity\EntityTypeManager $entity_type_manager
-   *    The entity type manager.
+   *   The entity type manager.
+   * @param \Drupal\Core\Field\WidgetPluginManager $widget_plugin_manager
+   *   The widget plugin manager.
    * @param \Drupal\Core\Config\TypedConfigManagerInterface|null $typed_config_manager
    *   The typed config manager.
    */
   public function __construct(
     ConfigFactoryInterface $config_factory,
+    EntityDisplayRepository $entity_display_repository,
     EntityFieldManager $entity_field_manager,
     EntityTypeManager $entity_type_manager,
+    WidgetPluginManager $widget_plugin_manager,
     protected $typed_config_manager = NULL,
-
   ) {
     parent::__construct($config_factory, $typed_config_manager);
+    $this->entityDisplayRepository = $entity_display_repository;
     $this->entityFieldManager = $entity_field_manager;
     $this->entityTypeManager = $entity_type_manager;
+    $this->widgetPluginManager = $widget_plugin_manager;
   }
 
   /**
@@ -81,8 +111,10 @@ class CharacterCounterSettingsForm extends ConfigFormBase {
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('config.factory'),
+      $container->get('entity_display.repository'),
       $container->get('entity_field.manager'),
       $container->get('entity_type.manager'),
+      $container->get('plugin.manager.field.widget'),
       $container->get('config.typed')
     );
   }
@@ -158,7 +190,7 @@ class CharacterCounterSettingsForm extends ConfigFormBase {
       '#type' => 'textarea',
       '#title' => $this->t('Status message'),
       '#description' => $this->t('Enter the message to show to users indicating the current status of the character count. The variables <strong>@maxlength</strong>, <strong>@current_length</strong> and <strong>@remaining_count</strong> can be used in this field. For the real-time counter to work, said variables must be wrapped in HTML span tags with their classes respectively set to <strong>maxlength_count</strong>, <strong>current_count</strong> and <strong>remaining_count</strong>.'),
-      '#default_value' => $config->get('status_message') ?? '@current_length / @maxlength characters',
+      '#default_value' => $config->get('status_message') ?? static::DEFAULT_STATUS_MESSAGE,
       '#required' => TRUE,
     ];
     $form['fields'] = [
@@ -168,11 +200,19 @@ class CharacterCounterSettingsForm extends ConfigFormBase {
       '#open' => TRUE,
     ];
     foreach ($char_count_fields as $bundle => $fields) {
+      $default_value = [];
+      $form_display = $this->entityDisplayRepository->getFormDisplay('node', $bundle, 'default');
+      foreach ($fields as $field => $label) {
+        $component = $form_display->getComponent($field);
+        if ($component && $this->isTextCounterComponent($component)) {
+          $default_value[] = $field;
+        }
+      }
       $form['fields'][$bundle] = [
         '#type' => 'checkboxes',
         '#title' => $node_types[$bundle]->label(),
         '#options' => $fields,
-        '#default_value' => array_keys($fields),
+        '#default_value' => $default_value,
       ];
     }
 
@@ -180,13 +220,6 @@ class CharacterCounterSettingsForm extends ConfigFormBase {
     $form['actions']['submit']['#value'] = $this->t('Apply configuration changes');
 
     return $form;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function validateForm(array &$form, FormStateInterface $form_state): void {
-    parent::validateForm($form, $form_state);
   }
 
   /**
@@ -203,18 +236,134 @@ class CharacterCounterSettingsForm extends ConfigFormBase {
       ->set('status_message', $values['config']['status_message'])
       ->save();
 
-    // Determine what's changing.
-    $add = [];
-    $remove = [];
+    // Determine which field widgets are changing.
     foreach ($values['fields'] as $bundle => $fields) {
-      if ($fields) {
-        $add[$bundle] = $fields;
+      $form_display = $this->entityDisplayRepository->getFormDisplay('node', $bundle, 'default');
+      foreach ($fields as $field => $status) {
+        if ($component = $form_display->getComponent($field)) {
+
+          // Convert to text field counter.
+          if ($this->isTextComponent($component) && $status !== 0) {
+            $component = $this->convertToTextCounter($field, $component);
+            $form_display->setComponent($field, $component);
+            $form_display->save();
+          }
+
+          // Convert to text field.
+          if ($this->isTextCounterComponent($component) && $status === 0) {
+            $component = $this->convertToText($component);
+            $form_display->setComponent($field, $component);
+            $form_display->save();
+          }
+        }
+      }
+    }
+  }
+
+  /**
+   * Is text field component?
+   *
+   * @param array $component
+   *   The component to check.
+   *
+   * @return bool
+   *   TRUE if the component is a text field component, FALSE otherwise.
+   */
+  protected function isTextComponent(array $component): bool {
+    return match ($component['type']) {
+      'string_textarea',
+      'string_textfield',
+      'text_textarea',
+      'text_textarea_with_summary',
+      'text_textfield' => TRUE,
+      default => FALSE,
+    };
+
+  }
+
+  /**
+   * Is text field counter component?
+   *
+   * @param array $component
+   *   The component to check.
+   *
+   * @return bool
+   *   TRUE if the component is a text field counter component, FALSE otherwise.
+   */
+  protected function isTextCounterComponent(array $component): bool {
+    return match ($component['type']) {
+      'string_textarea_with_counter',
+      'string_textfield_with_counter',
+      'text_textarea_with_counter',
+      'text_textarea_with_summary_and_counter',
+      'text_textfield_with_counter' => TRUE,
+      default => FALSE,
+    };
+  }
+
+  /**
+   * Convert text field counter component config to text field.
+   *
+   * @param array $component
+   *   The component to convert.
+   *
+   * @return array
+   *   The converted component.
+   */
+  protected function convertToText(array $component): array {
+
+    if ($component['type'] === 'text_textarea_with_summary_and_counter') {
+      $component['type'] = 'text_textarea_with_summary';
+      $field_settings = $this->widgetPluginManager->getDefaultSettings($component['type']);
+      $field_settings['show_summary'] = TRUE;
+    }
+    else {
+      $component['type'] = str_replace('_with_counter', '', $component['type']);
+      $field_settings = $this->widgetPluginManager->getDefaultSettings($component['type']);
+    }
+    $component['settings'] = $field_settings;
+
+    return $component;
+  }
+
+  /**
+   * Convert text field component config to text counter field.
+   *
+   * @param string $field
+   *   Name of field to convert.
+   * @param array $component
+   *   The component to convert.
+   *
+   * @return array
+   *   The converted component.
+   */
+  protected function convertToTextCounter(string $field, array $component): array {
+    $config = $this->config(static::SETTINGS);
+
+    if ($component['type'] === 'text_textarea_with_summary') {
+      $component['type'] = 'text_textarea_with_summary_and_counter';
+      $field_settings = $this->widgetPluginManager->getDefaultSettings($component['type']);
+      $field_settings['summary_maxlength'] = $config->get('summary_length');
+      $field_settings['show_summary'] = TRUE;
+    }
+    else {
+      $component['type'] .= '_with_counter';
+      $field_settings = $this->widgetPluginManager->getDefaultSettings($component['type']);
+      if ($field === 'title') {
+        $field_settings['maxlength'] = $config->get('title_length');
       }
       else {
-        $remove[$bundle] = $fields;
+        $field_settings['maxlength'] = $config->get('summary_length');
       }
     }
 
-    $x=0;
+    $field_settings['count_html_characters'] = FALSE;
+    $field_settings['count_only_mode'] = TRUE;
+    $field_settings['js_prevent_submit'] = FALSE;
+    $field_settings['textcount_status_message'] = $config->get('status_message');
+    $component['settings'] = $field_settings;
+
+    return $component;
   }
+
 }

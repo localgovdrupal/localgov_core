@@ -1,3 +1,3 @@
 title_length: 60
 summary_length: 160
-status_message: '@current_length / @maxlength characters'
+status_message: '<span class="current_count">@current_length</span> / <span class="maxlength_count">@maxlength</span> characters'
