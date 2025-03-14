@@ -108,7 +108,7 @@ class CharacterCounterSettingsForm extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container) {
+  public static function create(ContainerInterface $container): self {
     return new static(
       $container->get('config.factory'),
       $container->get('entity_display.repository'),
@@ -196,7 +196,7 @@ class CharacterCounterSettingsForm extends ConfigFormBase {
     $form['fields'] = [
       '#type' => 'details',
       '#title' => $this->t('Fields to apply character counting to.'),
-      '#description' => $this->t('Checked fields will have character counting added to them if it already set. Unchecked fields will remove character counting if already setup.'),
+      '#description' => $this->t('Checking a field will add character counting to it if not already configured. Unchecking a field will remove character counting from it.'),
       '#open' => TRUE,
     ];
     foreach ($char_count_fields as $bundle => $fields) {
