@@ -88,5 +88,5 @@ class SettingsFormTest extends WebDriverTestBase {
     $this->assertSession()->elementTextNotContains('css', '.form-item-title-0-value', $title_counter_message);
     $this->assertSession()->elementTextNotContains('css', '.form-item-body-0-summary', $summary_counter_message);
   }
-  
+
 }
