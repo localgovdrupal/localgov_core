@@ -278,7 +278,6 @@ class CharacterCounterSettingsForm extends ConfigFormBase {
       'text_textfield' => TRUE,
       default => FALSE,
     };
-
   }
 
   /**

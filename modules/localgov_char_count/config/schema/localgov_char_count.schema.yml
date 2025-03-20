@@ -1,5 +1,5 @@
 localgov_char_count.settings:
-  type: mapping
+  type: config_object
   label: 'LocalGov character counting settings'
   mapping:
     title_length:
