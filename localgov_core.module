@@ -25,6 +25,18 @@ function localgov_core_theme($existing, $type, $theme, $path) {
 }
 
 /**
+ * Implements hook_theme_suggestions_HOOK().
+ */
+function localgov_core_theme_suggestions_localgov_page_header_block(array $variables) {
+  $suggestions = [];
+  $entity = $variables['entity'];
+
+  $suggestions[] = 'localgov_page_header_block__' . $entity->bundle();
+  $suggestions[] = 'localgov_page_header_block__' . $entity->id();
+  return $suggestions;
+}
+
+/**
  * Implements hook_template_preprocess_default_variables_alter().
  */
 function localgov_core_template_preprocess_default_variables_alter(&$variables) {
