@@ -211,6 +211,7 @@ class PageHeaderBlock extends BlockBase implements ContainerFactoryPluginInterfa
       '#title' => $this->title,
       '#subtitle' => $this->subTitle,
       '#lede' => $this->lede,
+      '#entity' => $this->entity,
     ];
 
     return $build;
