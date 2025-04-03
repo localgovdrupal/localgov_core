@@ -27,7 +27,7 @@ function localgov_core_theme($existing, $type, $theme, $path) {
 /**
  * Implements hook_theme_suggestions_HOOK().
  */
-function localgov_core_theme_suggestions_localgov_page_header_block(array $variables) {
+function localgov_core_theme_suggestions_localgov_page_header_block(array $variables): array {
   $suggestions = [];
   $entity = $variables['entity'];
 
