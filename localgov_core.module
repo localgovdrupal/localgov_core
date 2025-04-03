@@ -17,6 +17,7 @@ function localgov_core_theme($existing, $type, $theme, $path) {
         'title' => '',
         'subtitle' => NULL,
         'lede' => NULL,
+        'entity' => NULL,
       ],
       'render element' => 'block',
     ],
