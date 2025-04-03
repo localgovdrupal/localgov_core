@@ -31,9 +31,12 @@ function localgov_core_theme_suggestions_localgov_page_header_block(array $varia
   $suggestions = [];
   $entity = $variables['entity'];
 
-  $suggestions[] = 'localgov_page_header_block__' . $entity->bundle();
-  $suggestions[] = 'localgov_page_header_block__' . $entity->id();
-  $suggestions[] = 'localgov_page_header_block__' . $entity->getEntityTypeId();
+  if ($entity instanceof NodeInterface || $entity instanceof TermInterface) {
+    $suggestions[] = 'localgov_page_header_block__' . $entity->bundle();
+    $suggestions[] = 'localgov_page_header_block__' . $entity->id();
+    $suggestions[] = 'localgov_page_header_block__' . $entity->getEntityTypeId();
+  }
+
   return $suggestions;
 }
 
