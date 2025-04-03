@@ -1,14 +1,13 @@
 <?php
 
-use Drupal\node\NodeInterface;
-use Drupal\taxonomy\TermInterface;
-
 /**
  * @file
  * LocalGovDrupal Core module file.
  */
 
 use Drupal\Core\Installer\InstallerKernel;
+use Drupal\node\NodeInterface;
+use Drupal\taxonomy\TermInterface;
 
 /**
  * Implements hook_theme().
