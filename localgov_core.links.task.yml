@@ -1,5 +1,3 @@
 localgov_core.files:
-  title: 'Files'
-  parent_id: entity.media.collection
-  route_name: view.files.page_1
+  deriver: 'Drupal\localgov_core\Plugin\Derivative\FilesLocalTasks'
   weight: 100
