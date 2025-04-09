@@ -52,7 +52,9 @@ class FilesLocalTasks extends DeriverBase implements ContainerDeriverInterface {
       }
     }
     catch (\Exception $exception) {
-      // Throw $th;.
+      // Nothing to log here.
+      // getRouteByName throw an exception If a matching route cannot be found.
+      // However, if the route do not exists, it is not an error in this case.
     }
     return parent::getDerivativeDefinitions($base_plugin_definition);
   }
