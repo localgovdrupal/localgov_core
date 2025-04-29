@@ -6,6 +6,8 @@
  */
 
 use Drupal\Core\Installer\InstallerKernel;
+use Drupal\node\NodeInterface;
+use Drupal\taxonomy\TermInterface;
 
 /**
  * Implements hook_theme().
@@ -17,6 +19,7 @@ function localgov_core_theme($existing, $type, $theme, $path) {
         'title' => '',
         'subtitle' => NULL,
         'lede' => NULL,
+        'entity' => NULL,
       ],
       'render element' => 'block',
     ],
@@ -42,6 +45,24 @@ function localgov_core_library_info_alter(&$libraries, $extension) {
       }
     }
   }
+
+/**
+ * Implements hook_theme_suggestions_HOOK().
+ */
+function localgov_core_theme_suggestions_localgov_page_header_block(array $variables): array {
+  $suggestions = [];
+  $entity = $variables['entity'];
+
+  if ($entity instanceof NodeInterface || $entity instanceof TermInterface) {
+    $id = $entity->id();
+    $type = $entity->getEntityTypeId();
+    $bundle = $entity->bundle();
+    $suggestions[] = 'localgov_page_header_block__' . $bundle;
+    $suggestions[] = 'localgov_page_header_block__' . $type . '__' . $id;
+    $suggestions[] = 'localgov_page_header_block__' . $type;
+  }
+
+  return $suggestions;
 }
 
 /**
