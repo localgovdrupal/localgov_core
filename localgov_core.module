@@ -27,6 +27,28 @@ function localgov_core_theme($existing, $type, $theme, $path) {
 }
 
 /**
+ * Implements hook_library_info_alter().
+ */
+function localgov_core_library_info_alter(&$libraries, $extension): void {
+
+  if ($extension === 'core') {
+    $remove_css = (bool) theme_get_setting('localgov_base_remove_css');
+    $remove_js = (bool) theme_get_setting('localgov_base_remove_js');
+    foreach ($libraries as $name => $library) {
+      if (str_starts_with($name, 'components.localgov_base--')) {
+        if ($remove_css) {
+          $libraries[$name]['css'] = [];
+        }
+        if ($remove_js) {
+          $libraries[$name]['js'] = [];
+        }
+      }
+    }
+  }
+
+}
+
+/**
  * Implements hook_theme_suggestions_HOOK().
  */
 function localgov_core_theme_suggestions_localgov_page_header_block(array $variables): array {
@@ -48,7 +70,7 @@ function localgov_core_theme_suggestions_localgov_page_header_block(array $varia
 /**
  * Implements hook_template_preprocess_default_variables_alter().
  */
-function localgov_core_template_preprocess_default_variables_alter(&$variables) {
+function localgov_core_template_preprocess_default_variables_alter(&$variables): void {
   $remove_css = (bool) theme_get_setting('localgov_base_remove_css');
   $remove_js = (bool) theme_get_setting('localgov_base_remove_js');
 
