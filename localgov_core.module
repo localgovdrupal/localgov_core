@@ -70,7 +70,7 @@ function localgov_core_theme_suggestions_localgov_page_header_block(array $varia
 /**
  * Implements hook_template_preprocess_default_variables_alter().
  */
-function localgov_core_template_preprocess_default_variables_alter(&$variables) {
+function localgov_core_template_preprocess_default_variables_alter(&$variables): void {
   $remove_css = (bool) theme_get_setting('localgov_base_remove_css');
   $remove_js = (bool) theme_get_setting('localgov_base_remove_js');
 
