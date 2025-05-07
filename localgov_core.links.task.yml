@@ -1,0 +1,5 @@
+localgov_core.files:
+  title: 'Files'
+  parent_id: entity.media.collection
+  route_name: view.files.page_1
+  weight: 100

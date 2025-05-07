@@ -8,6 +8,13 @@
 use Drupal\localgov_core\FieldRenameHelper;
 
 /**
+ * Implements hook_install().
+ */
+function localgov_core_install(): void {
+  _localgov_core_enabled_views_page_display_extender();
+}
+
+/**
  * Update Field names for localgov_core provided fields.
  *
  * Field mapping between existing and new names:
@@ -72,4 +79,44 @@ function localgov_core_update_8003() {
     ]);
     $view_mode->save();
   }
+}
+
+/**
+ * Update the files view to change the path and menu type for the 'page_1'.
+ */
+function localgov_core_update_8004() {
+  // Load the view configuration.
+  $config = \Drupal::configFactory()->getEditable('views.view.files');
+
+  // Set the configuration values using an array.
+  $config->set('display.page_1.display_options.path', 'admin/content/media/files');
+  $config_files_menu_items = $config->get('display.page_1.display_options.menu');
+  $config_files_menu_items['type'] = 'none';
+  $config_files_menu_items['expanded'] = 'false';
+  $config_files_menu_items['parent'] = '';
+  $config_files_menu_items['context'] = '0';
+  $config->set('display.page_1.display_options.menu', $config_files_menu_items);
+
+  $config->set('display.page_2.display_options.path', 'admin/content/media/files/usage/%');
+
+  // Save the configuration.
+  $config->save();
+}
+
+/**
+ * Enables the views page header display extender.
+ */
+function localgov_core_update_8005(): void {
+  _localgov_core_enabled_views_page_display_extender();
+}
+
+/**
+ * Enable localgov_page_header_display_extender plugin.
+ */
+function _localgov_core_enabled_views_page_display_extender(): void {
+  $config = \Drupal::service('config.factory')->getEditable('views.settings');
+  $display_extenders = $config->get('display_extenders') ?: [];
+  $display_extenders[] = 'localgov_page_header_display_extender';
+  $config->set('display_extenders', $display_extenders);
+  $config->save();
 }

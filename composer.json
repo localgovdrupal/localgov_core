@@ -6,9 +6,9 @@
     "license": "GPL-2.0-or-later",
     "minimum-stability": "dev",
     "require": {
-        "drupal/field_group": "^3.1",
-        "drupal/image_widget_crop": "^2.3",
-        "drupal/linkit": "^6.0-beta1",
+        "drupal/field_group": "^4.0",
+        "drupal/image_widget_crop": "^2.3 || ^3.0",
+        "drupal/linkit": "^6.1 || ^7.0",
         "drupal/media_library_edit": "^3.0",
         "drupal/metatag": "^2.0.2",
         "drupal/pathauto": "^1.8",
@@ -23,6 +23,11 @@
         "composer-exit-on-patch-failure": true,
         "patchLevel": {
             "drupal/core": "-p2"
+        },
+        "patches": {
+            "drupal/role_delegation": {
+                "Nullable types #3499682": "https://git.drupalcode.org/project/role_delegation/-/commit/f21be7a1f66de4a095c1398d9a53aa44bdad3524.patch"
+            }
         }
     }
 }
