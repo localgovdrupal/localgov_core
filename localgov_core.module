@@ -29,7 +29,7 @@ function localgov_core_theme($existing, $type, $theme, $path) {
 /**
  * Implements hook_library_info_alter().
  */
-function localgov_core_library_info_alter(&$libraries, $extension) {
+function localgov_core_library_info_alter(&$libraries, $extension): void {
 
   if ($extension === 'core') {
     $remove_css = (bool) theme_get_setting('localgov_base_remove_css');
