@@ -44,6 +44,6 @@ matchers:
       bundles:
         document: document
       group_by_bundle: true
-      substitution_type: canonical
+      substitution_type: media
       limit: 100
     weight: -9
