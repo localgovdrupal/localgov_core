@@ -10,6 +10,16 @@ use Drupal\localgov_roles\RolesHelper;
 use Drupal\user\Entity\Role;
 
 /**
+ * Implements hook_links_discovered_alter().
+ */
+function localgov_media_menu_links_discovered_alter(&$links): void {
+  // We move our files under media.
+  // @see https://github.com/localgovdrupal/localgov_core/pull/221
+  // @see \Drupal\localgov_media\Plugin\Derivative\FilesLocalTasks
+  unset($links['admin_toolbar_tools.extra_links:view.files']);
+}
+
+/**
  * Implements hook_modules_installed().
  */
 function localgov_media_modules_installed($modules, $is_syncing) {
