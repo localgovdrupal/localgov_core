@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\localgov_core\Plugin\Derivative;
+namespace Drupal\localgov_media\Plugin\Derivative;
 
 use Drupal\Component\Plugin\Derivative\DeriverBase;
 use Drupal\Core\Routing\RouteProviderInterface;
@@ -45,10 +45,11 @@ class FilesLocalTasks extends DeriverBase implements ContainerDeriverInterface {
 
     try {
       if ($this->routeProvider->getRouteByName('view.files.page_1')) {
-        $this->derivatives['localgov_core.files'] = $base_plugin_definition;
-        $this->derivatives['localgov_core.files']['parent_id'] = 'entity.media.collection';
-        $this->derivatives['localgov_core.files']['title'] = 'Files';
-        $this->derivatives['localgov_core.files']['route_name'] = 'view.files.page_1';
+        $this->derivatives['view.files'] = $base_plugin_definition;
+        $this->derivatives['view.files']['parent_id'] = 'entity.media.collection';
+        $this->derivatives['view.files']['title'] = 'Files';
+        $this->derivatives['view.files']['route_name'] = 'view.files.page_1';
+        $this->derivatives['view.files']['weight'] = 100;
       }
     }
     catch (\Exception $exception) {
