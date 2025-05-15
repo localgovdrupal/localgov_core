@@ -1,19 +1,19 @@
 <?php
 
+/**
+ * @file
+ * LocalGov Drupal Media module post update file.
+ */
+
 use Drupal\Component\Utility\DiffArray;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\views\Entity\View;
 use Symfony\Component\Yaml\Yaml;
 
 /**
- * @file
- * LocalGov Drupal Media module post update file.
- */
-
-/**
  * Change media administration view to include usage.
  */
-function localgov_media_post_update_media_admin_view_count(&$sandbox) {
+function localgov_media_post_update_media_admin_view_count(&$sandbox): TranslatableMarkup {
   if (!\Drupal::moduleHandler()->moduleExists('entity_usage')) {
     return new TranslatableMarkup('The Media administration view /admin/content/media has not been update as Media Usage is not enabled.');
   }
