@@ -918,14 +918,30 @@ display:
           row_class: ''
           default_row_class: true
           columns:
+            media_bulk_form: media_bulk_form
+            thumbnail__target_id: thumbnail__target_id
             name: name
             bundle: bundle
-            changed: changed
             uid: uid
             status: status
-            thumbnail__target_id: thumbnail__target_id
+            edit_media: edit_media
+            count: count
+            changed: changed
+            operations: operations
           default: changed
           info:
+            media_bulk_form:
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            thumbnail__target_id:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
             name:
               sortable: true
               default_sort_order: asc
@@ -936,13 +952,6 @@ display:
             bundle:
               sortable: true
               default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            changed:
-              sortable: true
-              default_sort_order: desc
               align: ''
               separator: ''
               empty_column: false
@@ -961,9 +970,28 @@ display:
               separator: ''
               empty_column: false
               responsive: ''
-            thumbnail__target_id:
+            edit_media:
               sortable: false
               default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            count:
+              sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            changed:
+              sortable: true
+              default_sort_order: desc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            operations:
               align: ''
               separator: ''
               empty_column: false
