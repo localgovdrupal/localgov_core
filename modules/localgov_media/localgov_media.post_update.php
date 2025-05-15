@@ -6,6 +6,11 @@ use Drupal\views\Entity\View;
 use Symfony\Component\Yaml\Yaml;
 
 /**
+ * @file
+ * LocalGov Drupal Media module post update file.
+ */
+
+/**
  * Change media administration view to include usage.
  */
 function localgov_media_post_update_media_admin_view_count(&$sandbox) {
@@ -14,7 +19,6 @@ function localgov_media_post_update_media_admin_view_count(&$sandbox) {
   }
 
   $media_view = View::load('media');
-  $live = $media_view->toArray();
   $original = Yaml::parseFile(\Drupal::moduleHandler()->getModule('media')->getPath() . '/config/optional/views.view.media.yml');
   // Diff this way round gets new keys.
   $diff = DiffArray::diffAssocRecursive($media_view->toArray(), $original);
