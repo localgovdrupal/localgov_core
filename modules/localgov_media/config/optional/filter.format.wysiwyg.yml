@@ -9,7 +9,6 @@ dependencies:
   module:
     - editor
     - linkit
-    - localgov_publications
     - media
 name: WYSIWYG
 format: wysiwyg
