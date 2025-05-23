@@ -12,3 +12,4 @@ dependencies:
   - drupal:responsive_image
   - image_widget_crop:image_widget_crop
   - linkit:linkit
+  - localgov_core:localgov_core
