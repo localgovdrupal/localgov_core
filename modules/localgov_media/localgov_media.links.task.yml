@@ -1,0 +1,2 @@
+localgov_core.files:
+  deriver: 'Drupal\localgov_media\Plugin\Derivative\FilesLocalTasks'
