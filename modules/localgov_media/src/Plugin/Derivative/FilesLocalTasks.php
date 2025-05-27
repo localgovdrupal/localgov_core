@@ -20,7 +20,7 @@ class FilesLocalTasks extends DeriverBase implements ContainerDeriverInterface {
   protected $routeProvider;
 
   /**
-   * Constructs a \Drupal\localgov_core\Plugin\Derivative\FilesLocalTasks instance.
+   * Constructs a FilesLocalTasks instance.
    *
    * @param \Drupal\Core\Routing\RouteProviderInterface $route_provider
    *   The route provider.
