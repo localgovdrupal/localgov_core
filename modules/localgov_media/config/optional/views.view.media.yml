@@ -6,6 +6,7 @@ dependencies:
   module:
     - entity_usage
     - image
+    - localgov_core
     - media
     - user
 id: media
