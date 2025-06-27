@@ -12,7 +12,7 @@
         "drupal/media_library_edit": "^3.0",
         "drupal/metatag": "^2.0.2",
         "drupal/pathauto": "^1.8",
-        "drupal/role_delegation": "^1.1",
+        "drupal/role_delegation": "^1.4",
         "drupal/token": "^1.7"
     },
     "require-dev": {
@@ -23,11 +23,6 @@
         "composer-exit-on-patch-failure": true,
         "patchLevel": {
             "drupal/core": "-p2"
-        },
-        "patches": {
-            "drupal/role_delegation": {
-                "Nullable types #3499682": "https://git.drupalcode.org/project/role_delegation/-/commit/f21be7a1f66de4a095c1398d9a53aa44bdad3524.patch"
-            }
         }
     }
 }
