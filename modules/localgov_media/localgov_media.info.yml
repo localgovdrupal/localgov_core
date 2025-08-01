@@ -9,6 +9,10 @@ dependencies:
   - drupal:editor
   - drupal:media_library
   - drupal:media_library_edit
+  - drupal:path
   - drupal:responsive_image
+  - entity_usage:entity_usage
   - image_widget_crop:image_widget_crop
   - linkit:linkit
+  - paragraphs:paragraphs_library
+  - localgov_core:localgov_core
