@@ -3,6 +3,7 @@ description: LocalGov Media configuration.
 package: LocalGov Drupal
 type: module
 core_version_requirement: ^10 || ^11
+container_rebuild_required: true
 
 dependencies:
   - drupal:ckeditor5
