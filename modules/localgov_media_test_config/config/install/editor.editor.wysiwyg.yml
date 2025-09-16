@@ -1,0 +1,123 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - filter.format.wysiwyg
+  module:
+    - ckeditor5
+format: wysiwyg
+editor: ckeditor5
+settings:
+  toolbar:
+    items:
+      - heading
+      - style
+      - removeFormat
+      - underline
+      - bold
+      - italic
+      - '|'
+      - undo
+      - redo
+      - '|'
+      - link
+      - '|'
+      - bulletedList
+      - numberedList
+      - '|'
+      - blockQuote
+      - drupalInsertImage
+      - drupalMedia
+      - '|'
+      - insertTable
+      - '|'
+      - sourceEditing
+      - textPartLanguage
+  plugins:
+    ckeditor5_heading:
+      enabled_headings:
+        - heading1
+        - heading2
+        - heading3
+        - heading4
+        - heading5
+        - heading6
+    ckeditor5_imageResize:
+      allow_resize: true
+    ckeditor5_language:
+      language_list: site_configured
+    ckeditor5_list:
+      properties:
+        reversed: false
+        startIndex: true
+      multiBlock: true
+    ckeditor5_sourceEditing:
+      allowed_tags:
+        - '<cite>'
+        - '<dl>'
+        - '<dt>'
+        - '<dd>'
+        - '<mark>'
+        - '<blockquote cite>'
+        - '<ol type>'
+        - '<h2 id>'
+        - '<h3 id>'
+        - '<h4 id>'
+        - '<h5 id>'
+        - '<h6 id>'
+        - '<a hreflang title>'
+        - '<ul type>'
+        - '<img data-entity-type data-entity-uuid data-caption>'
+        - '<drupal-media data-caption title>'
+        - '<span>'
+    ckeditor5_style:
+      styles:
+        -
+          label: 'External link'
+          element: '<a class="external-link">'
+        -
+          label: 'PDF link'
+          element: '<a class="pdf-link">'
+        -
+          label: 'Start button'
+          element: '<a class="btn btn-start">'
+        -
+          label: 'Alert info'
+          element: '<p class="alert alert-info">'
+        -
+          label: 'Alert warning'
+          element: '<p class="alert alert-danger">'
+        -
+          label: 'Alert failure'
+          element: '<p class="alert alert-fail">'
+        -
+          label: 'Alert success'
+          element: '<p class="alert alert-success">'
+        -
+          label: 'Callout primary'
+          element: '<p class="callout callout-primary">'
+        -
+          label: 'Callout success'
+          element: '<p class="callout callout-success">'
+        -
+          label: 'Callout danger'
+          element: '<p class="callout callout-danger">'
+        -
+          label: 'Callout teal'
+          element: '<p class="callout callout-teal">'
+        -
+          label: 'Callout carbon'
+          element: '<p class="callout callout-carbon">'
+        -
+          label: 'Callout yellow'
+          element: '<p class="callout callout-yellow">'
+        -
+          label: 'Green ticks'
+          element: '<ul class="list-checked">'
+    linkit_extension:
+      linkit_enabled: true
+      linkit_profile: default
+    media_media:
+      allow_view_mode_override: true
+image_upload:
+  status: false

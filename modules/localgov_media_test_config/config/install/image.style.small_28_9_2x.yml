@@ -1,0 +1,24 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - crop.type.28_9
+  module:
+    - crop
+name: small_28_9_2x
+label: 'Small 28:9 2x'
+effects:
+  dee69b23-7be1-4f92-ba96-2da06af593e8:
+    uuid: dee69b23-7be1-4f92-ba96-2da06af593e8
+    id: crop_crop
+    weight: 1
+    data:
+      crop_type: '28_9'
+  08702f55-9d8b-4b02-aede-001517eac25d:
+    uuid: 08702f55-9d8b-4b02-aede-001517eac25d
+    id: image_scale_and_crop
+    weight: 2
+    data:
+      width: 1536
+      height: 494
+      anchor: center-center
