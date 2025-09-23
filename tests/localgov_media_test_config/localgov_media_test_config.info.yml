@@ -1,0 +1,17 @@
+name: 'LocalGov media config for tests'
+type: module
+description: 'Media configuration for Drupal 11.2+ tests.'
+package: Testing
+core_version_requirement: ^10 || ^11
+hidden: true
+
+dependencies:
+  - drupal:ckeditor5
+  - drupal:editor
+  - drupal:media_library
+  - drupal:media_library_edit
+  - drupal:responsive_image
+  - entity_usage:entity_usage
+  - image_widget_crop:image_widget_crop
+  - linkit:linkit
+  - paragraphs:paragraphs_library
