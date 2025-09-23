@@ -1,0 +1,16 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - crop.type.7_3
+  module:
+    - crop
+name: manual_7_3_crop
+label: 'Manual 7:3 crop'
+effects:
+  6a9056df-03c2-4b09-a3b2-3c5333250735:
+    uuid: 6a9056df-03c2-4b09-a3b2-3c5333250735
+    id: crop_crop
+    weight: 1
+    data:
+      crop_type: '7_3'
