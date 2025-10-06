@@ -16,7 +16,8 @@
         "drupal/token": "^1.7"
     },
     "require-dev": {
-        "drupal/paragraphs": "^1.12"
+        "drupal/paragraphs": "^1.12",
+        "drupal/paragraphs_library": "^1.0"
     },
     "extra": {
         "enable-patching": true,

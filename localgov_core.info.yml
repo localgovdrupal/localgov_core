@@ -13,3 +13,5 @@ dependencies:
 
 test_dependencies:
   - paragraphs:paragraphs
+  - paragraphs:paragraphs_library
+  - localgov_core:localgov_media_test_config
