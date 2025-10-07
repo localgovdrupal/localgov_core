@@ -13,3 +13,6 @@ dependencies:
   - drupal:responsive_image
   - image_widget_crop:image_widget_crop
   - linkit:linkit
+
+test_dependencies:
+  - localgov_core:localgov_media_test_config
