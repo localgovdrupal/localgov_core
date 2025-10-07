@@ -60,7 +60,7 @@ class DefaultBlockInstaller {
    */
   protected function targetThemes(): array {
 
-    $themes = ['localgov_base', 'localgov_scarfolk'];
+    $themes = ['localgov_base', 'localgov_scarfolk', 'localgov_microsites_base'];
 
     $activeTheme = $this->getActiveThemeName();
     if ($activeTheme && !in_array($activeTheme, $themes, TRUE)) {
