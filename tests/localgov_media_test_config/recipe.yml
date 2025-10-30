@@ -1,0 +1,18 @@
+name: 'LocalGov Media Test Configuration'
+description: 'Provides media configuration for testing, only installing config that is not already present'
+
+install:
+  - drupal:ckeditor5
+  - drupal:editor
+  - drupal:media_library
+  - drupal:media_library_edit
+  - drupal:responsive_image
+  - entity_usage:entity_usage
+  - image_widget_crop:image_widget_crop
+  - linkit:linkit
+  - paragraphs:paragraphs_library
+
+config:
+  import:
+    './config/recipe': '*'
+  strict: false

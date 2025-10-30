@@ -1,0 +1,27 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the LocalGov Media Test Config module.
+ */
+
+use Drupal\Core\Recipe\Recipe;
+use Drupal\Core\Recipe\RecipeRunner;
+
+/**
+ * Implements hook_install().
+ */
+function localgov_media_test_config_install() {
+  // Apply the recipe to conditionally install media configuration.
+  // Only installs config that doesn't already exist (strict is false).
+  $module_path = \Drupal::service('extension.list.module')
+    ->getPath('localgov_media_test_config');
+  
+  $recipe_path = $module_path . '/recipe.yml';
+  
+  // Check if recipe file exists before attempting to apply it.
+  if (file_exists($recipe_path)) {
+    $recipe = Recipe::createFromDirectory(dirname($recipe_path));
+    RecipeRunner::processRecipe($recipe);
+  }
+}
