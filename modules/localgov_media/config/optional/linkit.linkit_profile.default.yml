@@ -2,6 +2,7 @@ langcode: en
 status: true
 dependencies:
   module:
+    - localgov_core
     - node
     - paragraphs_library
 label: Default
@@ -17,7 +18,7 @@ matchers:
       group_by_bundle: true
       substitution_type: canonical
       limit: 100
-      include_unpublished: false
+      include_unpublished: true
     weight: -10
   c3257417-fce9-4307-8251-58672edf88be:
     id: email
